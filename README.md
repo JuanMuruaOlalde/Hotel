@@ -1,29 +1,6 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Esto es un intento de escribir un ejercicio de organización del código dentro de una aplicación más o menos grande. 
 
-### What is this repository for? ###
+Para el capitulo 14 de mi libro [https://www.susosise.es/documentos/Mas_alla_del_IF_y_del_WHILE.pdf](https://www.susosise.es/documentos/Mas_alla_del_IF_y_del_WHILE.pdf)
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
