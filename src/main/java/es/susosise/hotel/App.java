@@ -1,13 +1,18 @@
 package es.susosise.hotel;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
+    public es.susosise.hotel.habitaciones.PersistenciaDeHabitaciones persistenciaDeHabitaciones;
+    
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+    
+ 
     }
+    
+    private void inicializarPersistencia() {
+     	persistenciaDeHabitaciones = new es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnArchivoJSON();
+   	
+    }
+    
 }
