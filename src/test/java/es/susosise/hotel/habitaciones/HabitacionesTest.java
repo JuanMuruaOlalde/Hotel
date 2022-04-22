@@ -1,30 +1,18 @@
 package es.susosise.hotel.habitaciones;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import junit.framework.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public class HabitacionesTest extends TestCase {
+class HabitacionesTest {
 
-    public HabitacionesTest( String testName )
-    {
-        super( testName );
-    }
-	
-    public static Test suite()
-    {
-        return new TestSuite( HabitacionesTest.class );
-    }
-	
-    
-   
-    public void testCrearUnaNuevaHabitacion() {
-    	PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesMocParaTest();
+  
+    @Test
+    void seCreaBienUnaNuevaHabitacion() {
+    	PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnArchivoJSON();
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada = creador.crearUnaNuevaHabitacion("101");
+    	Habitacion habitacionCreada = creador.crear("101");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacionRecuperada = buscador.get("101");
