@@ -6,13 +6,9 @@ public class App
     
     public static void main( String[] args )
     {
-    
+    	System.out.println("Aplicacion Hotel... todavia esta sin interface de usuario...");
  
     }
     
-    private void inicializarPersistencia() {
-     	persistenciaDeHabitaciones = new es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnArchivoJSON();
-   	
-    }
-    
+   
 }

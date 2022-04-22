@@ -5,8 +5,16 @@ import java.util.UUID;
 
 public class Habitacion {
 	
-	UUID idInterno;
-	String numeroDeHabitacion;
+	private UUID idInterno;
+	private String numeroDeHabitacion;
+	
+	public UUID getIdInterno() {
+		return idInterno;
+	}
+	public String getNumeroDeHabitacion() {
+		return numeroDeHabitacion;
+	}
+	
 	
 	public Habitacion(String numeroDeHabitacion) {
 		this.idInterno = UUID.randomUUID();
