@@ -8,7 +8,7 @@ public class CreadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 	
-	public Habitacion crearUnaNuevaHabitacion(String numeroDeHabitacion) {
+	public Habitacion crear(String numeroDeHabitacion) {
 		Habitacion nueva = new Habitacion(numeroDeHabitacion);
 		persistencia.guardar(nueva);
 		return nueva;

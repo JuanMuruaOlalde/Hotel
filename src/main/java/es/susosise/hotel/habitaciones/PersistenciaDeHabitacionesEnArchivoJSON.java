@@ -5,6 +5,9 @@ import java.util.UUID;
 
 public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
 
+	
+	
+	
 	@Override
 	public void guardar(Habitacion unaHabitacion) {
 		// TODO Auto-generated method stub
