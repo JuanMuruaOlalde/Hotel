@@ -41,10 +41,7 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 		}
 	}
 	
-	
-	@Override
-	public void añadirUnaNueva(Habitacion habitacion) {
-		habitaciones.add(habitacion);
+	private void guardarTodasLasHabitaciones() {
 		try {
 			mapper.writeValue(pathDelArchivo.toFile(), habitaciones);
 		} catch (JsonProcessingException e) {
@@ -54,6 +51,12 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void añadirUnaNueva(Habitacion habitacion) {
+		habitaciones.add(habitacion);
+		guardarTodasLasHabitaciones();
 	}
 
 	@Override
@@ -94,14 +97,14 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 
 	@Override
 	public void inactivar(UUID id) {
-		// TODO Auto-generated method stub
-		
+		get(id).setEstaActiva(false);
+		guardarTodasLasHabitaciones();
 	}
 
 	@Override
 	public void activar(UUID id) {
-		// TODO Auto-generated method stub
-		
+		get(id).setEstaActiva(true);
+		guardarTodasLasHabitaciones();
 	}
 
 }

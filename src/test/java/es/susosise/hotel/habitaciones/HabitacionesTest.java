@@ -113,5 +113,42 @@ class HabitacionesTest {
     	assertEquals(2, habitaciones.size());
     }
     
+    @Test
+    void inactivarUnaHabitacion() {
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("101");
+    	creador.crearUnaNueva("302");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	Habitacion habitacion = buscador.get("101");
+    	assertEquals(true, habitacion.estaActiva());
+    	java.util.UUID id = habitacion.getIdInterno();
+
+    	persistencia.inactivar(id);
+    	Habitacion habitacionDespues = buscador.get("101");
+    	assertEquals(false, habitacionDespues.estaActiva());
+    }
     
+    @Test
+    void reactivarUnaHabitacion() {
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("101");
+    	creador.crearUnaNueva("302");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	Habitacion habitacion = buscador.get("101");
+    	assertEquals(true, habitacion.estaActiva());
+    	java.util.UUID id = habitacion.getIdInterno();
+
+    	persistencia.inactivar(id);
+    	Habitacion habitacionDespues = buscador.get("101");
+    	assertEquals(false, habitacionDespues.estaActiva());
+
+    	persistencia.activar(id);
+    	Habitacion habitacionDespuesDespues = buscador.get("101");
+    	assertEquals(true, habitacionDespuesDespues.estaActiva());
+    }
+   
 }
