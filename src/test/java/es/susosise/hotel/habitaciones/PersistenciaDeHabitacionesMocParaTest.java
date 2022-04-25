@@ -6,7 +6,7 @@ import java.util.UUID;
 public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabitaciones {
 
 	@Override
-	public void guardar(Habitacion unaHabitacion) {
+	public void añadirUnaNueva(Habitacion unaHabitacion) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -16,11 +16,11 @@ public class Habitacion {
 	}
 	
 	
-	public Habitacion(String numeroDeHabitacion) {
-		this.idInterno = UUID.randomUUID();
+	public Habitacion(UUID idInterno, String numeroDeHabitacion) {
+		this.idInterno = idInterno;
 		this.numeroDeHabitacion = numeroDeHabitacion;
 	}
-
+	
 	
 	@Override
 	public int hashCode() {

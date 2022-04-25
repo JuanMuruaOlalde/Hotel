@@ -2,7 +2,7 @@ package es.susosise.hotel.habitaciones;
 
 public interface PersistenciaDeHabitaciones {
 	
-	public void guardar(Habitacion unaHabitacion);
+	public void añadirUnaNueva(Habitacion unaHabitacion);
 	
 	public Habitacion get(java.util.UUID id);
 	public Habitacion get(String numeroDeHabitacion);

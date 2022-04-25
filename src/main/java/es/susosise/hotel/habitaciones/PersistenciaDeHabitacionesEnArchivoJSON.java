@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 
 
 public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
 
 	java.nio.file.Path pathDelArchivo;
 	private com.fasterxml.jackson.databind.ObjectMapper mapper;
+	java.util.ArrayList<Habitacion> habitaciones;
 	
 	public PersistenciaDeHabitacionesEnArchivoJSON(java.nio.file.Path carpetaDondeUbicarArchivo) throws IOException {
 		pathDelArchivo = carpetaDondeUbicarArchivo.resolve("habitaciones.json");
@@ -19,15 +21,33 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 			pathDelArchivo.toFile().createNewFile();
 		}
 		mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		habitaciones = new ArrayList<Habitacion>();
+		try {
+			JsonNode datos;
+			datos = mapper.readTree(pathDelArchivo.toFile());
+			java.util.Iterator<JsonNode> nodos = datos.elements();
+			while (nodos.hasNext()) {
+				JsonNode nodo = nodos.next();
+				habitaciones.add(mapper.treeToValue(nodo, Habitacion.class));
+			}
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
 	@Override
-	public void guardar(Habitacion unaHabitacion) {
+	public void añadirUnaNueva(Habitacion habitacion) {
+		habitaciones.add(habitacion);
 		try {
-			java.nio.file.Files.writeString(pathDelArchivo, 
-					                        mapper.writeValueAsString(unaHabitacion) + System.getProperty("line.separator"), 
-			                                StandardOpenOption.APPEND);
+			mapper.writeValue(pathDelArchivo.toFile(), habitaciones);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,22 +65,23 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 
 	@Override
 	public Habitacion get(String numeroDeHabitacion) {
-		// TODO Auto-generated method stub
+		for (Habitacion habitacion : habitaciones) {
+			if (habitacion.getNumeroDeHabitacion().equals(numeroDeHabitacion)) {
+				return habitacion;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public java.util.List<Habitacion> getTodas() {
-		ArrayList<Habitacion> habitaciones = new ArrayList<>();
-		// TODO Auto-generated method stub
 		return habitaciones;
 	}
 
 	@Override
 	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
-		ArrayList<Habitacion> habitaciones = new ArrayList<>();
 		// TODO Auto-generated method stub
-		return habitaciones;
+		return new ArrayList<Habitacion>();
 	}
 
 	@Override

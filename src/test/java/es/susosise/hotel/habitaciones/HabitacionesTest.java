@@ -48,10 +48,10 @@ class HabitacionesTest {
   
 	
     @Test
-    void seCreaBienUnaNuevaHabitacion() {
+    void seCreaBienUnaNuevaHabitacionYSeRecuperaBienUsandoElNumeroDeHabitacion() {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada = creador.crear("101");
+    	Habitacion habitacionCreada = creador.crearUnaNueva("101");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacionRecuperada = buscador.get("101");
@@ -63,8 +63,8 @@ class HabitacionesTest {
     void alCrearUnaNuevaHabitacionSeAñadeALasExistentes() {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada01 = creador.crear("201");
-    	Habitacion habitacionCreada02 = creador.crear("202");
+    	Habitacion habitacionCreada01 = creador.crearUnaNueva("201");
+    	Habitacion habitacionCreada02 = creador.crearUnaNueva("202");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacionRecuperada01 = buscador.get("201");

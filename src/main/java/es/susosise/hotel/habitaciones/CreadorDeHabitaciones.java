@@ -1,5 +1,7 @@
 package es.susosise.hotel.habitaciones;
 
+import java.util.UUID;
+
 public class CreadorDeHabitaciones {
 	
 	private PersistenciaDeHabitaciones persistencia;
@@ -8,9 +10,9 @@ public class CreadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 	
-	public Habitacion crear(String numeroDeHabitacion) {
-		Habitacion nueva = new Habitacion(numeroDeHabitacion);
-		persistencia.guardar(nueva);
+	public Habitacion crearUnaNueva(String numeroDeHabitacion) {
+		Habitacion nueva = new Habitacion(UUID.randomUUID(), numeroDeHabitacion);
+		persistencia.añadirUnaNueva(nueva);
 		return nueva;
 	}
 
