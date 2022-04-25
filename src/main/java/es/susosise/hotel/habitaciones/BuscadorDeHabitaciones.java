@@ -21,7 +21,7 @@ public class BuscadorDeHabitaciones {
 	}
 	
 	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
-		return persistencia.getAquellasQueComiencenPor(criterio);
+		return persistencia.getAquellasCuyoNumeroComiencePor(criterio);
 	}
 	
 }

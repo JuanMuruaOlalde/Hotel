@@ -3,6 +3,8 @@ package es.susosise.hotel.habitaciones;
 import java.util.List;
 import java.util.UUID;
 
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+
 public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabitaciones {
 
 	@Override
@@ -30,7 +32,7 @@ public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabi
 	}
 
 	@Override
-	public List<Habitacion> getAquellasQueComiencenPor(String criterio) {
+	public List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -43,6 +45,12 @@ public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabi
 
 	@Override
 	public void activar(UUID id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cambiarTipo(UUID id, TipoDeHabitacion tipo) {
 		// TODO Auto-generated method stub
 		
 	}

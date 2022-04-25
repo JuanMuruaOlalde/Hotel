@@ -7,6 +7,8 @@ import java.util.UUID;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+
 
 public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
 
@@ -85,7 +87,7 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	}
 
 	@Override
-	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
+	public java.util.List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio) {
 		java.util.ArrayList<Habitacion> encontradas = new ArrayList<>();
 		for (Habitacion habitacion : habitaciones) {
 			if (habitacion.getNumeroDeHabitacion().startsWith(criterio)) {
@@ -104,6 +106,12 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	@Override
 	public void activar(UUID id) {
 		get(id).setEstaActiva(true);
+		guardarTodasLasHabitaciones();
+	}
+
+	@Override
+	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) {
+		get(id).setTipo(tipo);
 		guardarTodasLasHabitaciones();
 	}
 

@@ -3,6 +3,9 @@ package es.susosise.hotel.habitaciones;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -150,5 +153,25 @@ class HabitacionesTest {
     	Habitacion habitacionDespuesDespues = buscador.get("101");
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
+    
+    
+    @Test
+    void cambiarElTipoAUnaHabitacion() {
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("101");
+    	creador.crearUnaNueva("302");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	Habitacion habitacion = buscador.get("101");
+    	assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipo());
+    	java.util.UUID id = habitacion.getIdInterno();
+    	
+    	persistencia.cambiarTipo(id, TipoDeHabitacion.DOBLE);
+    	Habitacion habitacionDespues = buscador.get("101");
+    	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipo());
+    }
+    
+    
    
 }
