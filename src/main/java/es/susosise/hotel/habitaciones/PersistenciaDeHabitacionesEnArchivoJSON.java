@@ -1,7 +1,6 @@
 package es.susosise.hotel.habitaciones;
 
 import java.io.IOException;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -59,7 +58,11 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 
 	@Override
 	public Habitacion get(UUID id) {
-		// TODO Auto-generated method stub
+		for (Habitacion habitacion : habitaciones) {
+			if (habitacion.getIdInterno().equals(id)) {
+				return habitacion;
+			}
+		}
 		return null;
 	}
 
@@ -80,8 +83,13 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 
 	@Override
 	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
-		// TODO Auto-generated method stub
-		return new ArrayList<Habitacion>();
+		java.util.ArrayList<Habitacion> encontradas = new ArrayList<>();
+		for (Habitacion habitacion : habitaciones) {
+			if (habitacion.getNumeroDeHabitacion().startsWith(criterio)) {
+				 encontradas.add(habitacion);
+			}
+		}
+		return encontradas;
 	}
 
 	@Override

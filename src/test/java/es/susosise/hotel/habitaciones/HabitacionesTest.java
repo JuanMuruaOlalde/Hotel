@@ -48,13 +48,25 @@ class HabitacionesTest {
   
 	
     @Test
-    void seCreaBienUnaNuevaHabitacionYSeRecuperaBienUsandoElNumeroDeHabitacion() {
+    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElNumeroDeHabitacion() {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	Habitacion habitacionCreada = creador.crearUnaNueva("101");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacionRecuperada = buscador.get("101");
+    	
+    	assertEquals(habitacionCreada, habitacionRecuperada);
+    }
+    
+    @Test
+    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElIdentificadorInterno() {
+    	
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	Habitacion habitacionCreada = creador.crearUnaNueva("101");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	Habitacion habitacionRecuperada = buscador.get(habitacionCreada.getIdInterno());
     	
     	assertEquals(habitacionCreada, habitacionRecuperada);
     }
@@ -73,6 +85,33 @@ class HabitacionesTest {
     	assertEquals(habitacionCreada01, habitacionRecuperada01);
     	assertEquals(habitacionCreada02, habitacionRecuperada02);
     }
+
+    @Test
+    void recuperarTodasLasHabitaciones() {
+    	
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("302");
+    	creador.crearUnaNueva("303");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	java.util.List<Habitacion> habitaciones = buscador.getTodas();
+    	assertEquals(3, habitaciones.size());
+    }
+
+
+    @Test
+    void recuperarConFiltroDeNumeroDeHabitacion() {
+    	
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("101");
+    	creador.crearUnaNueva("302");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	java.util.List<Habitacion> habitaciones = buscador.getAquellasQueComiencenPor("3");
+    	assertEquals(2, habitaciones.size());
+    }
     
-   
+    
 }
