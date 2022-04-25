@@ -1,43 +1,34 @@
 package es.susosise.hotel.habitaciones;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 
 public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
 
-	private java.io.File archivo;
+	java.nio.file.Path pathDelArchivo;
 	private com.fasterxml.jackson.databind.ObjectMapper mapper;
 	
-	public PersistenciaDeHabitacionesEnArchivoJSON(java.nio.file.Path carpetaDondeUbicarArchivo) {
-		java.nio.file.Path pathDelArchivo = carpetaDondeUbicarArchivo.resolve("habitaciones.json");
-		archivo = pathDelArchivo.toFile();
+	public PersistenciaDeHabitacionesEnArchivoJSON(java.nio.file.Path carpetaDondeUbicarArchivo) throws IOException {
+		pathDelArchivo = carpetaDondeUbicarArchivo.resolve("habitaciones.json");
+		if(!pathDelArchivo.toFile().exists()) {
+			pathDelArchivo.toFile().createNewFile();
+		}
 		mapper = new com.fasterxml.jackson.databind.ObjectMapper();
 	}
 	
 	
 	@Override
 	public void guardar(Habitacion unaHabitacion) {
-		
 		try {
-			com.fasterxml.jackson.core.JsonGenerator generator;
-			generator = mapper.getFactory().createGenerator(new java.io.FileOutputStream(archivo));
-			mapper.writeValue(generator, unaHabitacion);
-			generator.close();
-		} catch (StreamWriteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DatabindException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
+			java.nio.file.Files.writeString(pathDelArchivo, 
+					                        mapper.writeValueAsString(unaHabitacion) + System.getProperty("line.separator"), 
+			                                StandardOpenOption.APPEND);
+		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -59,15 +50,17 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	}
 
 	@Override
-	public List<Habitacion> getTodas() {
+	public java.util.List<Habitacion> getTodas() {
+		ArrayList<Habitacion> habitaciones = new ArrayList<>();
 		// TODO Auto-generated method stub
-		return null;
+		return habitaciones;
 	}
 
 	@Override
-	public List<Habitacion> getAquellasQueComiencenPor(String criterio) {
+	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
+		ArrayList<Habitacion> habitaciones = new ArrayList<>();
 		// TODO Auto-generated method stub
-		return null;
+		return habitaciones;
 	}
 
 	@Override

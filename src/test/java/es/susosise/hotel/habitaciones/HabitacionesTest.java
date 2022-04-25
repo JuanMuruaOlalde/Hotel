@@ -1,11 +1,11 @@
 package es.susosise.hotel.habitaciones;
 
-import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
 
 
 
@@ -21,7 +21,12 @@ class HabitacionesTest {
 			borradoRecursivo(carpeta.toFile());
 		}
 		carpeta.toFile().mkdir();
-    	persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(carpeta);
+    	try {
+			persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(carpeta);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@AfterEach
