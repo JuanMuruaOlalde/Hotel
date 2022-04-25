@@ -172,6 +172,22 @@ class HabitacionesTest {
     	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipo());
     }
     
-    
+    @Test
+    void cambiarElTipoDeBañoAUnaHabitacion() {
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("301");
+    	creador.crearUnaNueva("101");
+    	creador.crearUnaNueva("302");
+    	
+    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	Habitacion habitacion = buscador.get("101");
+    	assertEquals(Habitacion.TipoDeBaño._SIN_ASIGNAR_AUN_, habitacion.getTipoDeBaño());
+    	java.util.UUID id = habitacion.getIdInterno();
+    	
+    	persistencia.cambiarTipoDeBaño(id, Habitacion.TipoDeBaño.DUCHA);
+    	Habitacion habitacionDespues = buscador.get("101");
+    	assertEquals(Habitacion.TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
+    }
+
    
 }

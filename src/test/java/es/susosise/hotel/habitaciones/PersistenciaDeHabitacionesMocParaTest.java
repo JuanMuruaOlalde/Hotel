@@ -3,6 +3,7 @@ package es.susosise.hotel.habitaciones;
 import java.util.List;
 import java.util.UUID;
 
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabitaciones {
@@ -51,6 +52,12 @@ public class PersistenciaDeHabitacionesMocParaTest implements PersistenciaDeHabi
 
 	@Override
 	public void cambiarTipo(UUID id, TipoDeHabitacion tipo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) {
 		// TODO Auto-generated method stub
 		
 	}

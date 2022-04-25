@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 
@@ -112,6 +113,12 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	@Override
 	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) {
 		get(id).setTipo(tipo);
+		guardarTodasLasHabitaciones();
+	}
+
+	@Override
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) {
+		get(id).setTipoDeBaño(tipo);
 		guardarTodasLasHabitaciones();
 	}
 

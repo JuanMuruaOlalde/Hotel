@@ -1,5 +1,8 @@
 package es.susosise.hotel.habitaciones;
 
+import java.util.UUID;
+
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 public interface PersistenciaDeHabitaciones {
@@ -16,5 +19,7 @@ public interface PersistenciaDeHabitaciones {
 	//public void eliminar(java.util.UUID id); // a no ser que el historico crezca demasiado, mejor inactivar que eliminar.	
 
 	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo);
+
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo);
 
 }

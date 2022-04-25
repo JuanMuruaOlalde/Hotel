@@ -7,15 +7,23 @@ public class Habitacion {
 	
 	public enum TipoDeHabitacion {
 		_SIN_ASIGNAR_AUN_,
-		SIMPLE,
+		SENCILLA,
 		DOBLE,
 		SUITE
+	}
+	public enum TipoDeBaño {
+		_SIN_ASIGNAR_AUN_,
+		SINBAÑO,
+		DUCHA,
+		BAÑERA,
+		JACUZZI
 	}
 	
 	private UUID idInterno;
 	private Boolean activa;
 	private String numeroDeHabitacion;
 	private TipoDeHabitacion tipo;
+	private TipoDeBaño tipoDeBaño;
 	
 	public UUID getIdInterno() {
 		return idInterno;
@@ -34,12 +42,18 @@ public class Habitacion {
 	public TipoDeHabitacion getTipo() {
 		return tipo;
 	}
+	public TipoDeBaño getTipoDeBaño() {
+		return tipoDeBaño;
+	}
 	
 	protected void setEstaActiva(Boolean estado) {
 		this.activa = estado;
 	}
 	protected void setTipo(TipoDeHabitacion tipo) {
 		this.tipo = tipo;
+	}
+	protected void setTipoDeBaño(TipoDeBaño tipo) {
+		this.tipoDeBaño = tipo;
 	}
 
 	
@@ -48,14 +62,17 @@ public class Habitacion {
 		this.activa = true;
 		this.numeroDeHabitacion = numeroDeHabitacion;
 		this.tipo = TipoDeHabitacion._SIN_ASIGNAR_AUN_;
+		this.tipoDeBaño = TipoDeBaño._SIN_ASIGNAR_AUN_;
 	}
 	
-	//nota: el que esté o no esté activa no influye en las comparaciones, sigue siendo la misma habitacion.
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.idInterno,
-				            this.numeroDeHabitacion);
+				            this.activa,
+				            this.numeroDeHabitacion,
+				            this.tipo,
+				            this.tipoDeBaño);
 	}
 	
 	@Override
@@ -71,7 +88,10 @@ public class Habitacion {
 		}
 		Habitacion unaHabitacion = (Habitacion)unObjeto;
 		return Objects.equals(this.idInterno, unaHabitacion.idInterno)
-			&& Objects.equals(this.numeroDeHabitacion, unaHabitacion.numeroDeHabitacion);
+			&& Objects.equals(this.activa, unaHabitacion.activa)
+			&& Objects.equals(this.numeroDeHabitacion, unaHabitacion.numeroDeHabitacion)
+			&& Objects.equals(this.tipo, unaHabitacion.tipo)
+			&& Objects.equals(this.tipoDeBaño, unaHabitacion.tipoDeBaño);
 	}
 	
 
