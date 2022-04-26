@@ -19,7 +19,7 @@ class HabitacionesTest {
 	
 	@BeforeEach
 	void prepararPersistencia() {
-    	carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas");
+        carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas");
 		if (carpeta.toFile().exists()) {
 			borradoRecursivo(carpeta.toFile());
 		}
@@ -30,6 +30,8 @@ class HabitacionesTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	
+//	    persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	}
 	
 	@AfterEach
