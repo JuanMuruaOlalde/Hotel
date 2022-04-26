@@ -1,5 +1,7 @@
 package es.susosise.hotel.habitaciones;
 
+import java.io.IOException;
+
 public class EliminadorDeHabitaciones {
 		
 	private PersistenciaDeHabitaciones persistencia;
@@ -8,11 +10,11 @@ public class EliminadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 
-	public void inactivar(java.util.UUID id) {
+	public void inactivar(java.util.UUID id) throws IOException {
 		persistencia.inactivar(id);
 	}
 	
-	public void activar(java.util.UUID id) {
+	public void activar(java.util.UUID id) throws IOException {
 		persistencia.activar(id);
 	}
 

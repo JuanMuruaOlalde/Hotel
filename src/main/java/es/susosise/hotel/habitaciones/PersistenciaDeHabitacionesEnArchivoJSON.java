@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
@@ -24,40 +25,29 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 		}
 		mapper = new com.fasterxml.jackson.databind.ObjectMapper();
 		habitaciones = new ArrayList<Habitacion>();
-		try {
-			JsonNode datos;
-			datos = mapper.readTree(pathDelArchivo.toFile());
-			java.util.Iterator<JsonNode> nodos = datos.elements();
-			while (nodos.hasNext()) {
-				JsonNode nodo = nodos.next();
-				habitaciones.add(mapper.treeToValue(nodo, Habitacion.class));
-			}
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		JsonNode datos;
+		datos = mapper.readTree(pathDelArchivo.toFile());
+		java.util.Iterator<JsonNode> nodos = datos.elements();
+		while (nodos.hasNext()) {
+			JsonNode nodo = nodos.next();
+			habitaciones.add(mapper.treeToValue(nodo, Habitacion.class));
 		}
 	}
 	
-	private void guardarTodasLasHabitaciones() {
+	private void guardarTodasLasHabitaciones() throws IOException {
 		try {
-			mapper.writeValue(pathDelArchivo.toFile(), habitaciones);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            mapper.writeValue(pathDelArchivo.toFile(), habitaciones);
+        } catch (StreamWriteException e) {
+            throw new IOException("Error al escribir en el archivo " + pathDelArchivo.toString());
+        } catch (DatabindException e) {
+            throw new IOException("Error al procesar formato JSON para " + pathDelArchivo.toString());
+        } catch (IOException e) {
+            throw new IOException("Error en el archivo " + pathDelArchivo.toString());
+        }
 	}
 	
 	@Override
-	public void añadirUnaNueva(Habitacion habitacion) {
+	public void añadirUnaNueva(Habitacion habitacion) throws IOException {
 		habitaciones.add(habitacion);
 		guardarTodasLasHabitaciones();
 	}
@@ -99,25 +89,25 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	}
 
 	@Override
-	public void inactivar(UUID id) {
+	public void inactivar(UUID id) throws IOException {
 		get(id).setEstaActiva(false);
 		guardarTodasLasHabitaciones();
 	}
 
 	@Override
-	public void activar(UUID id) {
+	public void activar(UUID id) throws IOException {
 		get(id).setEstaActiva(true);
 		guardarTodasLasHabitaciones();
 	}
 
 	@Override
-	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) {
+	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) throws IOException {
 		get(id).setTipo(tipo);
 		guardarTodasLasHabitaciones();
 	}
 
 	@Override
-	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) {
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException {
 		get(id).setTipoDeBaño(tipo);
 		guardarTodasLasHabitaciones();
 	}
