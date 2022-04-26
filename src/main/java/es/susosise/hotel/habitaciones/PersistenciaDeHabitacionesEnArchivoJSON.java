@@ -19,12 +19,14 @@ public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHa
 	java.util.ArrayList<Habitacion> habitaciones;
 	
 	public PersistenciaDeHabitacionesEnArchivoJSON(java.nio.file.Path carpetaDondeUbicarArchivo) throws IOException {
+		mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+		
+		habitaciones = new ArrayList<Habitacion>();
+		
 		pathDelArchivo = carpetaDondeUbicarArchivo.resolve("habitaciones.json");
 		if(!pathDelArchivo.toFile().exists()) {
 			pathDelArchivo.toFile().createNewFile();
 		}
-		mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-		habitaciones = new ArrayList<Habitacion>();
 		JsonNode datos;
 		datos = mapper.readTree(pathDelArchivo.toFile());
 		java.util.Iterator<JsonNode> nodos = datos.elements();
