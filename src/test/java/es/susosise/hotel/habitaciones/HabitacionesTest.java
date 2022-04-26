@@ -128,7 +128,8 @@ class HabitacionesTest {
     	assertEquals(true, habitacion.estaActiva());
     	java.util.UUID id = habitacion.getIdInterno();
 
-    	persistencia.inactivar(id);
+    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
+    	eliminador.inactivar(id);
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
     }
@@ -145,11 +146,12 @@ class HabitacionesTest {
     	assertEquals(true, habitacion.estaActiva());
     	java.util.UUID id = habitacion.getIdInterno();
 
-    	persistencia.inactivar(id);
+    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
+    	eliminador.inactivar(id);
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
 
-    	persistencia.activar(id);
+    	eliminador.activar(id);
     	Habitacion habitacionDespuesDespues = buscador.get("101");
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
