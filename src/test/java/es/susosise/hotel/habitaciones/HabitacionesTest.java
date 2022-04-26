@@ -1,15 +1,14 @@
 package es.susosise.hotel.habitaciones;
 
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-
-import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
-
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
-
 
 
 class HabitacionesTest {
@@ -50,8 +49,10 @@ class HabitacionesTest {
 	}
   
 	
+	
+	
     @Test
-    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElNumeroDeHabitacion() {
+    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElNumeroDeHabitacion() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	Habitacion habitacionCreada = creador.crearUnaNueva("101");
@@ -63,7 +64,7 @@ class HabitacionesTest {
     }
     
     @Test
-    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElIdentificadorInterno() {
+    void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElIdentificadorInterno() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	Habitacion habitacionCreada = creador.crearUnaNueva("101");
@@ -75,7 +76,7 @@ class HabitacionesTest {
     }
     
     @Test
-    void alCrearUnaNuevaHabitacionSeAñadeALasExistentes() {
+    void alCrearUnaNuevaHabitacionSeAñadeALasExistentes() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	Habitacion habitacionCreada01 = creador.crearUnaNueva("201");
@@ -90,7 +91,23 @@ class HabitacionesTest {
     }
 
     @Test
-    void recuperarTodasLasHabitaciones() {
+    void noSeCreanHabitacionesDuplicadas() throws IOException {
+    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+    	creador.crearUnaNueva("101");
+    	
+    	IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+		     new Executable() {
+	            @Override
+	            public void execute() throws Throwable {
+	            	creador.crearUnaNueva("101");
+	            }
+	    	 }
+    													 );
+   	}
+    
+    
+    @Test
+    void recuperarTodasLasHabitaciones() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
@@ -104,7 +121,7 @@ class HabitacionesTest {
 
 
     @Test
-    void recuperarConFiltroDeNumeroDeHabitacion() {
+    void recuperarConFiltroDeNumeroDeHabitacion() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
@@ -117,7 +134,7 @@ class HabitacionesTest {
     }
     
     @Test
-    void inactivarUnaHabitacion() {
+    void inactivarUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
     	creador.crearUnaNueva("101");
@@ -135,7 +152,7 @@ class HabitacionesTest {
     }
     
     @Test
-    void reactivarUnaHabitacion() {
+    void reactivarUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
     	creador.crearUnaNueva("101");
@@ -158,7 +175,7 @@ class HabitacionesTest {
     
     
     @Test
-    void cambiarElTipoAUnaHabitacion() {
+    void cambiarElTipoAUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
     	creador.crearUnaNueva("101");
@@ -175,7 +192,7 @@ class HabitacionesTest {
     }
     
     @Test
-    void cambiarElTipoDeBañoAUnaHabitacion() {
+    void cambiarElTipoDeBañoAUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
     	creador.crearUnaNueva("101");
