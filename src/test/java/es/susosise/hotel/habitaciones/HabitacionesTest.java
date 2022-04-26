@@ -1,6 +1,7 @@
 package es.susosise.hotel.habitaciones;
 
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -173,6 +174,12 @@ class HabitacionesTest {
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
     
+    @Test
+    void elTipoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
+        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+        Habitacion habitacion = creador.crearUnaNueva("101");
+        assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipo());
+    }
     
     @Test
     void cambiarElTipoAUnaHabitacion() throws IOException {
@@ -183,12 +190,19 @@ class HabitacionesTest {
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacion = buscador.get("101");
-    	assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipo());
     	java.util.UUID id = habitacion.getIdInterno();
     	
-    	persistencia.cambiarTipo(id, TipoDeHabitacion.DOBLE);
+    	ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
+    	modificador.cambiarTipoDeHabitacion(id, TipoDeHabitacion.DOBLE);
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipo());
+    }
+    
+    @Test
+    void elTipoDeBañoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
+        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+        Habitacion habitacion = creador.crearUnaNueva("101");
+        assertEquals(TipoDeBaño._SIN_ASIGNAR_AUN_, habitacion.getTipoDeBaño());
     }
     
     @Test
@@ -200,12 +214,12 @@ class HabitacionesTest {
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacion = buscador.get("101");
-    	assertEquals(Habitacion.TipoDeBaño._SIN_ASIGNAR_AUN_, habitacion.getTipoDeBaño());
     	java.util.UUID id = habitacion.getIdInterno();
     	
-    	persistencia.cambiarTipoDeBaño(id, Habitacion.TipoDeBaño.DUCHA);
+        ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
+        modificador.cambiarTipoDeBaño(id, TipoDeBaño.DUCHA);
     	Habitacion habitacionDespues = buscador.get("101");
-    	assertEquals(Habitacion.TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
+    	assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
     }
 
    
