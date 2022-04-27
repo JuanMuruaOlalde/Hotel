@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
+import java.util.UUID;
 
 
 class HabitacionesTest {
@@ -18,8 +19,8 @@ class HabitacionesTest {
 	PersistenciaDeHabitaciones persistencia;
 	
 	@BeforeEach
-	void prepararPersistencia() {
-        carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas");
+	void prepararPersistencia() throws IOException {
+        carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas" + UUID.randomUUID().toString());
 		if (carpeta.toFile().exists()) {
 			borradoRecursivo(carpeta.toFile());
 		}
