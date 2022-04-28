@@ -1,6 +1,7 @@
 package es.susosise.hotel.habitaciones;
 
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
+import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.UUID;
 
 
@@ -19,43 +21,17 @@ class HabitacionesTest {
 	PersistenciaDeHabitaciones persistencia;
 	
 	@BeforeEach
-	void prepararPersistencia() throws IOException {
-        carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas" + UUID.randomUUID().toString());
-		if (carpeta.toFile().exists()) {
-			borradoRecursivo(carpeta.toFile());
-		}
-		carpeta.toFile().mkdir();
-    	try {
-			persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(carpeta);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-//	    persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	void prepararPersistencia() throws IOException, SQLException {
+	    
+	    //persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(OpcionesYConstantes.getServidorDeDatosParaPruebas());	    
+	  
+	    persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
+	    
+	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	}
 	
-	@AfterEach
-	void borrarPersistencia() {
-		borradoRecursivo(carpeta.toFile());
-	}
-	
-	private void borradoRecursivo(java.io.File archivo) {
-		for (java.io.File subarchivo : archivo.listFiles()) {
-			if (subarchivo.isDirectory()) {
-				borradoRecursivo(subarchivo);
-			}
-			else {
-				subarchivo.delete();
-			}
-		}
-		archivo.delete();
-	}
-  
-	
-	
-	
-    @Test
+
+   @Test
     void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElNumeroDeHabitacion() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
