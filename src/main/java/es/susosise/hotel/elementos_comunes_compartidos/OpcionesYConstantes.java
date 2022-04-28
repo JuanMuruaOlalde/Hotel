@@ -2,8 +2,11 @@ package es.susosise.hotel.elementos_comunes_compartidos;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnArchivoJSON;
 
 public final class OpcionesYConstantes {
     
@@ -44,6 +47,22 @@ public final class OpcionesYConstantes {
          return java.sql.DriverManager.getConnection("jdbc:" + credenciales.baseDeDatos + "?user=" + credenciales.usuario + "&password=" + credenciales.contraseña);
     }
     
+    
+    
+    
+    
+    public static java.sql.Connection getServidorDeDatosParaPruebas() throws SQLException {
+        return java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306/Pruebas?user=root&password=89Pruebasymedia");
+    }
+    
+    public static java.nio.file.Path getCarpetaDeDatosParaPruebas() {
+        java.nio.file.Path carpeta;
+        carpeta = java.nio.file.Paths.get(System.getProperty("user.home"), "Hotel_pruebas" + UUID.randomUUID().toString());
+        if (!carpeta.toFile().exists()) {
+            carpeta.toFile().mkdir();
+        }
+        return carpeta;
+    }
 
 
 }
