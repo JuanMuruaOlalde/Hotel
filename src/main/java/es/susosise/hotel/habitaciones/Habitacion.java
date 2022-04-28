@@ -65,6 +65,18 @@ public class Habitacion {
 		this.tipoDeBaño = TipoDeBaño._SIN_ASIGNAR_AUN_;
 	}
 	
+    public Habitacion(UUID idInterno,
+                      Boolean activa,
+                      String numeroDeHabitacion,
+                      TipoDeHabitacion tipo,
+                      TipoDeBaño tipoDeBaño) {
+        this.idInterno = idInterno;
+        this.activa = activa;
+        this.numeroDeHabitacion = numeroDeHabitacion;
+        this.tipo = tipo;
+        this.tipoDeBaño = tipoDeBaño;
+    }
+	
 
 	@Override
 	public int hashCode() {

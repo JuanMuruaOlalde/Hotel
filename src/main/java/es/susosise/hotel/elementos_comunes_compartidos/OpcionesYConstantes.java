@@ -52,7 +52,12 @@ public final class OpcionesYConstantes {
     
     
     public static java.sql.Connection getServidorDeDatosParaPruebas() throws SQLException {
-        return java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306/Pruebas?user=root&password=89Pruebasymedia");
+        java.sql.Connection conexionTemporal = java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=root&password=89Pruebasymedia");
+        java.sql.Statement comando = conexionTemporal.createStatement();
+        comando.execute("CREATE OR REPLACE DATABASE Pruebas");
+        comando.close();
+        conexionTemporal.close();
+        return java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306/Pruebas?user=usuarioDePruebas&password=89Pruebasymedia");
     }
     
     public static java.nio.file.Path getCarpetaDeDatosParaPruebas() {
