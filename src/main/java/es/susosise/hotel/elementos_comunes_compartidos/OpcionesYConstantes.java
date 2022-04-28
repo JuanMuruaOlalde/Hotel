@@ -1,39 +1,49 @@
 package es.susosise.hotel.elementos_comunes_compartidos;
 
+import java.io.IOException;
 import java.sql.SQLException;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public final class OpcionesYConstantes {
     
-    public java.nio.file.Path carpetaDeDatos;
-    public java.sql.Connection servidorDeDatos;
+    private java.nio.file.Path carpetaDeDatos;
+    public java.nio.file.Path getCarpetaDeDatos() { return carpetaDeDatos; }
+
+    private java.sql.Connection servidorDeDatos;
+    public java.sql.Connection getServidorDeDatos() { return servidorDeDatos; }
     
-    private final class CredencialesDeConexionJDBC {
-        public String basededatos;
-        protected String usuario;
-        protected String contraseña;
-    }
+   
+    
+	public OpcionesYConstantes(java.nio.file.Path archivoDeConfiguracion) throws IOException, SQLException {
+	    com.fasterxml.jackson.databind.ObjectMapper mapper;
+	    mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+	    
+	    JsonNode configuracion = mapper.readTree(archivoDeConfiguracion.toFile());
+	    java.util.Iterator<JsonNode> nodos = configuracion.elements();
+	    while (nodos.hasNext()) {
+	        JsonNode nodo = nodos.next();
+	        switch (nodo.fields().next().getKey()) {
+	            case "carpetaDeDatos":
+	                carpetaDeDatos = java.nio.file.Paths.get(nodo.fields().next().getValue().asText());
+	                if (!carpetaDeDatos.toFile().exists()) {
+	                    carpetaDeDatos.toFile().mkdir();
+	                }
+	                break;
+	            case "servidorDeDatos":
+	                CredencialesDeConexion credenciales;
+	                credenciales = mapper.treeToValue(nodo.fields().next().getValue(), CredencialesDeConexion.class);
+	                servidorDeDatos = getConexionConElServidorDeDatos(credenciales);
+	                break;
+	        }
+	    }
+	}
 	
     
-	public OpcionesYConstantes() throws SQLException {
-		carpetaDeDatos = getCarpetaDeDatosPorDefecto();
-		servidorDeDatos = getConexionPorDefectoConElServidorDeDatos();
-	}
-
-	
-	private java.nio.file.Path getCarpetaDeDatosPorDefecto() {
-		java.nio.file.Path path = java.nio.file.Paths.get("C:\\Users\\Public", "Hotel_data");
-		if (!path.toFile().exists()) {
-			path.toFile().mkdir();
-		}
-		return path;
-	}
-
-    private java.sql.Connection getConexionPorDefectoConElServidorDeDatos() throws SQLException {
-        CredencialesDeConexionJDBC credenciales = new CredencialesDeConexionJDBC();
-        credenciales.basededatos = "mariadb://localhost:3306/Hotel";
-        credenciales.usuario = "root";
-        credenciales.contraseña = "89Pruebasymedia";
-        return java.sql.DriverManager.getConnection("jdbc:" + credenciales.basededatos + "?user=" + credenciales.usuario + "&password=" + credenciales.contraseña);
+    private java.sql.Connection getConexionConElServidorDeDatos(CredencialesDeConexion credenciales) throws SQLException {
+         return java.sql.DriverManager.getConnection("jdbc:" + credenciales.baseDeDatos + "?user=" + credenciales.usuario + "&password=" + credenciales.contraseña);
     }
+    
+
 
 }
