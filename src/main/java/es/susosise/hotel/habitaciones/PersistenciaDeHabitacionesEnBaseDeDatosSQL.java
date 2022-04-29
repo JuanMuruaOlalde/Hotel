@@ -16,7 +16,7 @@ public class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaD
         this.baseDeDatos = baseDeDatos;
     }
 
-    protected static String getSQLparaCrearLaTabla() {
+    public static String getSQLparaCrearLaTabla() {
         return "CREATE TABLE habitaciones ( " + System.lineSeparator()
              + "    idInterno CHAR(36) NOT NULL, " + System.lineSeparator()
              + "    activa BOOLEAN NULL, " + System.lineSeparator()
