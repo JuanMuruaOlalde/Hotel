@@ -15,12 +15,14 @@ public class CreadorDeLasTablasEnBD {
 
     
     public void crear() throws SQLException {
-        java.sql.Statement comando = baseDeDatos.createStatement();
-        
-        comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL.getSQLparaCrearLaTabla());
-        // TODO  aqui iremos poniendo el resto de tablas... a medida que vayamos completando cada entidad del dominio...
-        
-        comando.close();
+        java.sql.Statement comando = null;
+        try {
+            comando = baseDeDatos.createStatement();
+            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL.getSQLparaCrearLaTabla());
+            // TODO  aqui iremos poniendo el resto de tablas... a medida que vayamos completando cada entidad del dominio...
+        } finally {
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+        }
     }
 
 }
