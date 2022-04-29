@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,7 +27,7 @@ class HerramientasTest {
     }
     
     
-    @Test
+    @Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
     void seCreanTodasLasTablasNecesariasEnLaBD() throws SQLException {
         CreadorDeLasTablasEnBD creador = new CreadorDeLasTablasEnBD(OpcionesYConstantes.getServidorDeDatosParaPruebas());
         creador.crear();
