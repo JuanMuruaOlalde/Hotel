@@ -4,7 +4,7 @@ import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
