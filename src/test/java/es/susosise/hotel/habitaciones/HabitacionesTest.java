@@ -110,7 +110,7 @@ class HabitacionesTest {
     }
 
 
-    @Disabled
+    @Test
     void recuperarConFiltroDeNumeroDeHabitacion() throws IOException {
     	
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
@@ -123,7 +123,7 @@ class HabitacionesTest {
     	assertEquals(2, habitaciones.size());
     }
     
-    @Disabled
+    @Test
     void inactivarUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
@@ -141,7 +141,7 @@ class HabitacionesTest {
     	assertEquals(false, habitacionDespues.estaActiva());
     }
     
-    @Disabled
+    @Test
     void reactivarUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
@@ -163,14 +163,14 @@ class HabitacionesTest {
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
     
-    @Disabled
+    @Test
     void elTipoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
         CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
         Habitacion habitacion = creador.crearUnaNueva("101");
         assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipo());
     }
     
-    @Disabled
+    @Test
     void cambiarElTipoAUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");
@@ -187,14 +187,14 @@ class HabitacionesTest {
     	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipo());
     }
     
-    @Disabled
+    @Test
     void elTipoDeBañoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
         CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
         Habitacion habitacion = creador.crearUnaNueva("101");
         assertEquals(TipoDeBaño._SIN_ASIGNAR_AUN_, habitacion.getTipoDeBaño());
     }
     
-    @Disabled
+    @Test
     void cambiarElTipoDeBañoAUnaHabitacion() throws IOException {
     	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
     	creador.crearUnaNueva("301");

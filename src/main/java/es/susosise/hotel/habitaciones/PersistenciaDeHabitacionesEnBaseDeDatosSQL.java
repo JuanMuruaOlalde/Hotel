@@ -181,8 +181,38 @@ public class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaD
 
     @Override
     public List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio) {
-        // TODO Auto-generated method stub
-        return null;
+        java.util.ArrayList<Habitacion> habitaciones = new java.util.ArrayList<>();
+        StringBuilder sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT * FROM habitaciones");
+        sentenciaSQL.append("  WHERE numeroDeHabitacion LIKE ");
+        sentenciaSQL.append("'" + criterio + "%'");
+        sentenciaSQL.append(System.lineSeparator());
+        
+        java.sql.Statement comando = null;
+        java.sql.ResultSet respuesta = null;
+        try {
+            comando = baseDeDatos.createStatement();
+            respuesta = comando.executeQuery(sentenciaSQL.toString());
+            while (respuesta.next()) {
+                Habitacion habitacion;
+                habitacion = new Habitacion(java.util.UUID.fromString(respuesta.getString("idInterno")),
+                                            respuesta.getBoolean("activa"),
+                                            respuesta.getString("numeroDeHabitacion"),
+                                            TipoDeHabitacion.valueOf(respuesta.getString("tipo")),
+                                            TipoDeBaño.valueOf(respuesta.getString("tipoDeBaño"))
+                                            );
+                habitaciones.add(habitacion);
+            }
+        } catch(SQLException ex) {
+            System.out.println("Error al recuperar habitaciones de la base de datos "
+                             + System.lineSeparator() + System.lineSeparator()
+                             + Arrays.toString(ex.getStackTrace()));
+        } finally {
+            try { if (respuesta != null) respuesta.close(); } catch (Exception ex) {}
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+        }
+        
+        return habitaciones;
     }
 
     @Override
