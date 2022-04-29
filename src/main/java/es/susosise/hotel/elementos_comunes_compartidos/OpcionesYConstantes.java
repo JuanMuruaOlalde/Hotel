@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnArchivoJSON;
 
 public final class OpcionesYConstantes {
     
@@ -52,12 +51,18 @@ public final class OpcionesYConstantes {
     
     
     public static java.sql.Connection getServidorDeDatosParaPruebas() throws SQLException {
-        java.sql.Connection conexionTemporal = java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=root&password=89Pruebasymedia");
-        java.sql.Statement comando = conexionTemporal.createStatement();
-        comando.execute("CREATE OR REPLACE DATABASE Pruebas");
-        comando.close();
-        conexionTemporal.close();
-        return java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306/Pruebas?user=usuarioDePruebas&password=89Pruebasymedia");
+        java.sql.Connection conexionTemporal = null;
+        java.sql.Statement comando = null;
+        try {
+            conexionTemporal = java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=root&password=89Pruebasymedia");
+            comando = conexionTemporal.createStatement();
+            comando.execute("CREATE OR REPLACE DATABASE pruebas");
+        } finally {
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+            try { if (conexionTemporal != null) conexionTemporal.close(); } catch (Exception ex) {}
+        }
+        
+        return java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306/pruebas?user=usuarioDePruebas&password=89Pruebasymedia");
     }
     
     public static java.nio.file.Path getCarpetaDeDatosParaPruebas() {

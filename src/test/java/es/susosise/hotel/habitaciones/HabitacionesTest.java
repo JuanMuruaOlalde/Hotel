@@ -4,9 +4,11 @@ import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.Disabled;
 
@@ -16,18 +18,26 @@ import java.sql.SQLException;
 
 class HabitacionesTest {
 
-	java.nio.file.Path carpeta;
 	PersistenciaDeHabitaciones persistencia;
+	
+	java.sql.Connection baseDeDatos;
 	
 	@BeforeEach
 	void prepararPersistencia() throws IOException, SQLException {
 	    
-	    persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(OpcionesYConstantes.getServidorDeDatosParaPruebas());
+	    baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+	    persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
 	    ((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
 	  
 	    //persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
 	    
 	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	}
+	@AfterEach
+	void eliminarPersistencia() {
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+        
+        //por ahora, el resto de persistencias no requieren limpieza.
 	}
 	
 
