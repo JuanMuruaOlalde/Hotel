@@ -1,4 +1,4 @@
-package herramientas_de_instalacion_y_mantenimiento;
+package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import java.sql.SQLException;
 

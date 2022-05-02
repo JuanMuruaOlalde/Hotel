@@ -1,6 +1,7 @@
-package herramientas_de_instalacion_y_mantenimiento;
+package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
+import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CreadorDeLasTablasEnBD;
 
 import java.sql.SQLException;
 
