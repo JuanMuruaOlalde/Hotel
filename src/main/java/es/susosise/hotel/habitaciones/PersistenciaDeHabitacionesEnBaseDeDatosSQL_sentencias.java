@@ -6,7 +6,7 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias {
         
     }
     
-    public static String getSQLparaCrearLaTabla() {
+    public static String paraCrearLaTablaDeHabitaciones() {
         return "CREATE TABLE habitaciones ( " + System.lineSeparator()
              + "    idInterno CHAR(36) NOT NULL, " + System.lineSeparator()
              + "    activa BOOLEAN NULL, " + System.lineSeparator()

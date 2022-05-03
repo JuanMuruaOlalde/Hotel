@@ -18,7 +18,7 @@ public class CreadorDeLasTablasEnBD {
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
-            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.getSQLparaCrearLaTabla());
+            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
             // TODO  aqui iremos poniendo el resto de tablas... a medida que vayamos completando cada entidad del dominio...
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}

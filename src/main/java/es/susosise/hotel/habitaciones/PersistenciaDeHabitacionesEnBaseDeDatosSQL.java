@@ -22,7 +22,7 @@ final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDe
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
-            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.getSQLparaCrearLaTabla());
+            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
