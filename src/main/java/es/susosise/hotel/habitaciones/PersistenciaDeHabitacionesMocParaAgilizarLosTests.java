@@ -7,7 +7,7 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
-public class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements PersistenciaDeHabitaciones {
+final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements PersistenciaDeHabitaciones {
 
     java.util.ArrayList<Habitacion> habitaciones;
     

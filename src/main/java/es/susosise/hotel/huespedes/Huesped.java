@@ -26,7 +26,7 @@ public class Huesped {
         }
     }
 
-    public Huesped(UUID idInterno, String idLegal, String nombre, String letraIntermedia, String apellidos) {
+    protected Huesped(UUID idInterno, String idLegal, String nombre, String letraIntermedia, String apellidos) {
         this.idInterno = idInterno;
         this.idLegal = idLegal;
         this.nombre = nombre;
@@ -34,24 +34,24 @@ public class Huesped {
         this.apellidos = apellidos;
     }
    
-    public Huesped(String idLegal, String nombre, UUID idInterno)  {
+    protected Huesped(String idLegal, String nombre, UUID idInterno)  {
         this.idInterno = idInterno;
         this.idLegal = idLegal;
         this.nombre = nombre;
     }
     
-    public Huesped(UUID idInterno, String nombre) {
+    protected Huesped(UUID idInterno, String nombre) {
         this.idInterno = idInterno;
         this.nombre = nombre;
     }
 
-    public Huesped(UUID idInterno, String nombre, String apellidos) {
+    protected Huesped(UUID idInterno, String nombre, String apellidos) {
         this.idInterno = idInterno;
         this.nombre = nombre;
         this.apellidos = apellidos;
     }
     
-    public Huesped(UUID idInterno, String nombre, String letraIntermedia, String apellidos) {
+    protected Huesped(UUID idInterno, String nombre, String letraIntermedia, String apellidos) {
         this.idInterno = idInterno;
         this.nombre = nombre;
         this.letraIntermediaDelNombre = letraIntermedia;

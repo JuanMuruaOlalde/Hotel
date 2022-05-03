@@ -23,11 +23,11 @@ public class Estancia {
     public LocalDate getFechaSalida() { return fechaSalida; }
     public List<UUID> getHuespedes() { return huespedes; }
     
-    public Estancia(UUID idInterno,
-                    List<UUID> habitaciones,
-                    LocalDate fechaEntrada,
-                    LocalDate fechaSalida,
-                    List<UUID> huespedes) {
+    protected Estancia(UUID idInterno,
+                       List<UUID> habitaciones,
+                       LocalDate fechaEntrada,
+                       LocalDate fechaSalida,
+                       List<UUID> huespedes) {
         this.idInterno = idInterno;
         this.habitaciones = habitaciones;
         this.fechaEntrada = fechaEntrada;

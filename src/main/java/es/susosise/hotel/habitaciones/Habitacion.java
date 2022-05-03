@@ -56,8 +56,19 @@ public class Habitacion {
 		this.tipoDeBaño = tipo;
 	}
 
-	
-	public Habitacion(UUID idInterno, String numeroDeHabitacion) {
+	protected Habitacion(UUID idInterno,
+                         Boolean activa,
+                         String numeroDeHabitacion,
+                         TipoDeHabitacion tipo,
+                         TipoDeBaño tipoDeBaño) {
+        this.idInterno = idInterno;
+        this.activa = activa;
+        this.numeroDeHabitacion = numeroDeHabitacion;
+        this.tipo = tipo;
+        this.tipoDeBaño = tipoDeBaño;
+    }
+
+	protected Habitacion(UUID idInterno, String numeroDeHabitacion) {
 		this.idInterno = idInterno;
 		this.activa = true;
 		this.numeroDeHabitacion = numeroDeHabitacion;
@@ -65,21 +76,10 @@ public class Habitacion {
 		this.tipoDeBaño = TipoDeBaño._SIN_ASIGNAR_AUN_;
 	}
 	
-    public Habitacion(UUID idInterno,
-                      Boolean activa,
-                      String numeroDeHabitacion,
-                      TipoDeHabitacion tipo,
-                      TipoDeBaño tipoDeBaño) {
-        this.idInterno = idInterno;
-        this.activa = activa;
-        this.numeroDeHabitacion = numeroDeHabitacion;
-        this.tipo = tipo;
-        this.tipoDeBaño = tipoDeBaño;
-    }
 	
 
 	@Override
-	public int hashCode() {
+    public int hashCode() {
 		return Objects.hash(this.idInterno,
 				            this.activa,
 				            this.numeroDeHabitacion,
@@ -88,7 +88,7 @@ public class Habitacion {
 	}
 	
 	@Override
-	public boolean equals(Object unObjeto) {
+    public boolean equals(Object unObjeto) {
 		if (this == unObjeto) {
 			return true;
 		}

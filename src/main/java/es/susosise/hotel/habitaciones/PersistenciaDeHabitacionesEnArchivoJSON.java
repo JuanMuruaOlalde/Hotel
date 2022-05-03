@@ -12,7 +12,7 @@ import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 
-public class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
+final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHabitaciones {
 
 	java.nio.file.Path pathDelArchivo;
 	private com.fasterxml.jackson.databind.ObjectMapper mapper;

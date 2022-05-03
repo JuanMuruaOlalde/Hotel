@@ -24,6 +24,7 @@ import java.time.LocalDate;
 
 class EstanciasTest {
     
+ 
     private PersistenciaDeEstancias persistencia;
 
     private static List<Habitacion> habitaciones = CreadorDeHabitaciones.getElGrupoDeHabitacionesDePrueba();

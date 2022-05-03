@@ -7,7 +7,7 @@ import java.util.List;
 import es.susosise.hotel.habitaciones.Habitacion;
 
 
-public class PersistenciaDeEstanciasMocParaAgilizarLosTest implements PersistenciaDeEstancias {
+final class PersistenciaDeEstanciasMocParaAgilizarLosTest implements PersistenciaDeEstancias {
     
     private ArrayList<Estancia> almacenDeEstancias;
     

@@ -9,7 +9,8 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
-public class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDeHabitaciones {
+
+final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDeHabitaciones {
 
     private java.sql.Connection baseDeDatos;
     
@@ -17,21 +18,11 @@ public class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaD
         this.baseDeDatos = baseDeDatos;
     }
 
-    public static String getSQLparaCrearLaTabla() {
-        return "CREATE TABLE habitaciones ( " + System.lineSeparator()
-             + "    idInterno CHAR(36) NOT NULL, " + System.lineSeparator()
-             + "    activa BOOLEAN NULL, " + System.lineSeparator()
-             + "    numeroDeHabitacion VARCHAR(10) NOT NULL, " + System.lineSeparator()
-             + "    tipo VARCHAR(25), " + System.lineSeparator()
-             + "    tipoDeBaño VARCHAR(25) " + System.lineSeparator()
-             + ")"
-             ;
-    }
     protected void crearLaTabla() throws SQLException {
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
-            comando.execute(getSQLparaCrearLaTabla());
+            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.getSQLparaCrearLaTabla());
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
