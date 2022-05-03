@@ -11,7 +11,7 @@ public interface PersistenciaDeEstancias {
 
     public void añadirUnaNueva(Estancia estancia) throws IOException;
     
-    public List<Estancia> getEstanciasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones);
+    public List<UUID> getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones);
 
     public Estancia get(UUID id);
 

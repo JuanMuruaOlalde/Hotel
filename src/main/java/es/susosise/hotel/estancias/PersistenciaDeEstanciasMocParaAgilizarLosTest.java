@@ -24,14 +24,14 @@ final class PersistenciaDeEstanciasMocParaAgilizarLosTest implements Persistenci
 
 
     @Override
-    public List<Estancia> getEstanciasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones) {
-        ArrayList<Estancia> estanciasEncontradas = new ArrayList<>();
+    public List<UUID> getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones) {
+        ArrayList<UUID> estanciasEncontradas = new ArrayList<>();
         
         for(Estancia estancia : almacenDeEstancias) {
             for (java.util.UUID idHabitacion : estancia.getHabitaciones()) {
                for (Habitacion habitacion : habitaciones) {
                    if (habitacion.getIdInterno().equals(idHabitacion)) {
-                       estanciasEncontradas.add(estancia);
+                       estanciasEncontradas.add(estancia.getIdInterno());
                    }
                }
             }

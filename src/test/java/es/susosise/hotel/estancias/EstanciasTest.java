@@ -1,5 +1,6 @@
 package es.susosise.hotel.estancias;
 
+import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
 import es.susosise.hotel.habitaciones.CreadorDeHabitaciones;
 import es.susosise.hotel.habitaciones.Habitacion;
 import es.susosise.hotel.huespedes.CreadorDeHuespedes;
@@ -16,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
@@ -23,9 +25,10 @@ import java.time.LocalDate;
 
 
 class EstanciasTest {
-    
  
     private PersistenciaDeEstancias persistencia;
+
+    java.sql.Connection baseDeDatos;
 
     private static List<Habitacion> habitaciones = CreadorDeHabitaciones.getElGrupoDeHabitacionesDePrueba();
     private static LocalDate fechaEntrada = java.time.LocalDate.now();
@@ -42,13 +45,20 @@ class EstanciasTest {
     
     
     @BeforeEach
-    void prepararPersistencia() {
-        persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
+    void prepararPersistencia() throws SQLException {
+        
+        //persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
+        
+        baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+        persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
+        ((PersistenciaDeEstanciasEnBaseDeDatosSQL) persistencia).crearLasTablas();
     }
     
     @AfterEach
     void eliminarPersistencia() {
-        // De la persistencia Moc ya se encarga el recolector de basura.
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+        
+        //por ahora, el resto de persistencias no requieren limpieza.
     }
 
     

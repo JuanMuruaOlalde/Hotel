@@ -2,6 +2,7 @@ package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import java.sql.SQLException;
 
+import es.susosise.hotel.estancias.PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias;
 import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias;
 
 
@@ -18,8 +19,15 @@ public class CreadorDeLasTablasEnBD {
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
+            
             comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
+            
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstancias());
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHabitaciones());
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHuespedes());
+            
             // TODO  aqui iremos poniendo el resto de tablas... a medida que vayamos completando cada entidad del dominio...
+            
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }

@@ -19,7 +19,7 @@ public class BuscadorDeEstancias {
     }
     
     public boolean algunaDeLasHabitacionesEstaOcupada(List<Habitacion> habitaciones) {
-        List<Estancia> estancias = persistencia.getEstanciasAsociadasAAlgunaDeEstasHabitaciones(habitaciones);
+        List<UUID> estancias = persistencia.getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(habitaciones);
         if (estancias.isEmpty()) {
             return false;
         }

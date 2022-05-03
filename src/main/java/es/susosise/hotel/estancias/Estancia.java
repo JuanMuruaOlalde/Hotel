@@ -7,6 +7,7 @@ import es.susosise.hotel.huespedes.Huesped;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Estancia {
@@ -35,5 +36,29 @@ public class Estancia {
         this.huespedes = huespedes;
     }
 
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.idInterno,
+                            this.fechaEntrada,
+                            this.fechaSalida);
+    }
+    
+    @Override
+    public boolean equals(Object unObjeto) {
+        if (this == unObjeto) {
+            return true;
+        }
+        if (unObjeto == null) {
+            return false;
+        }
+        if (getClass() != unObjeto.getClass()) {
+            return false;
+        }
+        Estancia estancia = (Estancia)unObjeto;
+        return Objects.equals(this.idInterno, estancia.idInterno)
+            && Objects.equals(this.fechaEntrada, estancia.fechaEntrada)
+            && Objects.equals(this.fechaSalida, estancia.fechaSalida);
+    }
 
 }
