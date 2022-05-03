@@ -1,6 +1,9 @@
 package es.susosise.hotel.estancias;
 
+import es.susosise.hotel.habitaciones.Habitacion;
+
 import java.util.UUID;
+import java.util.List;
 
 
 public class BuscadorDeEstancias {
@@ -13,6 +16,16 @@ public class BuscadorDeEstancias {
     
     public Estancia get(UUID id) {
         return null;
+    }
+    
+    public boolean algunaDeLasHabitacionesEstaOcupada(List<Habitacion> habitaciones) {
+        List<Estancia> estancias = persistencia.getEstanciasAsociadasAAlgunaDeEstasHabitaciones(habitaciones);
+        if (estancias.isEmpty()) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
 }

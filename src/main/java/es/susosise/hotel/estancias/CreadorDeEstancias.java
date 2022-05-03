@@ -3,7 +3,7 @@ package es.susosise.hotel.estancias;
 import es.susosise.hotel.habitaciones.Habitacion;
 import es.susosise.hotel.huespedes.Huesped;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.io.IOException;
@@ -19,16 +19,25 @@ public class CreadorDeEstancias {
     }
     
     public Estancia crear(List<Habitacion> habitaciones, 
-                          Date fechaEntrada, Date fechaSalida, 
+                          LocalDate fechaEntrada, LocalDate fechaSalida, 
                           List<Huesped> huespedes)
                         throws IOException {
-        if (fechaEntrada.after(fechaSalida)) {
+        
+        BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
+        
+        if (fechaEntrada.isAfter(fechaSalida)) {
             throw new IllegalArgumentException("No se puede registrar la estancia. Fechas incorrectas:" 
                                              + " entrada ["+ fechaEntrada.toString() + "]"
                                              + " y salida [" + fechaSalida.toString() + "]");
         }
         else if (habitaciones.isEmpty()){
             throw new IllegalArgumentException("No se puede registrar una estancia sin habitación a ocupar."); 
+        }
+        else if (huespedes.isEmpty()) {
+            throw new IllegalArgumentException("No se puede registrar una estancia sin huesped al que facturar."); 
+        }
+        else if (buscador.algunaDeLasHabitacionesEstaOcupada(habitaciones)) {
+            throw new IllegalArgumentException("No se puede registrar una estancia en una habitación ya ocupada.");
         }
         else {
             ArrayList<UUID> listaDeHabitaciones = new ArrayList<>();
