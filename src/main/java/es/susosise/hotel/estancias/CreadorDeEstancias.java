@@ -25,10 +25,14 @@ public class CreadorDeEstancias {
         
         BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
         
-        if (fechaEntrada.isAfter(fechaSalida)) {
-            throw new IllegalArgumentException("No se puede registrar la estancia. Fechas incorrectas:" 
-                                             + " entrada ["+ fechaEntrada.toString() + "]"
-                                             + " y salida [" + fechaSalida.toString() + "]");
+        if (fechaEntrada.isAfter(java.time.LocalDate.now())) {
+            throw new IllegalArgumentException("No se puede registrar una estancia que comienza en el futuro, " 
+                                             + " con fecha de entrada ["+ fechaEntrada.toString() + "]");
+        }
+        else if (fechaEntrada.isAfter(fechaSalida)) {
+            throw new IllegalArgumentException("No se puede registrar una estancia que termina antes de que empiece, " 
+                                             + " con fecha de entrada ["+ fechaEntrada.toString() + "] "
+                                             + " y de salida [" + fechaSalida.toString() + "]");
         }
         else if (habitaciones.isEmpty()){
             throw new IllegalArgumentException("No se puede registrar una estancia sin habitación a ocupar."); 

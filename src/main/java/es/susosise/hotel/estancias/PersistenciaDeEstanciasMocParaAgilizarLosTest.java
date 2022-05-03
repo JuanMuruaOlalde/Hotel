@@ -3,6 +3,7 @@ package es.susosise.hotel.estancias;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import es.susosise.hotel.habitaciones.Habitacion;
 
@@ -37,6 +38,17 @@ final class PersistenciaDeEstanciasMocParaAgilizarLosTest implements Persistenci
         }
         
         return estanciasEncontradas;
+    }
+
+
+    @Override
+    public Estancia get(UUID id) {
+        for(Estancia estancia : almacenDeEstancias) {
+            if (estancia.getIdInterno().equals(id)) {
+                return estancia;
+            }
+        }
+        return null;
     }
 
 }

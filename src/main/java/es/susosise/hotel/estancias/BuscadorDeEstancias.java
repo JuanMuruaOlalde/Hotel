@@ -15,7 +15,7 @@ public class BuscadorDeEstancias {
     }
     
     public Estancia get(UUID id) {
-        return null;
+        return persistencia.get(id);
     }
     
     public boolean algunaDeLasHabitacionesEstaOcupada(List<Habitacion> habitaciones) {

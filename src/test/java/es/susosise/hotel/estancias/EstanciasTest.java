@@ -58,13 +58,29 @@ class EstanciasTest {
         Estancia estanciaCreada = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
         
         BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
-        Estancia estanciaEncontrada = buscador.get(estanciaCreada.getIdInterno());
+        Estancia estanciaRecuperada = buscador.get(estanciaCreada.getIdInterno());
         
-        assertEquals(estanciaCreada, estanciaEncontrada);
+        assertEquals(estanciaCreada, estanciaRecuperada);
     }
     
     @Test
-    void daErrorIntentarCrearEstanciaSinHabitacionAOcuparDaError() {
+    void daErrorCrearNuevaEstanciaSobreAlgunaHabitacionQueEstabaYaOcupada() throws IOException {
+        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
+
+        Estancia primeraEstancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+             new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    Estancia segundaEstancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+                }
+             }
+        );
+    }
+    
+    @Test
+    void daErrorCrearEstanciaSinNingunaHabitacionAOcupar() {
         ArrayList<Habitacion> listaVaciaDeHabitaciones = new ArrayList<>();
  
         CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
@@ -72,25 +88,55 @@ class EstanciasTest {
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estanciaCreada = creador.crear(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
+                    Estancia estancia = creador.crear(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
                 }
              }
-                                                         );
+        );
     }
     
     @Test
-    void daErrorIntentarCrearEstanciaSiLaFechaDeEntradaEstaEnElFuturo() {
-        fail();
+    void daErrorCrearEstanciaSiLaFechaDeEntradaEstaEnElFuturo() {
+        LocalDate fechaEntradaFutura = java.time.LocalDate.now().plusDays(3);
+        
+        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+             new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    Estancia estancia = creador.crear(habitaciones, fechaEntradaFutura, fechaSalida, huespedes);
+                }
+             }
+        );
     }
     
     @Test
-    void daErrorIntentarCrearEstanciaSiLaFechaDeSalidaEsAnteriorALaDeEntrada() {
-        fail();
+    void daErrorCrearEstanciaSiLaFechaDeSalidaEsAnteriorALaDeEntrada() {
+        LocalDate fechaSalidaErronea = fechaEntrada.plusDays(-3);
+        
+        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+             new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    Estancia estancia = creador.crear(habitaciones, fechaEntrada, fechaSalidaErronea, huespedes);
+                }
+             }
+        );
     }
     
     @Test
-    void daErrorIntentarCrearEstanciaSinHuespedAlQueFacturar() {
-        fail();
+    void daErrorCrearEstanciaSinHuespedAlQueFacturar() {
+        ArrayList<Huesped> listaVaciaDeHuespedes = new ArrayList<>();
+        
+        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+             new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    Estancia estancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, listaVaciaDeHuespedes);
+                }
+             }
+        );
     }
 
 }
