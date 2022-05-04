@@ -35,8 +35,7 @@ class HabitacionesTest {
 	}
 	@AfterEach
 	void eliminarPersistencia() {
-        //try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
-        
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
 	}
 	
