@@ -14,9 +14,10 @@ public class BuscadorDeEstancias {
         this.persistencia = persistencia;
     }
     
-    public Estancia get(UUID id) {
-        return persistencia.get(id);
+    public Estancia get(UUID idInterno) {
+        return persistencia.get(idInterno);
     }
+    
     
     public boolean algunaDeLasHabitacionesEstaOcupada(List<Habitacion> habitaciones) {
         List<UUID> estancias = persistencia.getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(habitaciones);

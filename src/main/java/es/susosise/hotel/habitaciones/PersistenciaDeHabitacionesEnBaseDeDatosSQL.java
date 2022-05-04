@@ -238,12 +238,12 @@ final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDe
     }
 
     @Override
-    public void cambiarTipo(UUID id, TipoDeHabitacion tipo) throws IOException {
+    public void cambiarTipoDeHabitacion(UUID id, TipoDeHabitacion nuevoTipo) throws IOException {
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("UPDATE habitaciones");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("SET tipo = ");
-        sentenciaSQL.append("'" + tipo.name() + "'");
+        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("  WHERE idInterno = ");
         sentenciaSQL.append("'" + id.toString() + "'");
@@ -254,7 +254,7 @@ final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDe
             comando = baseDeDatos.createStatement();
             comando.execute(sentenciaSQL.toString());
         } catch(SQLException ex) {
-            System.out.println("Error el tipo de habitacion a " + tipo.toString()
+            System.out.println("Error el tipo de habitacion a " + nuevoTipo.toString()
                              + " a la habitacion con código " + id.toString()
                              + System.lineSeparator() + System.lineSeparator()
                              + Arrays.toString(ex.getStackTrace()));
@@ -264,12 +264,12 @@ final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDe
     }
 
     @Override
-    public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException {
+    public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException {
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("UPDATE habitaciones");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("SET tipoDeBaño = ");
-        sentenciaSQL.append("'" + tipo.name() + "'");
+        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("  WHERE idInterno = ");
         sentenciaSQL.append("'" + id.toString() + "'");
@@ -280,7 +280,7 @@ final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDe
             comando = baseDeDatos.createStatement();
             comando.execute(sentenciaSQL.toString());
         } catch(SQLException ex) {
-            System.out.println("Error el tipo de baño a " + tipo.toString()
+            System.out.println("Error el tipo de baño a " + nuevoTipo.toString()
                              + " a la habitacion con código " + id.toString()
                              + System.lineSeparator() + System.lineSeparator()
                              + Arrays.toString(ex.getStackTrace()));

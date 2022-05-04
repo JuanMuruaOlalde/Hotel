@@ -19,8 +19,8 @@ public interface PersistenciaDeHabitaciones {
 	public void activar(java.util.UUID id) throws IOException;
 	//public void eliminar(java.util.UUID id); // a no ser que el historico crezca demasiado, mejor inactivar que eliminar.	
 
-	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) throws IOException;
+	public void cambiarTipoDeHabitacion(java.util.UUID id, TipoDeHabitacion nuevoTipo) throws IOException;
 
-	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException;
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException;
 
 }

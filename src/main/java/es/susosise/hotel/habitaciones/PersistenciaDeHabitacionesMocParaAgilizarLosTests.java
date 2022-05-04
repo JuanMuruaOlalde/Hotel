@@ -68,13 +68,13 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
     }
 
     @Override
-    public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) throws IOException {
-        get(id).setTipo(tipo);
+    public void cambiarTipoDeHabitacion(java.util.UUID id, TipoDeHabitacion nuevoTipo) throws IOException {
+        get(id).setTipo(nuevoTipo);
     }
 
     @Override
-    public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException {
-        get(id).setTipoDeBaño(tipo);
+    public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException {
+        get(id).setTipoDeBaño(nuevoTipo);
     }
 	
 }

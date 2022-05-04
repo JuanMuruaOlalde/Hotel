@@ -14,12 +14,12 @@ public class ModificadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 	
-	public void cambiarTipoDeHabitacion(java.util.UUID id, TipoDeHabitacion tipo) throws IOException {
-	    persistencia.cambiarTipo(id, tipo);
+	public void cambiarTipoDeHabitacion(java.util.UUID idInterno, TipoDeHabitacion nuevoTipo) throws IOException {
+	    persistencia.cambiarTipoDeHabitacion(idInterno, nuevoTipo);
 	}
 	
-	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException {
-        persistencia.cambiarTipoDeBaño(id, tipo);
+	public void cambiarTipoDeBaño(UUID idInterno, TipoDeBaño nuevoTipo) throws IOException {
+        persistencia.cambiarTipoDeBaño(idInterno, nuevoTipo);
     }
 
 }

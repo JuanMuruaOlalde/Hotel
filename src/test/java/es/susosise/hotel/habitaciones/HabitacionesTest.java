@@ -119,7 +119,7 @@ class HabitacionesTest {
     	creador.crearUnaNueva("302");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	java.util.List<Habitacion> habitaciones = buscador.getAquellasQueComiencenPor("3");
+    	java.util.List<Habitacion> habitaciones = buscador.getAquellasCuyoNumeroComiencePor("3");
     	assertEquals(2, habitaciones.size());
     }
     

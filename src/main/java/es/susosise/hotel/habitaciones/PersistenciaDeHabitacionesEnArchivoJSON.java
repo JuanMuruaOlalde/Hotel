@@ -103,14 +103,14 @@ final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHab
 	}
 
 	@Override
-	public void cambiarTipo(java.util.UUID id, TipoDeHabitacion tipo) throws IOException {
-		get(id).setTipo(tipo);
+	public void cambiarTipoDeHabitacion(java.util.UUID id, TipoDeHabitacion nuevoTipo) throws IOException {
+		get(id).setTipo(nuevoTipo);
 		guardarTodasLasHabitaciones();
 	}
 
 	@Override
-	public void cambiarTipoDeBaño(UUID id, TipoDeBaño tipo) throws IOException {
-		get(id).setTipoDeBaño(tipo);
+	public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException {
+		get(id).setTipoDeBaño(nuevoTipo);
 		guardarTodasLasHabitaciones();
 	}
 

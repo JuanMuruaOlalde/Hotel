@@ -12,15 +12,15 @@ public class BuscadorDeHabitaciones {
 		return persistencia.get(numeroDeHabitacion);
 	}
 	
-	public Habitacion get(java.util.UUID id) {
-		return persistencia.get(id);
+	public Habitacion get(java.util.UUID idInterno) {
+		return persistencia.get(idInterno);
 	}
 	
 	public java.util.List<Habitacion> getTodas() {
 		return persistencia.getTodas();
 	}
 	
-	public java.util.List<Habitacion> getAquellasQueComiencenPor(String criterio) {
+	public java.util.List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio) {
 		return persistencia.getAquellasCuyoNumeroComiencePor(criterio);
 	}
 	
