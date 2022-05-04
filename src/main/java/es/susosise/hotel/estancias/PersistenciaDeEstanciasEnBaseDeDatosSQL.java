@@ -87,23 +87,50 @@ final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEst
 
 
     @Override
-    public Estancia get(UUID id) {
+    public Estancia get(UUID idInterno) {
         Estancia estancia = null;
         
         StringBuilder sentenciaSQL_principal = new StringBuilder();
         sentenciaSQL_principal.append("SELECT * FROM estancias");
         sentenciaSQL_principal.append(System.lineSeparator());
         sentenciaSQL_principal.append("  WHERE idInterno = ");
-        sentenciaSQL_principal.append("'" + id.toString() + "'");
+        sentenciaSQL_principal.append("'" + idInterno.toString() + "'");
         sentenciaSQL_principal.append(System.lineSeparator());
         
+        java.sql.Statement comando = null;
+        java.sql.ResultSet respuesta = null;
+        try {
+            comando = baseDeDatos.createStatement();
+            respuesta = comando.executeQuery(sentenciaSQL_principal.toString());
+            if (respuesta.next()) {
+                ArrayList<UUID> habitaciones = new ArrayList<>();
+                ArrayList<UUID> huespedes = new ArrayList<>();
+                estancia = new Estancia(java.util.UUID.fromString(respuesta.getString("idInterno")),
+                                        habitaciones,
+                                        respuesta.getDate("fechaEntrada").toLocalDate(),
+                                        respuesta.getDate("fechaSalida").toLocalDate(),
+                                        huespedes);
+            }
+        } catch(SQLException ex) {
+            System.out.println("Error al recuperar de la base de datos "
+                             + "la estancia con código " + idInterno.toString()
+                             + System.lineSeparator() + System.lineSeparator()
+                             + java.util.Arrays.toString(ex.getStackTrace()));
+        } finally {
+            try { if (respuesta != null) respuesta.close(); } catch (Exception ex) {}
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+        }
+        return completarInformacionDeHabitacionesYHuespedes(estancia);
+    }
+    
+    private Estancia completarInformacionDeHabitacionesYHuespedes(Estancia estanciaIncompleta) {
         StringBuilder sentenciaSQL_habitaciones = new StringBuilder();
         sentenciaSQL_habitaciones.append("SELECT idHabitacion ");
         sentenciaSQL_habitaciones.append(System.lineSeparator());
         sentenciaSQL_habitaciones.append("  FROM estancias_habitaciones");
         sentenciaSQL_habitaciones.append(System.lineSeparator());
         sentenciaSQL_habitaciones.append("  WHERE idEstancia = ");
-        sentenciaSQL_habitaciones.append("'" + id.toString() + "'");
+        sentenciaSQL_habitaciones.append("'" + estanciaIncompleta.getIdInterno().toString() + "'");
         sentenciaSQL_habitaciones.append(System.lineSeparator());
         
         StringBuilder sentenciaSQL_huespedes = new StringBuilder();
@@ -112,49 +139,89 @@ final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEst
         sentenciaSQL_huespedes.append("  FROM estancias_huespedes");
         sentenciaSQL_huespedes.append(System.lineSeparator());
         sentenciaSQL_huespedes.append("  WHERE idEstancia = ");
-        sentenciaSQL_huespedes.append("'" + id.toString() + "'");
+        sentenciaSQL_huespedes.append("'" + estanciaIncompleta.getIdInterno().toString() + "'");
         sentenciaSQL_huespedes.append(System.lineSeparator());
         
+        ArrayList<UUID> habitaciones = new ArrayList<>();
+        ArrayList<UUID> huespedes = new ArrayList<>();
         java.sql.Statement comando = null;
-        java.sql.ResultSet respuesta = null;
         java.sql.ResultSet respuestaHabitaciones = null;
         java.sql.ResultSet respuestaHuespedes = null;
         try {
             comando = baseDeDatos.createStatement();
             
-            ArrayList<UUID> habitaciones = new ArrayList<>();
             respuestaHabitaciones = comando.executeQuery(sentenciaSQL_habitaciones.toString());
             while (respuestaHabitaciones.next()) {
                 habitaciones.add(java.util.UUID.fromString(respuestaHabitaciones.getString("idHabitacion")));
             }
-            ArrayList<UUID> huespedes = new ArrayList<>();
+            
             respuestaHuespedes = comando.executeQuery(sentenciaSQL_huespedes.toString());
             while (respuestaHuespedes.next()) {
                 huespedes.add(java.util.UUID.fromString(respuestaHuespedes.getString("idHuesped")));
             }
             
-            respuesta = comando.executeQuery(sentenciaSQL_principal.toString());
-            if (respuesta.next()) {
-                estancia = new Estancia(java.util.UUID.fromString(respuesta.getString("idInterno")),
-                                        habitaciones,
-                                        respuesta.getDate("fechaEntrada").toLocalDate(),
-                                        respuesta.getDate("fechaSalida").toLocalDate(),
-                                        huespedes);
-            }
-            
         } catch(SQLException ex) {
             System.out.println("Error al recuperar de la base de datos "
-                             + "la estancia con código " + id.toString()
+                             + "la estancia con código " + estanciaIncompleta.getIdInterno().toString()
                              + System.lineSeparator() + System.lineSeparator()
                              + java.util.Arrays.toString(ex.getStackTrace()));
         } finally {
-            try { if (respuesta != null) respuesta.close(); } catch (Exception ex) {}
             try { if (respuestaHabitaciones != null) respuestaHabitaciones.close(); } catch (Exception ex) {}
             try { if (respuestaHuespedes != null) respuestaHuespedes.close(); } catch (Exception ex) {}
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
-        return estancia;
+        
+        return new Estancia(estanciaIncompleta.getIdInterno(),
+                            habitaciones,
+                            estanciaIncompleta.getFechaEntrada(),
+                            estanciaIncompleta.getFechaSalida(),
+                            huespedes);
+
     }
+    
+    
+    @Override
+    public List<Estancia> getEstanciasActivasEnEsteMomento() {
+        List<Estancia> estancias = new ArrayList<>();
+        
+        StringBuilder sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("SELECT * FROM estancias");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append(" WHERE FechaEntrada <= ");
+        sentenciaSQL.append("'" + LocalDate.now().toString() + "'");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append("   AND FechaSalida >= ");
+        sentenciaSQL.append("'" + LocalDate.now().toString() + "'");
+        sentenciaSQL.append(System.lineSeparator());
+        
+        java.sql.Statement comando = null;
+        java.sql.ResultSet respuesta = null;
+        try {
+            comando = baseDeDatos.createStatement();
+            respuesta = comando.executeQuery(sentenciaSQL.toString());
+            ArrayList<UUID> habitaciones = new ArrayList<>();
+            ArrayList<UUID> huespedes = new ArrayList<>();
+            while (respuesta.next()) {
+                Estancia estanciaIncompleta = new Estancia(java.util.UUID.fromString(respuesta.getString("idInterno")),
+                                                           habitaciones,
+                                                           respuesta.getDate("fechaEntrada").toLocalDate(),
+                                                           respuesta.getDate("fechaSalida").toLocalDate(),
+                                                           huespedes);
+                estancias.add(completarInformacionDeHabitacionesYHuespedes(estanciaIncompleta));
+            }
+        } catch(SQLException ex) {
+            System.out.println("Error al recuperar de la base de datos "
+                             + "las estancias activas en este momento."
+                             + System.lineSeparator() + System.lineSeparator()
+                             + java.util.Arrays.toString(ex.getStackTrace()));
+        } finally {
+            try { if (respuesta != null) respuesta.close(); } catch (Exception ex) {}
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+        }
+        
+        return estancias;
+    }
+
 
     @Override
     public List<UUID> getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones) {
@@ -169,7 +236,6 @@ final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEst
             listaDeHabitaciones.deleteCharAt(listaDeHabitaciones.length() - 1);
             listaDeHabitaciones.deleteCharAt(listaDeHabitaciones.length() - 1);
         }
-        
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("SELECT UNIQUE idInterno");
         sentenciaSQL.append(System.lineSeparator());

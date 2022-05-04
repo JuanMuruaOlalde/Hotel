@@ -23,32 +23,52 @@ final class PersistenciaDeEstanciasMocParaAgilizarLosTest implements Persistenci
     }
 
 
-    @Override
-    public List<UUID> getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones) {
-        ArrayList<UUID> estanciasEncontradas = new ArrayList<>();
-        
-        for(Estancia estancia : almacenDeEstancias) {
-            for (java.util.UUID idHabitacion : estancia.getHabitaciones()) {
-               for (Habitacion habitacion : habitaciones) {
-                   if (habitacion.getIdInterno().equals(idHabitacion)) {
-                       estanciasEncontradas.add(estancia.getIdInterno());
-                   }
-               }
-            }
-        }
-        
-        return estanciasEncontradas;
-    }
-
 
     @Override
-    public Estancia get(UUID id) {
+    public Estancia get(UUID idInterno) {
         for(Estancia estancia : almacenDeEstancias) {
-            if (estancia.getIdInterno().equals(id)) {
+            if (estancia.getIdInterno().equals(idInterno)) {
                 return estancia;
             }
         }
         return null;
     }
 
+
+    @Override
+    public List<Estancia> getEstanciasActivasEnEsteMomento() {
+        List<Estancia> estanciasEncontradas = new ArrayList<>();
+        
+        for(Estancia estancia : almacenDeEstancias) {
+            java.time.LocalDate hoy = java.time.LocalDate.now();
+            if (estancia.getFechaSalida().isAfter(hoy)) {
+                estanciasEncontradas.add(estancia);
+            }
+        }
+        
+        return estanciasEncontradas;
+    }
+
+    
+
+    @Override
+    public List<UUID> getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(List<Habitacion> habitaciones) {
+        ArrayList<UUID> estanciasEncontradas = new ArrayList<>();
+        
+        for(Estancia estancia : almacenDeEstancias) {
+            if (estancia.getFechaSalida().isAfter(java.time.LocalDate.now())) {
+                for (java.util.UUID idHabitacion : estancia.getHabitaciones()) {
+                   for (Habitacion habitacion : habitaciones) {
+                       if (habitacion.getIdInterno().equals(idHabitacion)) {
+                           estanciasEncontradas.add(estancia.getIdInterno());
+                       }
+                   }
+                }
+            }
+        }
+        
+        return estanciasEncontradas;
+    }
+
+    
 }

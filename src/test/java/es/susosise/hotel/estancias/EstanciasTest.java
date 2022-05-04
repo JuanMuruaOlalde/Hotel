@@ -57,7 +57,6 @@ class EstanciasTest {
     @AfterEach
     void eliminarPersistencia() {
         try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
-        
         //por ahora, el resto de persistencias no requieren limpieza.
     }
 
@@ -149,4 +148,28 @@ class EstanciasTest {
         );
     }
 
+    
+    @Test
+    void seRecuperanTodasLasEstanciasActivasEnEsteMomento() throws IOException {
+        
+        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
+        
+        LocalDate fechaEntradaAntigua = fechaEntrada.plusDays(-25);
+        LocalDate fechaSalidaAntigua = fechaSalida.plusDays(-25);
+        
+        creador.crear(habitaciones, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+       
+        List<Habitacion> unaHabitacion = new ArrayList<>();
+        unaHabitacion.add(CreadorDeHabitaciones.getLaHabitacionDePrueba());
+
+        creador.crear(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        creador.crear(unaHabitacion, fechaEntrada, fechaSalida, huespedes);
+        
+        BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
+        List<Estancia> estanciasActivas = buscador.getEstanciasActivasEnEsteMomento();
+        assertEquals(2, estanciasActivas.size());
+    }
+    
+    
 }
