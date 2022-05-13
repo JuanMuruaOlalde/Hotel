@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+
+<BorderPane fx:controller="es.susosise.hotel.PantallaPrincipal" xmlns:fx="http://javafx.com/fxml">
+
+    <top>
+    </top>
+    
+    <left>
+    </left>
+    
+    <center>
+        <Button text="Estancias" onAction="#irAlEditorDeEstancias"/>
+    </center>
+    
+    <right>
+    </right>
+    
+    <bottom>
+    </bottom>
+    
+</BorderPane>
