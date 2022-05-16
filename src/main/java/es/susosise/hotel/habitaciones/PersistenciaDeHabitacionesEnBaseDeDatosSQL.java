@@ -10,7 +10,7 @@ import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 
-final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDeHabitaciones {
+public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDeHabitaciones {
 
     private java.sql.Connection baseDeDatos;
     

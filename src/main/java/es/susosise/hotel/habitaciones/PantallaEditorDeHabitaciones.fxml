@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<FlowPane fx:controller="es.susosise.hotel.habitaciones.PantallaEditorDeHabitaciones" 
+          xmlns:fx="http://javafx.com/fxml"
+          orientation="VERTICAL" Vgap="10">
+    <padding><Insets top="15" right="15" left="15" bottom="15"/></padding>
+
+	
+	<HBox spacing="5">
+	    <Label text="Número de habitación:"/>
+	    <TextField fx:id="numeroDeHabitacionABuscar" prefWidth="50"/>
+	    <Button text="Buscar" onAction="#buscarHabitacion"/>
+	</HBox>
+	
+	<VBox spacing="10" style=" -fx-border-color:grey; -fx-border-width: 1; -fx-border-style: solid;">
+        <padding><Insets top="15" left="15" bottom="15" right="15"/></padding>
+	    <HBox spacing="5">
+	        <Label text="Número:"/>
+	        <TextField fx:id="numeroDeHabitacion" prefWidth="50"/>
+	    </HBox>
+	    <HBox spacing="5">
+	        <Label text="Tipo de habitación:"/>
+	        <TextField fx:id="tipoDeHabitacion" prefWidth="150"/>
+	    </HBox>
+	    <HBox spacing="5">
+	        <Label text="Tipo de baño"/>
+	        <TextField fx:id="tipoDeBaño" prefWidth="150"/>
+	    </HBox>
+    </VBox>
+    
+</FlowPane>
