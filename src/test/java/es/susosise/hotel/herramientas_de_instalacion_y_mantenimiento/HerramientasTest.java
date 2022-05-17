@@ -28,8 +28,7 @@ class HerramientasTest {
     }
     
     
-    //@Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
-    @Test
+    @Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
     void seCreanTodasLasTablasNecesariasEnLaBD() throws SQLException {
         CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(OpcionesYConstantes.getServidorDeDatosParaPruebas());
         creador.crear();
