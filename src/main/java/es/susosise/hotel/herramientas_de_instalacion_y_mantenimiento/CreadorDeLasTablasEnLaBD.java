@@ -2,15 +2,15 @@ package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import java.sql.SQLException;
 
-import es.susosise.hotel.estancias.PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias;
 import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias;
+import es.susosise.hotel.estancias.PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias;
 
 
-public class CreadorDeLasTablasEnBD {
+public class CreadorDeLasTablasEnLaBD {
     
     private java.sql.Connection baseDeDatos;
 
-    public CreadorDeLasTablasEnBD(java.sql.Connection baseDeDatos) {
+    public CreadorDeLasTablasEnLaBD(java.sql.Connection baseDeDatos) {
         this.baseDeDatos = baseDeDatos;
     }
 

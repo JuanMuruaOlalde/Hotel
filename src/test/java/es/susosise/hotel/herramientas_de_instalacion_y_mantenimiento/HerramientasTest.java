@@ -1,7 +1,7 @@
 package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CreadorDeLasTablasEnBD;
+import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CreadorDeLasTablasEnLaBD;
 
 import java.sql.SQLException;
 
@@ -28,9 +28,10 @@ class HerramientasTest {
     }
     
     
-    @Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
+    //@Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
+    @Test
     void seCreanTodasLasTablasNecesariasEnLaBD() throws SQLException {
-        CreadorDeLasTablasEnBD creador = new CreadorDeLasTablasEnBD(OpcionesYConstantes.getServidorDeDatosParaPruebas());
+        CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(OpcionesYConstantes.getServidorDeDatosParaPruebas());
         creador.crear();
         
         String[] filtroDeTipos = {"TABLE"};
@@ -40,6 +41,9 @@ class HerramientasTest {
             tablas.add(respuesta.getString("TABLE_NAME"));
         }
         assertTrue(tablas.contains("habitaciones"));
+        assertTrue(tablas.contains("estancias"));
+        assertTrue(tablas.contains("estancias_habitaciones"));
+        assertTrue(tablas.contains("estancias_huespedes"));
         // TODO  aqui iremos comprobando el resto de tablas... a medida que vayamos completando cada entidad del dominio...
         
     }
