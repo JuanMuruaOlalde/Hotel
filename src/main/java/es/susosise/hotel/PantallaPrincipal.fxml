@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.control.*?>
 
@@ -12,8 +13,12 @@
     <top>
         <TilePane Hgap="10" Vgap="10" style=" -fx-border-color:grey; -fx-border-width: 1; -fx-border-style: hidden hidden solid hidden;">
             <padding><Insets bottom="15"/></padding>
-            <Button text="Estancias" onAction="#irAlEditorDeEstancias" />
-            <Button text="Habitaciones" onAction="#irAlEditorDeHabitaciones" />
+            <Button text="Cargar servicios" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+            <Button text="Enviar avisos" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+            <Button text="Gestionar estancias" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+            <Button text="Registrar reservas" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+            <Button text="Consultas" onAction="#mostrarSubmenuDeConsultas" />
+            <Button text="Mantenimiento" onAction="#mostrarSubmenuDeMantenimiento" />
         </TilePane>
     </top>
     
@@ -27,6 +32,19 @@
     </center>
     
     <right>
+        <VBox>
+	        <VBox fx:id="submenuDeConsultas" visible="false" spacing="10">
+	            <Button text="Estadisticas" onAction="#mostrarAvisoDeQueEstaAunSinHacer"/>
+	            <Button text="Historico de estancias" onAction="#mostrarAvisoDeQueEstaAunSinHacer"/>
+	            <Button text="Historico de reservas" onAction="#mostrarAvisoDeQueEstaAunSinHacer"/>
+	        </VBox>
+	        <VBox fx:id="submenuDeMantenimiento" visible="false" spacing="10">
+	            <Button text="Habitaciones" onAction="#mostrarPantallaDeHabitaciones" />
+	            <Button text="Servicios" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+	            <Button text="Empleados" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+	            <Button text="Roles" onAction="#mostrarAvisoDeQueEstaAunSinHacer" />
+	        </VBox>
+        </VBox>
     </right>
     
     <bottom>

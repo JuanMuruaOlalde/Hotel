@@ -33,8 +33,10 @@ public class App extends Application {
             opciones = new OpcionesYConstantes(new java.io.File(archivoDeOpciones).toPath());
         } catch (Exception ex) {
             Alert avisos = new Alert(AlertType.ERROR);
-            avisos.setTitle("Error al leer el archivo de opciones [" + archivoDeOpciones + "]");
-            avisos.setContentText(ex.getMessage());
+            avisos.setTitle("Error al leer el archivo de opciones.");
+            avisos.setContentText("[" + archivoDeOpciones + "]" 
+                                  + System.lineSeparator()
+                                  + ex.getMessage());
             avisos.showAndWait().ifPresent( respuesta -> { 
                 if (respuesta == ButtonType.OK) { 
                     Platform.exit(); 

@@ -5,42 +5,61 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
+import javax.swing.GroupLayout.Alignment;
+
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 
 
 public class PantallaPrincipal {
 
-    @FXML
-    private javafx.scene.layout.HBox espacioCentral;
-    @FXML
-    private javafx.scene.control.Label lineaDeMensajes;
-    
+    @FXML private javafx.scene.layout.VBox submenuDeConsultas;
+    @FXML private javafx.scene.layout.VBox submenuDeMantenimiento;
+    @FXML private javafx.scene.layout.HBox espacioCentral;
+    @FXML private javafx.scene.control.Label lineaDeMensajes;
     
     @FXML
     public void initialize() {
         lineaDeMensajes.setText("");
+        submenuDeConsultas.managedProperty().bind(submenuDeConsultas.visibleProperty());
+        submenuDeMantenimiento.managedProperty().bind(submenuDeMantenimiento.visibleProperty());
     }
 
+    @FXML
+    private void mostrarSubmenuDeConsultas(ActionEvent evento) {
+        ocultarSubmenusLaterales();
+        submenuDeConsultas.setVisible(true);
+    }
+    @FXML
+    private void mostrarSubmenuDeMantenimiento(ActionEvent evento) {
+        ocultarSubmenusLaterales();
+        submenuDeMantenimiento.setVisible(true);
+    }
+    
+    private void ocultarSubmenusLaterales( ) {
+        submenuDeConsultas.setVisible(false);
+        submenuDeMantenimiento.setVisible(false);
+    }
+    
     
     @FXML
-    protected void irAlEditorDeHabitaciones(ActionEvent evento) throws IOException {
+    protected void mostrarPantallaDeHabitaciones(ActionEvent evento) throws IOException {
         espacioCentral.getChildren().clear();
-        java.net.URL location = getClass().getResource("habitaciones/PantallaEditorDeHabitaciones.fxml");
+        java.net.URL location = getClass().getResource("habitaciones/PantallaDeHabitaciones.fxml");
         Parent pantallaEditorDeHabitaciones = FXMLLoader.load(location);
         espacioCentral.getChildren().add(pantallaEditorDeHabitaciones);
         lineaDeMensajes.setText("Estamos trabajando con HABITACIONES");
     }
 
     
+    
+    
     @FXML
-    protected void irAlEditorDeEstancias(ActionEvent evento) throws IOException {
+    private void mostrarAvisoDeQueEstaAunSinHacer(ActionEvent evento) {
+        ocultarSubmenusLaterales();
         espacioCentral.getChildren().clear();
-        java.net.URL location = getClass().getResource("estancias/PantallaEditorDeEstancias.fxml");
-        Parent pantallaEditorDeEstancias = FXMLLoader.load(location);
-        espacioCentral.getChildren().add(pantallaEditorDeEstancias);
-        lineaDeMensajes.setText("Estamos trabajando con ESTANCIAS");
+        espacioCentral.getChildren().add(new javafx.scene.control.Label(evento.getSource().toString() + "     ¡ ESTÁ AÚN SIN HACER !"));
     }
-
+    
 
 }

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
 
-<FlowPane fx:controller="es.susosise.hotel.habitaciones.PantallaEditorDeHabitaciones" 
+<FlowPane fx:controller="es.susosise.hotel.habitaciones.PantallaDeHabitaciones" 
           xmlns:fx="http://javafx.com/fxml"
           orientation="VERTICAL" Vgap="10">
     <padding><Insets top="15" right="15" left="15" bottom="15"/></padding>

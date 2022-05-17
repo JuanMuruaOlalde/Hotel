@@ -9,7 +9,7 @@ import es.susosise.hotel.App;
 import javafx.event.ActionEvent;
 
 
-public class PantallaEditorDeHabitaciones {
+public class PantallaDeHabitaciones {
 
     @FXML private TextField numeroDeHabitacionABuscar;
     @FXML private TextField numeroDeHabitacion;
