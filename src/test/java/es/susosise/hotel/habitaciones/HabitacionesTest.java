@@ -25,9 +25,9 @@ class HabitacionesTest {
 	@BeforeEach
 	void prepararPersistencia() throws IOException, SQLException {
 	    
-	    persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	    
-	    //persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
+	    persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
 	    
 	    //baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
 	    //persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
@@ -35,7 +35,7 @@ class HabitacionesTest {
 	}
 	@AfterEach
 	void eliminarPersistencia() {
-        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+        //try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
 	}
 	
@@ -163,10 +163,31 @@ class HabitacionesTest {
     }
     
     @Test
+    void guardarCambiosAUnaHabitacion() throws IllegalArgumentException, IOException {
+        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+        creador.crearUnaNueva("301");
+        creador.crearUnaNueva("101");
+        creador.crearUnaNueva("302");
+        
+        BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+        Habitacion habitacion = buscador.get("101");
+        habitacion.setEstaActiva(false);
+        habitacion.setTipoDeHabitacion(TipoDeHabitacion.DOBLE);
+        habitacion.setTipoDeBaño(TipoDeBaño.DUCHA);
+        ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
+        modificador.guardarCambios(habitacion);
+        
+        Habitacion habitacionDespues = buscador.get("101");
+        assertEquals(false, habitacionDespues.getEstaActiva());
+        assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipoDeHabitacion());
+        assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
+    }
+    
+    @Test
     void elTipoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
         CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
         Habitacion habitacion = creador.crearUnaNueva("101");
-        assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipo());
+        assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipoDeHabitacion());
     }
     
     @Test
@@ -182,8 +203,9 @@ class HabitacionesTest {
     	
     	ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
     	modificador.cambiarTipoDeHabitacion(id, TipoDeHabitacion.DOBLE);
+    	
     	Habitacion habitacionDespues = buscador.get("101");
-    	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipo());
+    	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipoDeHabitacion());
     }
     
     @Test
@@ -206,6 +228,7 @@ class HabitacionesTest {
     	
         ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
         modificador.cambiarTipoDeBaño(id, TipoDeBaño.DUCHA);
+        
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
     }

@@ -9,7 +9,7 @@ import es.susosise.hotel.App;
 import javafx.event.ActionEvent;
 
 
-public class PantallaDeHabitaciones {
+public class PantallaParaHabitaciones {
 
     @FXML private TextField numeroDeHabitacionABuscar;
     @FXML private TextField numeroDeHabitacion;
@@ -22,7 +22,7 @@ public class PantallaDeHabitaciones {
         Habitacion habitacion = App.buscadorDeHabitaciones.get(numeroDeHabitacionABuscar.getText());
         if (habitacion != null) {
             numeroDeHabitacion.setText(habitacion.getNumeroDeHabitacion());
-            tipoDeHabitacion.setText(habitacion.getTipo().toString());
+            tipoDeHabitacion.setText(habitacion.getTipoDeHabitacion().toString());
             tipoDeBaño.setText(habitacion.getTipoDeBaño().toString());
         }
     }

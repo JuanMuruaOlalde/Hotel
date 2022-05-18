@@ -48,7 +48,6 @@ public class PantallaPrincipal {
         java.net.URL location = getClass().getResource("habitaciones/PantallaDeHabitaciones.fxml");
         Parent pantallaEditorDeHabitaciones = FXMLLoader.load(location);
         espacioCentral.getChildren().add(pantallaEditorDeHabitaciones);
-        lineaDeMensajes.setText("Estamos trabajando con HABITACIONES");
     }
 
     

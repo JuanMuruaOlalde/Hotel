@@ -39,7 +39,7 @@ public class Habitacion {
 	public String getNumeroDeHabitacion() {
 		return numeroDeHabitacion;
 	}
-	public TipoDeHabitacion getTipo() {
+	public TipoDeHabitacion getTipoDeHabitacion() {
 		return tipoDeHabitacion;
 	}
 	public TipoDeBaño getTipoDeBaño() {
@@ -49,7 +49,7 @@ public class Habitacion {
 	protected void setEstaActiva(Boolean estado) {
 		this.activa = estado;
 	}
-	protected void setTipo(TipoDeHabitacion tipo) {
+	protected void setTipoDeHabitacion(TipoDeHabitacion tipo) {
 		this.tipoDeHabitacion = tipo;
 	}
 	protected void setTipoDeBaño(TipoDeBaño tipo) {

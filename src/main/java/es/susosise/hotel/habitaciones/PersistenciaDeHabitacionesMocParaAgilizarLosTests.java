@@ -58,6 +58,20 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
     }
 
     @Override
+    public void guardarCambios(Habitacion habitacion) {
+        Habitacion habitacionEnLaLista = get(habitacion.getIdInterno());
+        if (habitacionEnLaLista != null) {
+            habitacionEnLaLista.setEstaActiva(habitacion.getEstaActiva());
+            habitacionEnLaLista.setTipoDeHabitacion(habitacion.getTipoDeHabitacion());
+            habitacionEnLaLista.setTipoDeBaño(habitacion.getTipoDeBaño());
+        }else {
+            throw new IllegalArgumentException();
+        }
+    }
+    
+
+	
+    @Override
     public void inactivar(UUID id) throws IOException {
         get(id).setEstaActiva(false);
     }
@@ -67,14 +81,4 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
         get(id).setEstaActiva(true);
     }
 
-    @Override
-    public void cambiarTipoDeHabitacion(java.util.UUID id, TipoDeHabitacion nuevoTipo) throws IOException {
-        get(id).setTipo(nuevoTipo);
-    }
-
-    @Override
-    public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException {
-        get(id).setTipoDeBaño(nuevoTipo);
-    }
-	
 }

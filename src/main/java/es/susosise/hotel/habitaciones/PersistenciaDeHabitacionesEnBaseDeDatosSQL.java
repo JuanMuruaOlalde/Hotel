@@ -44,7 +44,7 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
         sentenciaSQL.append("'" + unaHabitacion.getNumeroDeHabitacion() + "'");
         sentenciaSQL.append(" ," + System.lineSeparator());
         sentenciaSQL.append("      tipo = ");
-        sentenciaSQL.append("'" + unaHabitacion.getTipo().toString() + "'");
+        sentenciaSQL.append("'" + unaHabitacion.getTipoDeHabitacion().toString() + "'");
         sentenciaSQL.append(" ," + System.lineSeparator());
         sentenciaSQL.append("      tipoDeBaño = ");
         sentenciaSQL.append("'" + unaHabitacion.getTipoDeBaño().toString() + "'");
@@ -202,6 +202,37 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
         return habitaciones;
     }
 
+    
+    @Override
+    public void guardarCambios(Habitacion habitacion) {
+        // TODO Auto-generated method stub
+        
+//        StringBuilder sentenciaSQL = new StringBuilder();
+//        sentenciaSQL.append("UPDATE habitaciones");
+//        sentenciaSQL.append(System.lineSeparator());
+//        sentenciaSQL.append("SET tipoDeBaño = ");
+//        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
+//        sentenciaSQL.append(System.lineSeparator());
+//        sentenciaSQL.append("  WHERE idInterno = ");
+//        sentenciaSQL.append("'" + id.toString() + "'");
+//        sentenciaSQL.append(System.lineSeparator());
+//        
+//        java.sql.Statement comando = null;
+//        try {
+//            comando = baseDeDatos.createStatement();
+//            comando.execute(sentenciaSQL.toString());
+//        } catch(SQLException ex) {
+//            System.out.println("Error el tipo de baño a " + nuevoTipo.toString()
+//                             + " a la habitacion con código " + id.toString()
+//                             + System.lineSeparator() + System.lineSeparator()
+//                             + Arrays.toString(ex.getStackTrace()));
+//        } finally {
+//            try { if (comando != null) comando.close(); } catch (Exception ex) {}
+//        }
+        }
+
+        
+        
     private void modificarActiva(UUID id, boolean nuevoEstado) {
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("UPDATE habitaciones");
@@ -226,7 +257,7 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
     }
-    
+
     @Override
     public void inactivar(UUID id) throws IOException {
         modificarActiva(id, false);
@@ -237,57 +268,6 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
         modificarActiva(id, true);
     }
 
-    @Override
-    public void cambiarTipoDeHabitacion(UUID id, TipoDeHabitacion nuevoTipo) throws IOException {
-        StringBuilder sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("UPDATE habitaciones");
-        sentenciaSQL.append(System.lineSeparator());
-        sentenciaSQL.append("SET tipo = ");
-        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
-        sentenciaSQL.append(System.lineSeparator());
-        sentenciaSQL.append("  WHERE idInterno = ");
-        sentenciaSQL.append("'" + id.toString() + "'");
-        sentenciaSQL.append(System.lineSeparator());
-        
-        java.sql.Statement comando = null;
-        try {
-            comando = baseDeDatos.createStatement();
-            comando.execute(sentenciaSQL.toString());
-        } catch(SQLException ex) {
-            System.out.println("Error el tipo de habitacion a " + nuevoTipo.toString()
-                             + " a la habitacion con código " + id.toString()
-                             + System.lineSeparator() + System.lineSeparator()
-                             + Arrays.toString(ex.getStackTrace()));
-        } finally {
-            try { if (comando != null) comando.close(); } catch (Exception ex) {}
-        }
-    }
-
-    @Override
-    public void cambiarTipoDeBaño(UUID id, TipoDeBaño nuevoTipo) throws IOException {
-        StringBuilder sentenciaSQL = new StringBuilder();
-        sentenciaSQL.append("UPDATE habitaciones");
-        sentenciaSQL.append(System.lineSeparator());
-        sentenciaSQL.append("SET tipoDeBaño = ");
-        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
-        sentenciaSQL.append(System.lineSeparator());
-        sentenciaSQL.append("  WHERE idInterno = ");
-        sentenciaSQL.append("'" + id.toString() + "'");
-        sentenciaSQL.append(System.lineSeparator());
-        
-        java.sql.Statement comando = null;
-        try {
-            comando = baseDeDatos.createStatement();
-            comando.execute(sentenciaSQL.toString());
-        } catch(SQLException ex) {
-            System.out.println("Error el tipo de baño a " + nuevoTipo.toString()
-                             + " a la habitacion con código " + id.toString()
-                             + System.lineSeparator() + System.lineSeparator()
-                             + Arrays.toString(ex.getStackTrace()));
-        } finally {
-            try { if (comando != null) comando.close(); } catch (Exception ex) {}
-        }
-    }
 
     
 }
