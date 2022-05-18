@@ -60,7 +60,7 @@ public class App extends Application {
         try {
             buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
             
-            //Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
+            // TODO Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
             
         } catch (Exception ex) {
             Alert avisos = new Alert(AlertType.ERROR);
