@@ -20,7 +20,7 @@ public class Habitacion {
 	}
 	
 	private UUID idInterno;
-	private Boolean activa;
+	private Boolean estaActiva;
 	private String numeroDeHabitacion;
 	private TipoDeHabitacion tipoDeHabitacion;
 	private TipoDeBaño tipoDeBaño;
@@ -30,11 +30,11 @@ public class Habitacion {
 	}
 	public Boolean getEstaActiva() {
 		//nota: este getter es para el mecanismo de serializacion de la persistencia
-		return activa;
+		return estaActiva;
 	}
 	public Boolean estaActiva() {
 		//nota: este getter es para que quede más fácil de leer allá donde se compruebe si xxx.estaActiva()
-		return activa;
+		return estaActiva;
 	}
 	public String getNumeroDeHabitacion() {
 		return numeroDeHabitacion;
@@ -47,41 +47,59 @@ public class Habitacion {
 	}
 	
 	protected void setEstaActiva(Boolean estado) {
-		this.activa = estado;
+		this.estaActiva = estado;
 	}
-	protected void setTipoDeHabitacion(TipoDeHabitacion tipo) {
+    protected void setTipoDeHabitacion(TipoDeHabitacion tipo) {
 		this.tipoDeHabitacion = tipo;
 	}
 	protected void setTipoDeBaño(TipoDeBaño tipo) {
 		this.tipoDeBaño = tipo;
 	}
 
-	protected Habitacion(UUID idInterno,
-                         Boolean activa,
-                         String numeroDeHabitacion,
-                         TipoDeHabitacion tipo,
-                         TipoDeBaño tipoDeBaño) {
-        this.idInterno = idInterno;
-        this.activa = activa;
-        this.numeroDeHabitacion = numeroDeHabitacion;
-        this.tipoDeHabitacion = tipo;
-        this.tipoDeBaño = tipoDeBaño;
-    }
-
-	protected Habitacion(UUID idInterno, String numeroDeHabitacion) {
+	public Habitacion(UUID idInterno, String numeroDeHabitacion) {
 		this.idInterno = idInterno;
-		this.activa = true;
+		this.estaActiva = true;
 		this.numeroDeHabitacion = numeroDeHabitacion;
 		this.tipoDeHabitacion = TipoDeHabitacion._SIN_ASIGNAR_AUN_;
 		this.tipoDeBaño = TipoDeBaño._SIN_ASIGNAR_AUN_;
 	}
 	
+	protected Habitacion(UUID idInterno,
+                         Boolean estaActiva,
+                         String numeroDeHabitacion,
+                         TipoDeHabitacion tipoDeHabitacion,
+                         TipoDeBaño tipoDeBaño) {
+        this.idInterno = idInterno;
+        this.estaActiva = estaActiva;
+        this.numeroDeHabitacion = numeroDeHabitacion;
+        this.tipoDeHabitacion = tipoDeHabitacion;
+        this.tipoDeBaño = tipoDeBaño;
+    }
+	
+	protected void copiarDatosDesde(Habitacion habitacionConLosNuevosDatos) {
+        this.estaActiva = habitacionConLosNuevosDatos.getEstaActiva();
+        this.numeroDeHabitacion = habitacionConLosNuevosDatos.getNumeroDeHabitacion();
+        this.tipoDeHabitacion = habitacionConLosNuevosDatos.getTipoDeHabitacion();
+        this.tipoDeBaño = habitacionConLosNuevosDatos.getTipoDeBaño();
+	}
+
+	
+    //nota: estos dos setter son para el mecanismo de serializacion de la persistencia
+    protected void setIdInterno(UUID idInterno) {
+        this.idInterno = idInterno;
+    }
+    protected void setNumeroDeHabitacion(String numeroDeHabitacion) {
+        this.numeroDeHabitacion = numeroDeHabitacion;
+    }
+	protected Habitacion() {
+        //nota: este constructor es para el mecanismo de serializacion de la persistencia
+	}
 	
 
 	@Override
     public int hashCode() {
 		return Objects.hash(this.idInterno,
-				            this.activa,
+				            this.estaActiva,
 				            this.numeroDeHabitacion,
 				            this.tipoDeHabitacion,
 				            this.tipoDeBaño);
@@ -100,7 +118,7 @@ public class Habitacion {
 		}
 		Habitacion unaHabitacion = (Habitacion)unObjeto;
 		return Objects.equals(this.idInterno, unaHabitacion.idInterno)
-			&& Objects.equals(this.activa, unaHabitacion.activa)
+			&& Objects.equals(this.estaActiva, unaHabitacion.estaActiva)
 			&& Objects.equals(this.numeroDeHabitacion, unaHabitacion.numeroDeHabitacion)
 			&& Objects.equals(this.tipoDeHabitacion, unaHabitacion.tipoDeHabitacion)
 			&& Objects.equals(this.tipoDeBaño, unaHabitacion.tipoDeBaño);

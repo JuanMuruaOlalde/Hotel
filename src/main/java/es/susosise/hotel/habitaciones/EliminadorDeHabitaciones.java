@@ -10,11 +10,11 @@ public class EliminadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 
-	public void inactivar(java.util.UUID id) throws IOException {
+	public void desactivarHabitacion(java.util.UUID id) throws IOException {
 		persistencia.inactivar(id);
 	}
 	
-	public void activar(java.util.UUID id) throws IOException {
+	public void reactivarHabitacion(java.util.UUID id) throws IOException {
 		persistencia.activar(id);
 	}
 

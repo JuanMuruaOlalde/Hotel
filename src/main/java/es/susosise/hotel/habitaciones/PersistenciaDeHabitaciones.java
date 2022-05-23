@@ -15,7 +15,7 @@ public interface PersistenciaDeHabitaciones {
 	public java.util.List<Habitacion> getTodas();
 	public java.util.List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio);
 	
-	public void guardarCambios(Habitacion habitacion);
+	public void guardarCambios(Habitacion habitacion) throws IOException;
 
 	public void inactivar(java.util.UUID id) throws IOException;
 	public void activar(java.util.UUID id) throws IOException;

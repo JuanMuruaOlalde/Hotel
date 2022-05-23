@@ -35,7 +35,7 @@ class HabitacionesTest {
 	}
 	@AfterEach
 	void eliminarPersistencia() {
-        //try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
 	}
 	
@@ -130,12 +130,12 @@ class HabitacionesTest {
     	creador.crearUnaNueva("302");
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
+
     	Habitacion habitacion = buscador.get("101");
     	assertEquals(true, habitacion.estaActiva());
-    	java.util.UUID id = habitacion.getIdInterno();
 
-    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
-    	eliminador.inactivar(id);
+    	eliminador.desactivarHabitacion(habitacion.getIdInterno());
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
     }
@@ -146,18 +146,18 @@ class HabitacionesTest {
     	creador.crearUnaNueva("301");
     	creador.crearUnaNueva("101");
     	creador.crearUnaNueva("302");
-    	
+
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
+    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
+
     	Habitacion habitacion = buscador.get("101");
     	assertEquals(true, habitacion.estaActiva());
-    	java.util.UUID id = habitacion.getIdInterno();
 
-    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
-    	eliminador.inactivar(id);
+    	eliminador.desactivarHabitacion(habitacion.getIdInterno());
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
 
-    	eliminador.activar(id);
+    	eliminador.reactivarHabitacion(habitacionDespues.getIdInterno());
     	Habitacion habitacionDespuesDespues = buscador.get("101");
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
