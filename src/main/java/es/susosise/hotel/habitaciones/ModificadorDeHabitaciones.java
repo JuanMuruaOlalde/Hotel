@@ -14,20 +14,9 @@ public class ModificadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 	
-	public void guardarCambios(Habitacion habitacion) throws IOException {
-	    persistencia.guardarCambios(habitacion);
+	public void guardarCambios(Habitacion datosAGuardar) throws IOException {
+	    persistencia.guardarCambios(datosAGuardar);
 	}
 	
-	public void cambiarTipoDeHabitacion(java.util.UUID idInterno, TipoDeHabitacion nuevoTipo) throws IOException {
-	    Habitacion habitacionAModificar = persistencia.get(idInterno);
-	    habitacionAModificar.setTipoDeHabitacion(nuevoTipo);
-	    persistencia.guardarCambios(habitacionAModificar);
-	}
-	
-	public void cambiarTipoDeBaño(UUID idInterno, TipoDeBaño nuevoTipo) throws IOException {
-        Habitacion habitacionAModificar = persistencia.get(idInterno);
-        habitacionAModificar.setTipoDeBaño(nuevoTipo);
-        persistencia.guardarCambios(habitacionAModificar);
-    }
 
 }

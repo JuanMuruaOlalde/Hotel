@@ -20,9 +20,10 @@ import javafx.scene.control.ButtonType;
 
 public class App extends Application {
     
-    
     public static BuscadorDeHabitaciones buscadorDeHabitaciones;
-    
+    public static CreadorDeHabitaciones creadorDeHabitaciones;
+    public static ModificadorDeHabitaciones modificadorDeHabitaciones;
+    public static EliminadorDeHabitaciones eliminadorDeHabitaciones;
 
     @Override
     public void start(Stage primaryStage) {
@@ -59,6 +60,9 @@ public class App extends Application {
         
         try {
             buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            creadorDeHabitaciones = new CreadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            modificadorDeHabitaciones = new ModificadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            eliminadorDeHabitaciones = new EliminadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
             
             // TODO Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
             

@@ -59,10 +59,10 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
 
     
     @Override
-    public void guardarCambios(Habitacion habitacionAGuardar) {
+    public void guardarCambios(Habitacion datosAGuardar) {
         for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getIdInterno().equals(habitacionAGuardar.getIdInterno())) {
-                habitacion.copiarDatosDesde(habitacionAGuardar);
+            if (habitacion.getIdInterno().equals(datosAGuardar.getIdInterno())) {
+                habitacion.copiarDatosDesde(datosAGuardar);
             }
         }
     }

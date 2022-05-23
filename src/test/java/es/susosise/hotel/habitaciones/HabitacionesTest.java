@@ -199,10 +199,9 @@ class HabitacionesTest {
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacion = buscador.get("101");
-    	java.util.UUID id = habitacion.getIdInterno();
-    	
+    	habitacion.setTipoDeHabitacion(TipoDeHabitacion.DOBLE);
     	ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
-    	modificador.cambiarTipoDeHabitacion(id, TipoDeHabitacion.DOBLE);
+    	modificador.guardarCambios(habitacion);
     	
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipoDeHabitacion());
@@ -224,10 +223,9 @@ class HabitacionesTest {
     	
     	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
     	Habitacion habitacion = buscador.get("101");
-    	java.util.UUID id = habitacion.getIdInterno();
-    	
+    	habitacion.setTipoDeBaño(TipoDeBaño.DUCHA);
         ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
-        modificador.cambiarTipoDeBaño(id, TipoDeBaño.DUCHA);
+        modificador.guardarCambios(habitacion);
         
     	Habitacion habitacionDespues = buscador.get("101");
     	assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());

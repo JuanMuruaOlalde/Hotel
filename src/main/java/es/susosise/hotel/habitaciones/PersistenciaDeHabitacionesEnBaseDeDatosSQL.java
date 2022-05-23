@@ -204,24 +204,24 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
 
     
     @Override
-    public void guardarCambios(Habitacion habitacion) {
+    public void guardarCambios(Habitacion datosAGuardar) {
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("UPDATE habitaciones");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("SET estaActiva = ");
-        sentenciaSQL.append(habitacion.getEstaActiva());
+        sentenciaSQL.append(datosAGuardar.getEstaActiva());
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append(", numeroDeHabitacion = ");
-        sentenciaSQL.append("'" + habitacion.getNumeroDeHabitacion() + "'");
+        sentenciaSQL.append("'" + datosAGuardar.getNumeroDeHabitacion() + "'");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append(", tipoDeHabitacion = ");
-        sentenciaSQL.append("'" + habitacion.getTipoDeHabitacion().name() + "'");
+        sentenciaSQL.append("'" + datosAGuardar.getTipoDeHabitacion().name() + "'");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append(", tipoDeBaño = ");
-        sentenciaSQL.append("'" + habitacion.getTipoDeBaño().name() + "'");
+        sentenciaSQL.append("'" + datosAGuardar.getTipoDeBaño().name() + "'");
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("  WHERE idInterno = ");
-        sentenciaSQL.append("'" + habitacion.getIdInterno().toString() + "'");
+        sentenciaSQL.append("'" + datosAGuardar.getIdInterno().toString() + "'");
         sentenciaSQL.append(System.lineSeparator());
         
         java.sql.Statement comando = null;
@@ -230,7 +230,7 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             comando.execute(sentenciaSQL.toString());
         } catch(SQLException ex) {
             System.out.println("Error al guardar cambios en la habitacion con código " 
-                               + habitacion.getIdInterno().toString()
+                               + datosAGuardar.getIdInterno().toString()
                                + System.lineSeparator() + System.lineSeparator()
                                + Arrays.toString(ex.getStackTrace()));
         } finally {

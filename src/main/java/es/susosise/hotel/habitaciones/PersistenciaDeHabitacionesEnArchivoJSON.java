@@ -100,11 +100,11 @@ final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHab
 
 
     @Override
-    public void guardarCambios(Habitacion habitacion) throws IOException {
+    public void guardarCambios(Habitacion datosAGuardar) throws IOException {
         ArrayList<Habitacion> habitaciones = leerDatosDesdeElArchivo();
-        for (Habitacion habitacionAModificar : habitaciones) {
-            if (habitacionAModificar.getIdInterno().equals(habitacion.getIdInterno())) {
-                habitacionAModificar.copiarDatosDesde(habitacion);
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getIdInterno().equals(datosAGuardar.getIdInterno())) {
+                habitacion.copiarDatosDesde(datosAGuardar);
             }
         }
         guardarDatosAlArchivo(habitaciones);
