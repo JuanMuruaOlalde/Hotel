@@ -14,8 +14,8 @@ public class ModificadorDeHabitaciones {
 		this.persistencia = persistencia;
 	}
 	
-	public void guardarCambios(Habitacion habitacion) {
-	    
+	public void guardarCambios(Habitacion habitacion) throws IOException {
+	    persistencia.guardarCambios(habitacion);
 	}
 	
 	public void cambiarTipoDeHabitacion(java.util.UUID idInterno, TipoDeHabitacion nuevoTipo) throws IOException {

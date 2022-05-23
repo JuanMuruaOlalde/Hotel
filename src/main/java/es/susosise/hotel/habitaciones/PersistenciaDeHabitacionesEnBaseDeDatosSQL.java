@@ -37,17 +37,17 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
         sentenciaSQL.append("  SET idInterno = ");
         sentenciaSQL.append("'" + unaHabitacion.getIdInterno().toString() + "'");
         sentenciaSQL.append(" ," + System.lineSeparator());
-        sentenciaSQL.append("      activa = ");
+        sentenciaSQL.append("      estaActiva = ");
         sentenciaSQL.append(unaHabitacion.estaActiva());
         sentenciaSQL.append(" ," + System.lineSeparator());
         sentenciaSQL.append("      numeroDeHabitacion = ");
         sentenciaSQL.append("'" + unaHabitacion.getNumeroDeHabitacion() + "'");
         sentenciaSQL.append(" ," + System.lineSeparator());
-        sentenciaSQL.append("      tipo = ");
-        sentenciaSQL.append("'" + unaHabitacion.getTipoDeHabitacion().toString() + "'");
+        sentenciaSQL.append("      tipoDeHabitacion = ");
+        sentenciaSQL.append("'" + unaHabitacion.getTipoDeHabitacion().name() + "'");
         sentenciaSQL.append(" ," + System.lineSeparator());
         sentenciaSQL.append("      tipoDeBaño = ");
-        sentenciaSQL.append("'" + unaHabitacion.getTipoDeBaño().toString() + "'");
+        sentenciaSQL.append("'" + unaHabitacion.getTipoDeBaño().name() + "'");
         sentenciaSQL.append(System.lineSeparator());
         
         java.sql.Statement comando = null;
@@ -79,9 +79,9 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             respuesta = comando.executeQuery(sentenciaSQL.toString());
             if (respuesta.next()) {
                 habitacion = new Habitacion(java.util.UUID.fromString(respuesta.getString("idInterno")),
-                                            respuesta.getBoolean("activa"),
+                                            respuesta.getBoolean("estaActiva"),
                                             respuesta.getString("numeroDeHabitacion"),
-                                            TipoDeHabitacion.valueOf(respuesta.getString("tipo")),
+                                            TipoDeHabitacion.valueOf(respuesta.getString("tipoDeHabitacion")),
                                             TipoDeBaño.valueOf(respuesta.getString("tipoDeBaño"))
                                             );
             }
@@ -114,9 +114,9 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             respuesta = comando.executeQuery(sentenciaSQL.toString());
             if (respuesta.next()) {
                 habitacion = new Habitacion(java.util.UUID.fromString(respuesta.getString("idInterno")),
-                                            respuesta.getBoolean("activa"),
+                                            respuesta.getBoolean("estaActiva"),
                                             respuesta.getString("numeroDeHabitacion"),
-                                            TipoDeHabitacion.valueOf(respuesta.getString("tipo")),
+                                            TipoDeHabitacion.valueOf(respuesta.getString("tipoDeHabitacion")),
                                             TipoDeBaño.valueOf(respuesta.getString("tipoDeBaño"))
                                             );
             }
@@ -147,9 +147,9 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             while (respuesta.next()) {
                 Habitacion habitacion;
                 habitacion = new Habitacion(java.util.UUID.fromString(respuesta.getString("idInterno")),
-                                            respuesta.getBoolean("activa"),
+                                            respuesta.getBoolean("estaActiva"),
                                             respuesta.getString("numeroDeHabitacion"),
-                                            TipoDeHabitacion.valueOf(respuesta.getString("tipo")),
+                                            TipoDeHabitacion.valueOf(respuesta.getString("tipoDeHabitacion")),
                                             TipoDeBaño.valueOf(respuesta.getString("tipoDeBaño"))
                                             );
                 habitaciones.add(habitacion);
@@ -183,9 +183,9 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             while (respuesta.next()) {
                 Habitacion habitacion;
                 habitacion = new Habitacion(java.util.UUID.fromString(respuesta.getString("idInterno")),
-                                            respuesta.getBoolean("activa"),
+                                            respuesta.getBoolean("estaActiva"),
                                             respuesta.getString("numeroDeHabitacion"),
-                                            TipoDeHabitacion.valueOf(respuesta.getString("tipo")),
+                                            TipoDeHabitacion.valueOf(respuesta.getString("tipoDeHabitacion")),
                                             TipoDeBaño.valueOf(respuesta.getString("tipoDeBaño"))
                                             );
                 habitaciones.add(habitacion);
@@ -205,39 +205,55 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
     
     @Override
     public void guardarCambios(Habitacion habitacion) {
-        // TODO Auto-generated method stub
+        StringBuilder sentenciaSQL = new StringBuilder();
+        sentenciaSQL.append("UPDATE habitaciones");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append("SET estaActiva = ");
+        sentenciaSQL.append(habitacion.getEstaActiva());
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append(", numeroDeHabitacion = ");
+        sentenciaSQL.append("'" + habitacion.getNumeroDeHabitacion() + "'");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append(", tipoDeHabitacion = ");
+        sentenciaSQL.append("'" + habitacion.getTipoDeHabitacion().name() + "'");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append(", tipoDeBaño = ");
+        sentenciaSQL.append("'" + habitacion.getTipoDeBaño().name() + "'");
+        sentenciaSQL.append(System.lineSeparator());
+        sentenciaSQL.append("  WHERE idInterno = ");
+        sentenciaSQL.append("'" + habitacion.getIdInterno().toString() + "'");
+        sentenciaSQL.append(System.lineSeparator());
         
-//        StringBuilder sentenciaSQL = new StringBuilder();
-//        sentenciaSQL.append("UPDATE habitaciones");
-//        sentenciaSQL.append(System.lineSeparator());
-//        sentenciaSQL.append("SET tipoDeBaño = ");
-//        sentenciaSQL.append("'" + nuevoTipo.name() + "'");
-//        sentenciaSQL.append(System.lineSeparator());
-//        sentenciaSQL.append("  WHERE idInterno = ");
-//        sentenciaSQL.append("'" + id.toString() + "'");
-//        sentenciaSQL.append(System.lineSeparator());
-//        
-//        java.sql.Statement comando = null;
-//        try {
-//            comando = baseDeDatos.createStatement();
-//            comando.execute(sentenciaSQL.toString());
-//        } catch(SQLException ex) {
-//            System.out.println("Error el tipo de baño a " + nuevoTipo.toString()
-//                             + " a la habitacion con código " + id.toString()
-//                             + System.lineSeparator() + System.lineSeparator()
-//                             + Arrays.toString(ex.getStackTrace()));
-//        } finally {
-//            try { if (comando != null) comando.close(); } catch (Exception ex) {}
-//        }
+        java.sql.Statement comando = null;
+        try {
+            comando = baseDeDatos.createStatement();
+            comando.execute(sentenciaSQL.toString());
+        } catch(SQLException ex) {
+            System.out.println("Error al guardar cambios en la habitacion con código " 
+                               + habitacion.getIdInterno().toString()
+                               + System.lineSeparator() + System.lineSeparator()
+                               + Arrays.toString(ex.getStackTrace()));
+        } finally {
+            try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
+    }
 
-        
-        
+    
+    @Override
+    public void inactivar(UUID id) throws IOException {
+        modificarActiva(id, false);
+    }
+
+    @Override
+    public void activar(UUID id) throws IOException {
+        modificarActiva(id, true);
+    }
+
     private void modificarActiva(UUID id, boolean nuevoEstado) {
         StringBuilder sentenciaSQL = new StringBuilder();
         sentenciaSQL.append("UPDATE habitaciones");
         sentenciaSQL.append(System.lineSeparator());
-        sentenciaSQL.append("SET activa = ");
+        sentenciaSQL.append("SET estaActiva = ");
         sentenciaSQL.append(nuevoEstado);
         sentenciaSQL.append(System.lineSeparator());
         sentenciaSQL.append("  WHERE idInterno = ");
@@ -249,23 +265,13 @@ public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements Persist
             comando = baseDeDatos.createStatement();
             comando.execute(sentenciaSQL.toString());
         } catch(SQLException ex) {
-            System.out.println("Error al cambiar activa = " + nuevoEstado
+            System.out.println("Error al cambiar estaActiva = " + nuevoEstado
                              + " la habitacion con código " + id.toString()
                              + System.lineSeparator() + System.lineSeparator()
                              + Arrays.toString(ex.getStackTrace()));
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }
-    }
-
-    @Override
-    public void inactivar(UUID id) throws IOException {
-        modificarActiva(id, false);
-    }
-
-    @Override
-    public void activar(UUID id) throws IOException {
-        modificarActiva(id, true);
     }
 
 
