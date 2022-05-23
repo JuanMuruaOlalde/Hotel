@@ -82,7 +82,14 @@ public class Habitacion {
         this.tipoDeHabitacion = habitacionConLosNuevosDatos.getTipoDeHabitacion();
         this.tipoDeBaño = habitacionConLosNuevosDatos.getTipoDeBaño();
 	}
-
+	
+	protected Habitacion getUnDeepClon() {
+	    return new Habitacion (this.idInterno,
+	                           this.estaActiva,
+	                           this.numeroDeHabitacion,
+	                           this.tipoDeHabitacion,
+	                           this.tipoDeBaño);
+	}
 	
     //nota: estos dos setter son para el mecanismo de serializacion de la persistencia
     protected void setIdInterno(UUID idInterno) {

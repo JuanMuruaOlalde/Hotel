@@ -25,7 +25,7 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
     public Habitacion get(UUID id) {
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.getIdInterno().equals(id)) {
-                return habitacion;
+                return habitacion.getUnDeepClon();
             }
         }
         return null;
@@ -35,7 +35,7 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
     public Habitacion get(String numeroDeHabitacion) {
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.getNumeroDeHabitacion().equals(numeroDeHabitacion)) {
-                return habitacion;
+                return habitacion.getUnDeepClon();
             }
         }
         return null;
@@ -51,34 +51,39 @@ final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements Persist
         java.util.ArrayList<Habitacion> encontradas = new ArrayList<>();
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.getNumeroDeHabitacion().startsWith(criterio)) {
-                 encontradas.add(habitacion);
+                 encontradas.add(habitacion.getUnDeepClon());
             }
         }
         return encontradas;
     }
 
+    
     @Override
-    public void guardarCambios(Habitacion habitacion) {
-        Habitacion habitacionEnLaLista = get(habitacion.getIdInterno());
-        if (habitacionEnLaLista != null) {
-            habitacionEnLaLista.setEstaActiva(habitacion.getEstaActiva());
-            habitacionEnLaLista.setTipoDeHabitacion(habitacion.getTipoDeHabitacion());
-            habitacionEnLaLista.setTipoDeBaño(habitacion.getTipoDeBaño());
-        }else {
-            throw new IllegalArgumentException();
+    public void guardarCambios(Habitacion habitacionAGuardar) {
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getIdInterno().equals(habitacionAGuardar.getIdInterno())) {
+                habitacion.copiarDatosDesde(habitacionAGuardar);
+            }
         }
     }
-    
 
 	
     @Override
     public void inactivar(UUID id) throws IOException {
-        get(id).setEstaActiva(false);
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getIdInterno().equals(id)) {
+                habitacion.setEstaActiva(false);
+            }
+        }
     }
 
     @Override
     public void activar(UUID id) throws IOException {
-        get(id).setEstaActiva(true);
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.getIdInterno().equals(id)) {
+                habitacion.setEstaActiva(true);
+            }
+        }
     }
 
 }

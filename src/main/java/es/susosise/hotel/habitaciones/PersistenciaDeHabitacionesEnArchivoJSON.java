@@ -66,7 +66,7 @@ final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHab
 	public Habitacion get(UUID id) {
 		for (Habitacion habitacion : cacheDeHabitaciones) {
 			if (habitacion.getIdInterno().equals(id)) {
-				return habitacion;
+				return habitacion.getUnDeepClon();
 			}
 		}
 		return null;
@@ -76,7 +76,7 @@ final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHab
 	public Habitacion get(String numeroDeHabitacion) {
 		for (Habitacion habitacion : cacheDeHabitaciones) {
 			if (habitacion.getNumeroDeHabitacion().equals(numeroDeHabitacion)) {
-				return habitacion;
+				return habitacion.getUnDeepClon();
 			}
 		}
 		return null;
@@ -92,7 +92,7 @@ final class PersistenciaDeHabitacionesEnArchivoJSON implements PersistenciaDeHab
 		java.util.ArrayList<Habitacion> encontradas = new ArrayList<>();
 		for (Habitacion habitacion : cacheDeHabitaciones) {
 			if (habitacion.getNumeroDeHabitacion().startsWith(criterio)) {
-				 encontradas.add(habitacion);
+				 encontradas.add(habitacion.getUnDeepClon());
 			}
 		}
 		return encontradas;

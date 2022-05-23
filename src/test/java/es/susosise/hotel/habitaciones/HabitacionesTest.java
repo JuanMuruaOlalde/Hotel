@@ -25,13 +25,13 @@ class HabitacionesTest {
 	@BeforeEach
 	void prepararPersistencia() throws IOException, SQLException {
 	    
-	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	    persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	    
 	    //persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
 	    
-	    baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-	    persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
-	    ((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
+	    //baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+	    //persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
+	    //((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
 	}
 	@AfterEach
 	void eliminarPersistencia() {
