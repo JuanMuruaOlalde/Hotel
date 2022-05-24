@@ -15,14 +15,18 @@ public class CreadorDeHabitaciones {
 	}
 	
 	public Habitacion crearUnaNueva(String numeroDeHabitacion) throws IllegalArgumentException, IOException {
-	    Habitacion existente = persistencia.get(numeroDeHabitacion);
-	    if (existente == null) {
-    		Habitacion nueva = new Habitacion(UUID.randomUUID(), numeroDeHabitacion);
-    		persistencia.añadirUnaNueva(nueva);
-    		return nueva;
-	    }
-	    else {
-	        throw new IllegalArgumentException("Intento de duplicar la habitación. Ya existe una habitación [" + numeroDeHabitacion + "]");
+	    if (!numeroDeHabitacion.isBlank()) {
+    	    Habitacion existente = persistencia.get(numeroDeHabitacion);
+    	    if (existente == null) {
+        		Habitacion nueva = new Habitacion(UUID.randomUUID(), numeroDeHabitacion);
+        		persistencia.añadirUnaNueva(nueva);
+        		return nueva;
+    	    }
+    	    else {
+    	        throw new IllegalArgumentException("Intento de duplicar la habitación. Ya existe una habitación [" + numeroDeHabitacion + "]");
+    	    }
+	    } else {
+            throw new IllegalArgumentException("No se puede crear una habitación con número/nombre en blanco.");
 	    }
 	}
 	

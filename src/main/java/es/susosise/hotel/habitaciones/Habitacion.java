@@ -46,14 +46,14 @@ public class Habitacion {
 		return tipoDeBaño;
 	}
 	
-	protected void setEstaActiva(Boolean estado) {
-		this.estaActiva = estado;
+	protected void setEstaActiva(Boolean estaActiva) {
+		this.estaActiva = estaActiva;
 	}
-    protected void setTipoDeHabitacion(TipoDeHabitacion tipo) {
-		this.tipoDeHabitacion = tipo;
+    protected void setTipoDeHabitacion(TipoDeHabitacion tipoDeHabitacion) {
+		this.tipoDeHabitacion = tipoDeHabitacion;
 	}
-	protected void setTipoDeBaño(TipoDeBaño tipo) {
-		this.tipoDeBaño = tipo;
+	protected void setTipoDeBaño(TipoDeBaño tipoDeBaño) {
+		this.tipoDeBaño = tipoDeBaño;
 	}
 
 	public Habitacion(UUID idInterno, String numeroDeHabitacion) {

@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
-import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
-
 final class PersistenciaDeHabitacionesMocParaAgilizarLosTests implements PersistenciaDeHabitaciones {
 
     java.util.ArrayList<Habitacion> habitaciones;
     
     public PersistenciaDeHabitacionesMocParaAgilizarLosTests() {
-        habitaciones = new java.util.ArrayList<Habitacion>();
+        habitaciones = new java.util.ArrayList<>();
     }
 
     

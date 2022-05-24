@@ -10,18 +10,21 @@
           orientation="VERTICAL" Vgap="10">
     <padding><Insets top="15" right="15" left="15" bottom="15"/></padding>
 
-    <TabPane side="TOP" tabClosingPolicy="UNAVAILABLE">
+    <TabPane fx:id="pestañas" side="TOP" tabClosingPolicy="UNAVAILABLE">
     <tabs>
         <Tab text="Ver todas">
-            <TableView>
-            <columns>
-                <TableColumn text="número"/>
-                <TableColumn text="tipo"/>
-                <TableColumn text="baño"/>
-            </columns>
-            </TableView>
+            <VBox spacing="10">
+	            <Button text="Refrescar lista" onAction="#refrescarLista"/>
+	            <TableView fx:id="listaDeHabitaciones">
+		            <columns>
+		                <TableColumn fx:id="numeroDeHabitacion" text="número" />
+		                <TableColumn fx:id="tipoDeHabitacion" text="tipo" />
+		                <TableColumn fx:id="tipoDeBaño" text="baño" />
+		            </columns>
+	            </TableView>
+            </VBox>
         </Tab>
-	    <Tab text="Modificar una existente">
+	    <Tab fx:id="pestañaDeModificar" text="Modificar una existente">
 	        <VBox spacing="10">
             <padding><Insets top="15" left="15" bottom="15" right="15"/></padding>
 				<HBox spacing="5">
@@ -34,18 +37,18 @@
 			        <padding><Insets top="15" left="15" bottom="15" right="15"/></padding>
 				    <HBox spacing="5">
 				        <Label text="Número:"/>
-				        <TextField fx:id="numeroDeHabitacion" prefWidth="50"/>
+				        <TextField fx:id="paraModificar_numeroDeHabitacion" prefWidth="50"/>
 				    </HBox>
 				    <HBox spacing="5">
 				        <Label text="Tipo de habitación:"/>
-				        <TextField fx:id="tipoDeHabitacion" prefWidth="150"/>
+				        <ChoiceBox fx:id="paraModificar_tipoDeHabitacion" prefWidth="150"/>
 				    </HBox>
 				    <HBox spacing="5">
 				        <Label text="Tipo de baño"/>
-				        <TextField fx:id="tipoDeBaño" prefWidth="150"/>
+				        <ChoiceBox fx:id="paraModificar_tipoDeBaño" prefWidth="150"/>
 				    </HBox>
 		        </VBox>
-		        <Button text="modificar"/>
+		        <Button text="Guardar cambios" onAction="#modificarHabitacion"/>
 		    </VBox>
         </Tab>
         <Tab text="Crear una nueva">
@@ -53,17 +56,9 @@
                 <padding><Insets top="15" left="15" bottom="15" right="15"/></padding>
                 <HBox spacing="5">
                     <Label text="Número:"/>
-                    <TextField fx:id="numeroDeHabitacion" prefWidth="50"/>
+                    <TextField fx:id="numeroDeHabitacionACrear" prefWidth="50"/>
                 </HBox>
-                <HBox spacing="5">
-                    <Label text="Tipo de habitación:"/>
-                    <TextField fx:id="tipoDeHabitacion" prefWidth="150"/>
-                </HBox>
-                <HBox spacing="5">
-                    <Label text="Tipo de baño"/>
-                    <TextField fx:id="tipoDeBaño" prefWidth="150"/>
-                </HBox>
-                <Button text="crear"/>
+                <Button text="Crear" onAction="#crearHabitacion"/>
             </VBox>
         </Tab>
     </tabs>

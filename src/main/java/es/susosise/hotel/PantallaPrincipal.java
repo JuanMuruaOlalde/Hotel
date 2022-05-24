@@ -5,8 +5,6 @@ import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
-import javax.swing.GroupLayout.Alignment;
-
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 
@@ -45,7 +43,7 @@ public class PantallaPrincipal {
     @FXML
     protected void mostrarPantallaDeHabitaciones(ActionEvent evento) throws IOException {
         espacioCentral.getChildren().clear();
-        java.net.URL location = getClass().getResource("habitaciones/PantallaDeHabitaciones.fxml");
+        java.net.URL location = getClass().getResource("habitaciones/PantallaParaHabitaciones.fxml");
         Parent pantallaEditorDeHabitaciones = FXMLLoader.load(location);
         espacioCentral.getChildren().add(pantallaEditorDeHabitaciones);
     }
