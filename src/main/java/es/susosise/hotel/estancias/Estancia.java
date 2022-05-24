@@ -2,9 +2,6 @@ package es.susosise.hotel.estancias;
 
 import java.util.UUID;
 
-import es.susosise.hotel.habitaciones.Habitacion;
-import es.susosise.hotel.huespedes.Huesped;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

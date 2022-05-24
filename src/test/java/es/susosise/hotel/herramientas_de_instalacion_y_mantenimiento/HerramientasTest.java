@@ -1,14 +1,11 @@
 package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CreadorDeLasTablasEnLaBD;
-
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 

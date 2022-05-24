@@ -21,9 +21,9 @@ public class AppComandosDeInstalacion {
                     case "--borrarEInicializarLaBaseDeDatos":
                         try {
                             System.out.println();
-                            System.out.println("Se va a inicializar la base de datos:");
+                            System.out.println("Se va a inicializar la base de datos, creando de nuevo las tablas en ella.");
                             System.out.println("[" + baseDeDatos.getMetaData().getURL() + "]");
-                            System.out.println("Aviso: si ya existe y contiene datos, se borraran todos.");
+                            System.out.println("Aviso: SE BORRARAN todos los datos que tuviera.");
                             System.out.println("¿Hacerlo? (Si/No) ");
                             java.util.Scanner lectorDeTeclado = new java.util.Scanner(System.in);
                             String respuesta = lectorDeTeclado.nextLine();
@@ -31,25 +31,33 @@ public class AppComandosDeInstalacion {
                             if (respuesta.equals("Si")) {
                                 CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(baseDeDatos);
                                 creador.crear();
-                                System.out.println("¡Borrada e inicializada!");
-                            } else {
-                                System.out.println("No se ha hecho nada.");
+                                System.out.println("¡Borrada e inicializada!.");
+                                System.out.println();
+                           } else {
+                                System.out.println("Se ha dejado la base de datos como estaba.");
+                                System.out.println();
                             }
                         } catch (Exception e) {
+                            System.out.println();
                             System.out.println("Error al inicializar la base de datos.");
                             System.out.println("======================================");
                             e.printStackTrace();
+                            System.out.println();
                         }
                         break;
                     case "--cargarDatosDePrueba":
                         try {
                             CargadorDeLosDatosDePruebaEnLaBD cargador = new CargadorDeLosDatosDePruebaEnLaBD(baseDeDatos);
                             cargador.cargar();
+                            System.out.println();
                             System.out.println("Se han cargado los datos de prueba en " + baseDeDatos.getMetaData().getURL());
+                            System.out.println();
                         } catch (Exception e) {
+                            System.out.println();
                             System.out.println("Error al cargar datos de prueba en la base de datos.");
                             System.out.println("====================================================");
                             e.printStackTrace();
+                            System.out.println();
                         }
                         break;
                 }

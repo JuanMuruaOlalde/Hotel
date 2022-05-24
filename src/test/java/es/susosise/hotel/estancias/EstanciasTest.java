@@ -47,16 +47,16 @@ class EstanciasTest {
     @BeforeEach
     void prepararPersistencia() throws SQLException {
         
-        persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
+        //persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
         
-//        baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-//        persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
-//        ((PersistenciaDeEstanciasEnBaseDeDatosSQL) persistencia).crearLasTablas();
+        baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+        persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
+        ((PersistenciaDeEstanciasEnBaseDeDatosSQL) persistencia).crearLasTablas();
     }
     
     @AfterEach
     void eliminarPersistencia() {
-//        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
     }
 

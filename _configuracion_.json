@@ -1,7 +1,7 @@
 [
-{"carpetaDeDatos" : "C:\\Users\\Public\\Hotel_pruebas"},
-{"servidorDeDatos" : { "baseDeDatos" : "mariadb://localhost:3306/pruebas",
-                       "usuario" : "usuarioDePruebas",
+{"carpetaDeDatos" : "C:\\Users\\Public\\Hotel"},
+{"servidorDeDatos" : { "baseDeDatos" : "mariadb://localhost:3306/hotel",
+                       "usuario" : "root",
                        "contraseña" : "89Pruebasymedia" 
                      }
 }

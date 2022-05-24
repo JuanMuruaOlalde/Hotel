@@ -1,12 +1,8 @@
 package es.susosise.hotel;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CreadorDeLasTablasEnLaBD;
-import es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento.CargadorDeLosDatosDePruebaEnLaBD;
 import es.susosise.hotel.habitaciones.*;
+import es.susosise.hotel.estancias.*;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,14 +16,73 @@ import javafx.scene.control.ButtonType;
 
 public class App extends Application {
     
-    public static BuscadorDeHabitaciones buscadorDeHabitaciones;
-    public static CreadorDeHabitaciones creadorDeHabitaciones;
-    public static ModificadorDeHabitaciones modificadorDeHabitaciones;
-    public static EliminadorDeHabitaciones eliminadorDeHabitaciones;
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
+   
 
     @Override
     public void start(Stage primaryStage) {
         
+        java.sql.Connection baseDeDatos = obtenerLaConexionConLaBD();
+        prepararControladoresDelModelo(baseDeDatos);
+        
+        try {
+            java.net.URL location = getClass().getResource("PantallaPrincipal.fxml");
+            Parent pantallaPrincipal = FXMLLoader.load(location);
+            Scene scene = new Scene(pantallaPrincipal,800,600);
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("Hotel");
+            primaryStage.show();
+        } catch(Exception ex) {
+            Alert avisos = new Alert(AlertType.ERROR);
+            avisos.setTitle("Error al crear la pantalla principal.");
+            avisos.setContentText(ex.getMessage());
+            avisos.showAndWait().ifPresent( respuesta -> { 
+                if (respuesta == ButtonType.OK) { 
+                    Platform.exit(); 
+                }
+            } );
+        }
+        
+    }
+
+    
+    public static BuscadorDeHabitaciones buscadorDeHabitaciones;
+    public static CreadorDeHabitaciones creadorDeHabitaciones;
+    public static ModificadorDeHabitaciones modificadorDeHabitaciones;
+    public static EliminadorDeHabitaciones eliminadorDeHabitaciones;
+    
+    public static BuscadorDeEstancias buscadorDeEstancias;
+    public static CreadorDeEstancias creadorDeEstancias;
+ 
+    private void prepararControladoresDelModelo(java.sql.Connection baseDeDatos) {
+        try {
+            buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            creadorDeHabitaciones = new CreadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            modificadorDeHabitaciones = new ModificadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            eliminadorDeHabitaciones = new EliminadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
+            
+            buscadorDeEstancias = new BuscadorDeEstancias(new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos));
+            creadorDeEstancias = new CreadorDeEstancias(new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos));
+
+            // TODO Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
+            
+        } catch (Exception ex) {
+            Alert avisos = new Alert(AlertType.ERROR);
+            avisos.setTitle("Error al inicializar los módulos internos.");
+            avisos.setContentText(ex.getMessage());
+            avisos.showAndWait().ifPresent( respuesta -> { 
+                if (respuesta == ButtonType.OK) { 
+                    Platform.exit(); 
+                }
+            } );
+        }
+    }
+
+
+    private java.sql.Connection obtenerLaConexionConLaBD() {
         String archivoDeOpciones = "_configuracion_.json";
         OpcionesYConstantes opciones = null;
         try {
@@ -57,50 +112,8 @@ public class App extends Application {
                 }
             } );
         }
-        
-        try {
-            buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            creadorDeHabitaciones = new CreadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            modificadorDeHabitaciones = new ModificadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            eliminadorDeHabitaciones = new EliminadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            
-            // TODO Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
-            
-        } catch (Exception ex) {
-            Alert avisos = new Alert(AlertType.ERROR);
-            avisos.setTitle("Error al inicializar los módulos internos.");
-            avisos.setContentText(ex.getMessage());
-            avisos.showAndWait().ifPresent( respuesta -> { 
-                if (respuesta == ButtonType.OK) { 
-                    Platform.exit(); 
-                }
-            } );
-        }
-        
-        try {
-            java.net.URL location = getClass().getResource("PantallaPrincipal.fxml");
-            Parent pantallaPrincipal = FXMLLoader.load(location);
-            Scene scene = new Scene(pantallaPrincipal,800,600);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("Hotel");
-            primaryStage.show();
-        } catch(Exception ex) {
-            Alert avisos = new Alert(AlertType.ERROR);
-            avisos.setTitle("Error al crear la pantalla principal.");
-            avisos.setContentText(ex.getMessage());
-            avisos.showAndWait().ifPresent( respuesta -> { 
-                if (respuesta == ButtonType.OK) { 
-                    Platform.exit(); 
-                }
-            } );
-        }
-        
+        return baseDeDatos;
     }
 
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-   
     
 }

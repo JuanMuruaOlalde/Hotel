@@ -20,8 +20,12 @@ public class CreadorDeLasTablasEnLaBD {
         try {
             comando = baseDeDatos.createStatement();
             
+            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeHabitaciones());
             comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
             
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstancias());
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstanciasHuespedes());
+            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstanciasHabitaciones());
             comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstancias());
             comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHabitaciones());
             comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHuespedes());

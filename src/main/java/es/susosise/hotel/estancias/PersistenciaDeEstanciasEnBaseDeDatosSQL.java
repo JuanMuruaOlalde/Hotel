@@ -10,7 +10,7 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion;
 
 
-final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEstancias {
+public final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEstancias {
     private java.sql.Connection baseDeDatos;
     
     public PersistenciaDeEstanciasEnBaseDeDatosSQL(java.sql.Connection baseDeDatos) {
