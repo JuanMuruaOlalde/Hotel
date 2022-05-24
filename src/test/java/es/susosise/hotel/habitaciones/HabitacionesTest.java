@@ -25,13 +25,13 @@ class HabitacionesTest {
 	@BeforeEach
 	void prepararPersistencia() throws IOException, SQLException {
 	    
-	    persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	    
 	    //persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
 	    
-	    //baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-	    //persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
-	    //((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
+	    baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+	    persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
+	    ((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
 	}
 	@AfterEach
 	void eliminarPersistencia() {
@@ -93,6 +93,19 @@ class HabitacionesTest {
 	    	 }
     													 );
    	}
+    
+    @Test
+    void noSeCreanHabitacionesSinNumero() throws IOException {
+        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+             new Executable() {
+                @Override
+                public void execute() throws Throwable {
+                    creador.crearUnaNueva("");
+                }
+             }
+                                                         );
+    }
     
     
     @Test
