@@ -18,16 +18,18 @@ public class App extends Application {
     
     
     public static void main(String[] args) {
-        launch(args);
+        launch(args); // esto llama a start(...)
     }
    
 
     @Override
     public void start(Stage primaryStage) {
         
+        // trabajos previos...
         java.sql.Connection baseDeDatos = obtenerLaConexionConLaBD();
-        prepararControladoresDelModelo(baseDeDatos);
+        prepararHerramientasParaGestionarElModelo(baseDeDatos);
         
+        // lanzar el interfaz de usuario...
         try {
             java.net.URL location = getClass().getResource("PantallaPrincipal.fxml");
             Parent pantallaPrincipal = FXMLLoader.load(location);
@@ -57,7 +59,7 @@ public class App extends Application {
     public static BuscadorDeEstancias buscadorDeEstancias;
     public static CreadorDeEstancias creadorDeEstancias;
  
-    private void prepararControladoresDelModelo(java.sql.Connection baseDeDatos) {
+    private void prepararHerramientasParaGestionarElModelo(java.sql.Connection baseDeDatos) {
         try {
             buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
             creadorDeHabitaciones = new CreadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
