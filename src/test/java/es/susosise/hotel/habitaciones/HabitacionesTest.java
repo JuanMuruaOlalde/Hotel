@@ -2,6 +2,7 @@ package es.susosise.hotel.habitaciones;
 
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
+import es.susosise.hotel.estancias.GestorDeEstancias;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
 import org.junit.jupiter.api.AfterEach;
@@ -17,24 +18,23 @@ import java.sql.SQLException;
 
 
 class HabitacionesTest {
-
-	PersistenciaDeHabitaciones persistencia;
 	
 	java.sql.Connection baseDeDatos;
+	GestorDeHabitaciones gestorDeHabitaciones;
+	
 	
 	@BeforeEach
-	void prepararPersistencia() throws IOException, SQLException {
-	    
-	    //persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
-	    
-	    //persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
-	    
+	void prepararEntorno() throws IOException, SQLException {
+	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
+	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
 	    baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-	    persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
+	    PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
 	    ((PersistenciaDeHabitacionesEnBaseDeDatosSQL) persistencia).crearLaTabla();
+	    
+        gestorDeHabitaciones = new GestorDeHabitaciones(persistencia);
 	}
 	@AfterEach
-	void eliminarPersistencia() {
+	void limpiarEntorno() {
         try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
 	}
@@ -43,11 +43,9 @@ class HabitacionesTest {
     @Test
     void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElNumeroDeHabitacion() throws IOException {
     	
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada = creador.crearUnaNueva("101");
+    	Habitacion habitacionCreada = gestorDeHabitaciones.crearUnaNueva("101");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	Habitacion habitacionRecuperada = buscador.get("101");
+    	Habitacion habitacionRecuperada = gestorDeHabitaciones.get("101");
     	
     	assertEquals(habitacionCreada, habitacionRecuperada);
     }
@@ -55,11 +53,9 @@ class HabitacionesTest {
     @Test
     void seCreaUnaNuevaHabitacionYSeRecuperaUsandoElIdentificadorInterno() throws IOException {
     	
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada = creador.crearUnaNueva("101");
+    	Habitacion habitacionCreada = gestorDeHabitaciones.crearUnaNueva("101");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	Habitacion habitacionRecuperada = buscador.get(habitacionCreada.getIdInterno());
+    	Habitacion habitacionRecuperada = gestorDeHabitaciones.get(habitacionCreada.getIdInterno());
     	
     	assertEquals(habitacionCreada, habitacionRecuperada);
     }
@@ -67,13 +63,11 @@ class HabitacionesTest {
     @Test
     void alCrearUnaNuevaHabitacionSeAñadeALasExistentes() throws IOException {
     	
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	Habitacion habitacionCreada01 = creador.crearUnaNueva("201");
-    	Habitacion habitacionCreada02 = creador.crearUnaNueva("202");
+    	Habitacion habitacionCreada01 = gestorDeHabitaciones.crearUnaNueva("201");
+    	Habitacion habitacionCreada02 = gestorDeHabitaciones.crearUnaNueva("202");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	Habitacion habitacionRecuperada01 = buscador.get("201");
-    	Habitacion habitacionRecuperada02 = buscador.get("202");
+    	Habitacion habitacionRecuperada01 = gestorDeHabitaciones.get("201");
+    	Habitacion habitacionRecuperada02 = gestorDeHabitaciones.get("202");
     	
     	assertEquals(habitacionCreada01, habitacionRecuperada01);
     	assertEquals(habitacionCreada02, habitacionRecuperada02);
@@ -81,14 +75,13 @@ class HabitacionesTest {
 
     @Test
     void noSeCreanHabitacionesDuplicadas() throws IOException {
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("101");
     	
     	IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
 		     new Executable() {
 	            @Override
 	            public void execute() throws Throwable {
-	            	creador.crearUnaNueva("101");
+	                gestorDeHabitaciones.crearUnaNueva("101");
 	            }
 	    	 }
     													 );
@@ -96,12 +89,11 @@ class HabitacionesTest {
     
     @Test
     void noSeCreanHabitacionesSinNumero() throws IOException {
-        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    creador.crearUnaNueva("");
+                    gestorDeHabitaciones.crearUnaNueva("");
                 }
              }
                                                          );
@@ -110,87 +102,70 @@ class HabitacionesTest {
     
     @Test
     void recuperarTodasLasHabitaciones() throws IOException {
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("303");
     	
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("302");
-    	creador.crearUnaNueva("303");
-    	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	java.util.List<Habitacion> habitaciones = buscador.getTodas();
+    	java.util.List<Habitacion> habitaciones = gestorDeHabitaciones.getTodas();
     	assertEquals(3, habitaciones.size());
     }
 
 
     @Test
     void recuperarConFiltroDeNumeroDeHabitacion() throws IOException {
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("302");
     	
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("101");
-    	creador.crearUnaNueva("302");
-    	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	java.util.List<Habitacion> habitaciones = buscador.getAquellasCuyoNumeroComiencePor("3");
+    	java.util.List<Habitacion> habitaciones = gestorDeHabitaciones.getAquellasCuyoNumeroComiencePor("3");
     	assertEquals(2, habitaciones.size());
     }
     
     @Test
     void inactivarUnaHabitacion() throws IOException {
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("101");
-    	creador.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("302");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
-
-    	Habitacion habitacion = buscador.get("101");
+    	Habitacion habitacion = gestorDeHabitaciones.get("101");
     	assertEquals(true, habitacion.estaActiva());
 
-    	eliminador.desactivarHabitacion(habitacion.getIdInterno());
-    	Habitacion habitacionDespues = buscador.get("101");
+    	gestorDeHabitaciones.desactivarHabitacion(habitacion.getIdInterno());
+    	Habitacion habitacionDespues = gestorDeHabitaciones.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
     }
     
     @Test
     void reactivarUnaHabitacion() throws IOException {
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("101");
-    	creador.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("302");
 
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	EliminadorDeHabitaciones eliminador = new EliminadorDeHabitaciones(persistencia);
-
-    	Habitacion habitacion = buscador.get("101");
+     	Habitacion habitacion = gestorDeHabitaciones.get("101");
     	assertEquals(true, habitacion.estaActiva());
 
-    	eliminador.desactivarHabitacion(habitacion.getIdInterno());
-    	Habitacion habitacionDespues = buscador.get("101");
+    	gestorDeHabitaciones.desactivarHabitacion(habitacion.getIdInterno());
+    	Habitacion habitacionDespues = gestorDeHabitaciones.get("101");
     	assertEquals(false, habitacionDespues.estaActiva());
 
-    	eliminador.reactivarHabitacion(habitacionDespues.getIdInterno());
-    	Habitacion habitacionDespuesDespues = buscador.get("101");
+    	gestorDeHabitaciones.reactivarHabitacion(habitacionDespues.getIdInterno());
+    	Habitacion habitacionDespuesDespues = gestorDeHabitaciones.get("101");
     	assertEquals(true, habitacionDespuesDespues.estaActiva());
     }
     
     @Test
     void guardarCambiosAUnaHabitacion() throws IllegalArgumentException, IOException {
-        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-        creador.crearUnaNueva("301");
-        creador.crearUnaNueva("101");
-        creador.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("302");
         
-        BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-        Habitacion habitacion = buscador.get("101");
+        Habitacion habitacion = gestorDeHabitaciones.get("101");
         habitacion.setEstaActiva(false);
         habitacion.setTipoDeHabitacion(TipoDeHabitacion.DOBLE);
         habitacion.setTipoDeBaño(TipoDeBaño.DUCHA);
-        ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
-        modificador.guardarCambios(habitacion);
+        gestorDeHabitaciones.guardarCambios(habitacion);
         
-        Habitacion habitacionDespues = buscador.get("101");
+        Habitacion habitacionDespues = gestorDeHabitaciones.get("101");
         assertEquals(false, habitacionDespues.getEstaActiva());
         assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipoDeHabitacion());
         assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
@@ -198,49 +173,41 @@ class HabitacionesTest {
     
     @Test
     void elTipoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
-        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-        Habitacion habitacion = creador.crearUnaNueva("101");
+        Habitacion habitacion = gestorDeHabitaciones.crearUnaNueva("101");
         assertEquals(TipoDeHabitacion._SIN_ASIGNAR_AUN_, habitacion.getTipoDeHabitacion());
     }
     
     @Test
     void cambiarElTipoAUnaHabitacion() throws IOException {
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("101");
-    	creador.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("301");
+    	gestorDeHabitaciones.crearUnaNueva("101");
+    	gestorDeHabitaciones.crearUnaNueva("302");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	Habitacion habitacion = buscador.get("101");
+    	Habitacion habitacion = gestorDeHabitaciones.get("101");
     	habitacion.setTipoDeHabitacion(TipoDeHabitacion.DOBLE);
-    	ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
-    	modificador.guardarCambios(habitacion);
+    	gestorDeHabitaciones.guardarCambios(habitacion);
     	
-    	Habitacion habitacionDespues = buscador.get("101");
+    	Habitacion habitacionDespues = gestorDeHabitaciones.get("101");
     	assertEquals(TipoDeHabitacion.DOBLE, habitacionDespues.getTipoDeHabitacion());
     }
     
     @Test
     void elTipoDeBañoDeUnaHabitacionRecienCreadaEsSinAsignar() throws IllegalArgumentException, IOException {
-        CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-        Habitacion habitacion = creador.crearUnaNueva("101");
+        Habitacion habitacion = gestorDeHabitaciones.crearUnaNueva("101");
         assertEquals(TipoDeBaño._SIN_ASIGNAR_AUN_, habitacion.getTipoDeBaño());
     }
     
     @Test
     void cambiarElTipoDeBañoAUnaHabitacion() throws IOException {
-    	CreadorDeHabitaciones creador = new CreadorDeHabitaciones(persistencia);
-    	creador.crearUnaNueva("301");
-    	creador.crearUnaNueva("101");
-    	creador.crearUnaNueva("302");
+        gestorDeHabitaciones.crearUnaNueva("301");
+        gestorDeHabitaciones.crearUnaNueva("101");
+        gestorDeHabitaciones.crearUnaNueva("302");
     	
-    	BuscadorDeHabitaciones buscador = new BuscadorDeHabitaciones(persistencia);
-    	Habitacion habitacion = buscador.get("101");
+    	Habitacion habitacion = gestorDeHabitaciones.get("101");
     	habitacion.setTipoDeBaño(TipoDeBaño.DUCHA);
-        ModificadorDeHabitaciones modificador = new ModificadorDeHabitaciones(persistencia);
-        modificador.guardarCambios(habitacion);
+    	gestorDeHabitaciones.guardarCambios(habitacion);
         
-    	Habitacion habitacionDespues = buscador.get("101");
+    	Habitacion habitacionDespues = gestorDeHabitaciones.get("101");
     	assertEquals(TipoDeBaño.DUCHA, habitacionDespues.getTipoDeBaño());
     }
 

@@ -16,30 +16,37 @@ import javafx.scene.control.ButtonType;
 
 public class App extends Application {
     
-    
     public static void main(String[] args) {
         launch(args); // esto llama a start(...)
     }
-   
 
     @Override
     public void start(Stage primaryStage) {
-        
-        // trabajos previos...
-        java.sql.Connection baseDeDatos = obtenerLaConexionConLaBD();
-        prepararHerramientasParaGestionarElModelo(baseDeDatos);
-        
-        // lanzar el interfaz de usuario...
         try {
-            java.net.URL location = getClass().getResource("PantallaPrincipal.fxml");
-            Parent pantallaPrincipal = FXMLLoader.load(location);
+            java.sql.Connection baseDeDatos = obtenerLaConexionConLaBD();
+            
+            PersistenciaDeHabitaciones habitaciones = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
+            GestionDeHabitaciones gestorDeHabitaciones = new GestorDeHabitaciones(habitaciones);
+            ControlParaPantallaEditorDeHabitaciones controladorEditorDeHabitaciones = new ControlParaPantallaEditorDeHabitaciones(gestorDeHabitaciones);
+            FXMLLoader loaderEditorDeHabitaciones = new FXMLLoader(getClass().getResource("habitaciones/PantallaEditorDeHabitaciones.fxml"));
+            loaderEditorDeHabitaciones.setController(controladorEditorDeHabitaciones);
+            Parent pantallaEditorDeHabitaciones = loaderEditorDeHabitaciones.load();
+            
+            // TODO Aquí seguiremos poniendo el resto (estancias, reservas, huespedes, servicios, empleados, roles, avisos,...)
+            //      según vayamos completando las distintas partes de la aplicación.
+            
+            ControlParaPantallaPrincipal controladorPrincipal = new ControlParaPantallaPrincipal(pantallaEditorDeHabitaciones);
+            FXMLLoader loaderPrincipal = new FXMLLoader(getClass().getResource("PantallaPrincipal.fxml"));
+            loaderPrincipal.setController(controladorPrincipal);
+            Parent pantallaPrincipal = loaderPrincipal.load();
             Scene scene = new Scene(pantallaPrincipal,800,600);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Hotel");
             primaryStage.show();
-        } catch(Exception ex) {
+
+        } catch (Exception ex) {
             Alert avisos = new Alert(AlertType.ERROR);
-            avisos.setTitle("Error al crear la pantalla principal.");
+            avisos.setTitle("Error al inicializar los módulos internos y las pantallas del interfaz.");
             avisos.setContentText(ex.getMessage());
             avisos.showAndWait().ifPresent( respuesta -> { 
                 if (respuesta == ButtonType.OK) { 
@@ -50,40 +57,7 @@ public class App extends Application {
         
     }
 
-    
-    public static BuscadorDeHabitaciones buscadorDeHabitaciones;
-    public static CreadorDeHabitaciones creadorDeHabitaciones;
-    public static ModificadorDeHabitaciones modificadorDeHabitaciones;
-    public static EliminadorDeHabitaciones eliminadorDeHabitaciones;
-    
-    public static BuscadorDeEstancias buscadorDeEstancias;
-    public static CreadorDeEstancias creadorDeEstancias;
  
-    private void prepararHerramientasParaGestionarElModelo(java.sql.Connection baseDeDatos) {
-        try {
-            buscadorDeHabitaciones = new BuscadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            creadorDeHabitaciones = new CreadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            modificadorDeHabitaciones = new ModificadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            eliminadorDeHabitaciones = new EliminadorDeHabitaciones(new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos));
-            
-            buscadorDeEstancias = new BuscadorDeEstancias(new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos));
-            creadorDeEstancias = new CreadorDeEstancias(new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos));
-
-            // TODO Aquí iremos poniendo las distintas herramientas del modelo según las vayamos desarrollando.
-            
-        } catch (Exception ex) {
-            Alert avisos = new Alert(AlertType.ERROR);
-            avisos.setTitle("Error al inicializar los módulos internos.");
-            avisos.setContentText(ex.getMessage());
-            avisos.showAndWait().ifPresent( respuesta -> { 
-                if (respuesta == ButtonType.OK) { 
-                    Platform.exit(); 
-                }
-            } );
-        }
-    }
-
-
     private java.sql.Connection obtenerLaConexionConLaBD() {
         String archivoDeOpciones = "_configuracion_.json";
         OpcionesYConstantes opciones = null;

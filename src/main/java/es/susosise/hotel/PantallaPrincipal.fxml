@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.control.*?>
 
-<BorderPane fx:controller="es.susosise.hotel.PantallaPrincipal" xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns:fx="http://javafx.com/fxml">
 <padding><Insets top="15" right="15" left="15" bottom="15"/></padding>
 
     <top>

@@ -3,19 +3,19 @@ package es.susosise.hotel.huespedes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreadorDeHuespedes {
+public class CreadorDeHuespedesDePrueba {
     
     
     
     
     
-    public static Huesped getElHuespedDePrueba() {
+    public static Huesped getUnHuespedDePrueba() {
         return new Huesped(java.util.UUID.fromString("08b67057-5cce-4275-84cb-0183fdaea3fb"), "HuespedDePruebas");
     }
     
-    public static List<Huesped> getElGrupoDeHuespedesDePrueba() {
+    public static List<Huesped> getUnGrupoDeHuespedesDePrueba() {
         ArrayList<Huesped> huespedes = new ArrayList<>();
-        huespedes.add(getElHuespedDePrueba());
+        huespedes.add(getUnHuespedDePrueba());
         return huespedes;
     }
 

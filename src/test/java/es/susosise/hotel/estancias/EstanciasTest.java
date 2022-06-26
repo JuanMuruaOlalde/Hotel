@@ -1,9 +1,9 @@
 package es.susosise.hotel.estancias;
 
 import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-import es.susosise.hotel.habitaciones.CreadorDeHabitaciones;
+import es.susosise.hotel.habitaciones.GestorDeHabitaciones;
 import es.susosise.hotel.habitaciones.Habitacion;
-import es.susosise.hotel.huespedes.CreadorDeHuespedes;
+import es.susosise.hotel.huespedes.CreadorDeHuespedesDePrueba;
 import es.susosise.hotel.huespedes.Huesped;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -26,36 +26,35 @@ import java.time.LocalDate;
 
 class EstanciasTest {
  
-    private PersistenciaDeEstancias persistencia;
+    private java.sql.Connection baseDeDatos;
+    private GestorDeEstancias gestorDeEstancias;
 
-    java.sql.Connection baseDeDatos;
-
-    private static List<Habitacion> habitaciones = CreadorDeHabitaciones.getElGrupoDeHabitacionesDePrueba();
+    private static List<Habitacion> habitaciones = GestorDeHabitaciones.getUnGrupoDeHabitacionesDePrueba();
     private static LocalDate fechaEntrada = java.time.LocalDate.now();
     private static LocalDate fechaSalida = fechaEntrada.plusDays(1);
-    private static List<Huesped> huespedes = CreadorDeHuespedes.getElGrupoDeHuespedesDePrueba();
+    private static List<Huesped> huespedes = CreadorDeHuespedesDePrueba.getUnGrupoDeHuespedesDePrueba();
     
     @BeforeAll
     static void prepararConstantes() {
-        habitaciones = CreadorDeHabitaciones.getElGrupoDeHabitacionesDePrueba();
+        habitaciones = GestorDeHabitaciones.getUnGrupoDeHabitacionesDePrueba();
         fechaEntrada = java.time.LocalDate.now();
         fechaSalida = fechaEntrada.plusDays(1);
-        huespedes = CreadorDeHuespedes.getElGrupoDeHuespedesDePrueba();
+        huespedes = CreadorDeHuespedesDePrueba.getUnGrupoDeHuespedesDePrueba();
     }
     
     
     @BeforeEach
-    void prepararPersistencia() throws SQLException {
-        
+    void prepararEntorno() throws SQLException {
         //persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
-        
         baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-        persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
+        PersistenciaDeEstancias persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
         ((PersistenciaDeEstanciasEnBaseDeDatosSQL) persistencia).crearLasTablas();
+
+        gestorDeEstancias = new GestorDeEstancias(persistencia);
     }
     
     @AfterEach
-    void eliminarPersistencia() {
+    void limpiarEntorno() {
         try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
         //por ahora, el resto de persistencias no requieren limpieza.
     }
@@ -63,26 +62,22 @@ class EstanciasTest {
     
     @Test
     void seCreaYSeRecuperaUnaNuevaEstancia() throws IOException {
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
-        Estancia estanciaCreada = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        Estancia estanciaCreada = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
         
-        BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
-        Estancia estanciaRecuperada = buscador.get(estanciaCreada.getIdInterno());
+        Estancia estanciaRecuperada = gestorDeEstancias.get(estanciaCreada.getIdInterno());
         
         assertEquals(estanciaCreada, estanciaRecuperada);
     }
     
     @Test
     void daErrorCrearNuevaEstanciaSobreAlgunaHabitacionQueEstabaYaOcupada() throws IOException {
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
-
-        Estancia primeraEstancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        Estancia primeraEstancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia segundaEstancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+                    Estancia segundaEstancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
                 }
              }
         );
@@ -92,12 +87,11 @@ class EstanciasTest {
     void daErrorCrearEstanciaSinNingunaHabitacionAOcupar() {
         ArrayList<Habitacion> listaVaciaDeHabitaciones = new ArrayList<>();
  
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = creador.crear(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
+                    Estancia estancia = gestorDeEstancias.crear(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
                 }
              }
         );
@@ -107,12 +101,11 @@ class EstanciasTest {
     void daErrorCrearEstanciaSiLaFechaDeEntradaEstaEnElFuturo() {
         LocalDate fechaEntradaFutura = java.time.LocalDate.now().plusDays(3);
         
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = creador.crear(habitaciones, fechaEntradaFutura, fechaSalida, huespedes);
+                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntradaFutura, fechaSalida, huespedes);
                 }
              }
         );
@@ -122,12 +115,11 @@ class EstanciasTest {
     void daErrorCrearEstanciaSiLaFechaDeSalidaEsAnteriorALaDeEntrada() {
         LocalDate fechaSalidaErronea = fechaEntrada.plusDays(-3);
         
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = creador.crear(habitaciones, fechaEntrada, fechaSalidaErronea, huespedes);
+                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalidaErronea, huespedes);
                 }
              }
         );
@@ -137,12 +129,11 @@ class EstanciasTest {
     void daErrorCrearEstanciaSinHuespedAlQueFacturar() {
         ArrayList<Huesped> listaVaciaDeHuespedes = new ArrayList<>();
         
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = creador.crear(habitaciones, fechaEntrada, fechaSalida, listaVaciaDeHuespedes);
+                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, listaVaciaDeHuespedes);
                 }
              }
         );
@@ -151,23 +142,19 @@ class EstanciasTest {
     
     @Test
     void seRecuperanTodasLasEstanciasActivasEnEsteMomento() throws IOException {
-        
-        CreadorDeEstancias creador = new CreadorDeEstancias(persistencia);
-        
         LocalDate fechaEntradaAntigua = fechaEntrada.plusDays(-25);
         LocalDate fechaSalidaAntigua = fechaSalida.plusDays(-25);
         
-        creador.crear(habitaciones, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
-        creador.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        gestorDeEstancias.crear(habitaciones, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
        
         List<Habitacion> unaHabitacion = new ArrayList<>();
-        unaHabitacion.add(CreadorDeHabitaciones.getLaHabitacionDePrueba());
+        unaHabitacion.add(GestorDeHabitaciones.getUnaHabitacionDePrueba());
 
-        creador.crear(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
-        creador.crear(unaHabitacion, fechaEntrada, fechaSalida, huespedes);
+        gestorDeEstancias.crear(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        gestorDeEstancias.crear(unaHabitacion, fechaEntrada, fechaSalida, huespedes);
         
-        BuscadorDeEstancias buscador = new BuscadorDeEstancias(persistencia);
-        List<Estancia> estanciasActivas = buscador.getEstanciasActivasEnEsteMomento();
+        List<Estancia> estanciasActivas = gestorDeEstancias.getEstanciasActivasEnEsteMomento();
         assertEquals(2, estanciasActivas.size());
     }
     

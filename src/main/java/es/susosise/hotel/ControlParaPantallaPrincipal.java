@@ -9,8 +9,15 @@ import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 
 
-public class PantallaPrincipal {
+public class ControlParaPantallaPrincipal {
 
+    private Parent pantallaEditorDeHabitaciones;
+    
+    public ControlParaPantallaPrincipal(Parent pantallaEditorDeHabitaciones) {
+        this.pantallaEditorDeHabitaciones = pantallaEditorDeHabitaciones;
+    }
+    
+    
     @FXML private javafx.scene.layout.VBox submenuDeConsultas;
     @FXML private javafx.scene.layout.VBox submenuDeMantenimiento;
     @FXML private javafx.scene.layout.HBox espacioCentral;
@@ -43,8 +50,6 @@ public class PantallaPrincipal {
     @FXML
     protected void mostrarPantallaDeHabitaciones(ActionEvent evento) throws IOException {
         espacioCentral.getChildren().clear();
-        java.net.URL location = getClass().getResource("habitaciones/PantallaParaHabitaciones.fxml");
-        Parent pantallaEditorDeHabitaciones = FXMLLoader.load(location);
         espacioCentral.getChildren().add(pantallaEditorDeHabitaciones);
     }
 

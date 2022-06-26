@@ -25,8 +25,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 
-public class PantallaParaHabitaciones implements Initializable {
+public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
     
+    private GestionDeHabitaciones gestorDeHabitaciones;
+    
+    public ControlParaPantallaEditorDeHabitaciones(GestionDeHabitaciones gestorDeHabitaciones) {
+        this.gestorDeHabitaciones = gestorDeHabitaciones;
+    }
+    
+  
     @FXML private TableView<Habitacion> listaDeHabitaciones;
     @FXML private TableColumn<Habitacion, String> numeroDeHabitacion;
     @FXML private TableColumn<Habitacion, TipoDeHabitacion> tipoDeHabitacion;
@@ -48,7 +55,7 @@ public class PantallaParaHabitaciones implements Initializable {
         refrescar();
     }
     private void refrescar() {
-        List<Habitacion> habitaciones = App.buscadorDeHabitaciones.getTodas();
+        List<Habitacion> habitaciones = gestorDeHabitaciones.getTodas();
         ObservableList<Habitacion> lista = FXCollections.observableArrayList(habitaciones);
         listaDeHabitaciones.setItems(lista);
     }
@@ -66,7 +73,7 @@ public class PantallaParaHabitaciones implements Initializable {
         buscar();
     }
     private void buscar() {
-        habitacion = App.buscadorDeHabitaciones.get(numeroDeHabitacionABuscar.getText());
+        habitacion = gestorDeHabitaciones.get(numeroDeHabitacionABuscar.getText());
         if (habitacion != null) {
             paraModificar_numeroDeHabitacion.setText(habitacion.getNumeroDeHabitacion());
             paraModificar_tipoDeHabitacion.setValue(habitacion.getTipoDeHabitacion());
@@ -86,7 +93,7 @@ public class PantallaParaHabitaciones implements Initializable {
             habitacion.setTipoDeHabitacion(paraModificar_tipoDeHabitacion.getValue());
             habitacion.setTipoDeBaño(paraModificar_tipoDeBaño.getValue());
             try {
-                App.modificadorDeHabitaciones.guardarCambios(habitacion);
+                gestorDeHabitaciones.guardarCambios(habitacion);
                 refrescar();
             } catch (IOException ex) {
                 Alert avisos = new Alert(AlertType.ERROR);
@@ -113,7 +120,7 @@ public class PantallaParaHabitaciones implements Initializable {
     private void crearHabitacion(ActionEvent evento) {
         String numeroPropuesto = numeroDeHabitacionACrear.getText();
         try {
-            App.creadorDeHabitaciones.crearUnaNueva(numeroPropuesto);
+            gestorDeHabitaciones.crearUnaNueva(numeroPropuesto);
             refrescar();
             numeroDeHabitacionABuscar.setText(numeroPropuesto);
             buscar();
