@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.Disabled;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -35,9 +36,19 @@ class HabitacionesTest {
 	}
 	@AfterEach
 	void limpiarEntorno() {
+	    //borrarRecursivo(OpcionesYConstantes.getCarpetaDeDatosParaPruebas().toFile());
         try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
-        //por ahora, el resto de persistencias no requieren limpieza.
 	}
+//    static void borrarRecursivo (File carpeta) {
+//        if (carpeta.exists()) {
+//            if (carpeta.isDirectory()) {
+//                for (File contenido : carpeta.listFiles()) {
+//                    borrarRecursivo(contenido);
+//                }
+//            }
+//            carpeta.delete();
+//        }
+//    }
 	
 
     @Test

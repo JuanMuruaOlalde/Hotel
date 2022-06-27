@@ -20,10 +20,12 @@ public class App extends Application {
         launch(args); // esto llama a start(...)
     }
 
+    private java.sql.Connection baseDeDatos;
+    
     @Override
     public void start(Stage primaryStage) {
         try {
-            java.sql.Connection baseDeDatos = obtenerLaConexionConLaBD();
+            baseDeDatos = obtenerLaConexionConLaBD();
             
             PersistenciaDeHabitaciones habitaciones = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
             GestionDeHabitaciones gestorDeHabitaciones = new GestorDeHabitaciones(habitaciones);
@@ -57,7 +59,17 @@ public class App extends Application {
         
     }
 
+    
+    @Override
+    public void stop() {
+        try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
+    }
  
+    // TODO Esto de abrir una conexion al principio y cerrarla al final puede servir para una pequeña aplicacion.
+    //      Pero lo suyo es utilizar un pool de conexiones, utilizando java.sql.DataSource;
+    //      e irlas "abriendo" (usar una del pool) y "cerrando" (devolver al pool) cada vez que ejecutamos un comando.
+    //      (https://mariadb.com/kb/en/pool-datasource-implementation/)
+    
     private java.sql.Connection obtenerLaConexionConLaBD() {
         String archivoDeOpciones = "_configuracion_.json";
         OpcionesYConstantes opciones = null;
