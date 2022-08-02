@@ -6,27 +6,24 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
-public class GestorDeHabitaciones implements GestionDeHabitaciones {
+public class Habitaciones {
 
     private PersistenciaDeHabitaciones persistencia;
     
-    public GestorDeHabitaciones(PersistenciaDeHabitaciones persistencia) {
+    public Habitaciones(PersistenciaDeHabitaciones persistencia) {
         this.persistencia = persistencia;
     }
 
 
     
-    @Override
     public Habitacion get(String numeroDeHabitacion) {
         return persistencia.get(numeroDeHabitacion);
     }
     
-    @Override
     public java.util.List<Habitacion> getTodas() {
         return persistencia.getTodas();
     }
     
-    @Override
     public java.util.List<Habitacion> getAquellasCuyoNumeroComiencePor(String criterio) {
         return persistencia.getAquellasCuyoNumeroComiencePor(criterio);
     }
@@ -35,10 +32,8 @@ public class GestorDeHabitaciones implements GestionDeHabitaciones {
         return persistencia.get(idInterno);
     }
 
+  
     
-   
-    
-    @Override
     public Habitacion crearUnaNueva(String numeroDeHabitacion) throws IllegalArgumentException, IOException {
         if (numeroDeHabitacion.isBlank()) {
             throw new IllegalArgumentException("No se puede crear una habitación con número/nombre en blanco.");
@@ -57,19 +52,16 @@ public class GestorDeHabitaciones implements GestionDeHabitaciones {
     
 
        
-    @Override
     public void guardarCambios(Habitacion datosAGuardar) throws IOException {
         persistencia.guardarCambios(datosAGuardar);
     }
     
     
     
-    @Override
     public void desactivarHabitacion(java.util.UUID id) throws IOException {
         persistencia.inactivar(id);
     }
     
-    @Override
     public void reactivarHabitacion(java.util.UUID id) throws IOException {
         persistencia.activar(id);
     }
@@ -84,12 +76,12 @@ public class GestorDeHabitaciones implements GestionDeHabitaciones {
 
     
     
-    public static Habitacion getUnaHabitacionDePrueba() {
+    public static Habitacion getUnaParaPruebas() {
         return new Habitacion(java.util.UUID.fromString("b163aed7-1606-49e0-87d5-399db7a76037"),
                               true, "101", TipoDeHabitacion.SUITE, TipoDeBaño.JACUZZI);
     }
     
-    public static java.util.List<Habitacion> getUnGrupoDeHabitacionesDePrueba() {
+    public static java.util.List<Habitacion> getUnasCuantasParaPruebas() {
         java.util.ArrayList<Habitacion> habitaciones = new java.util.ArrayList<>();
         habitaciones.add(new Habitacion(java.util.UUID.fromString("9bbdac7d-4d53-49eb-b814-3c26594ae949"),
                                         true, "201", TipoDeHabitacion.SENCILLA, TipoDeBaño.DUCHA));

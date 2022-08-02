@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import es.susosise.hotel.App;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
@@ -25,12 +24,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 
-public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
+public class ControladorParaEditarHabitaciones implements Initializable {
     
-    private GestionDeHabitaciones gestorDeHabitaciones;
+    private Habitaciones habitaciones;
     
-    public ControlParaPantallaEditorDeHabitaciones(GestionDeHabitaciones gestorDeHabitaciones) {
-        this.gestorDeHabitaciones = gestorDeHabitaciones;
+    public ControladorParaEditarHabitaciones(Habitaciones habitaciones) {
+        this.habitaciones = habitaciones;
     }
     
   
@@ -55,8 +54,8 @@ public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
         refrescar();
     }
     private void refrescar() {
-        List<Habitacion> habitaciones = gestorDeHabitaciones.getTodas();
-        ObservableList<Habitacion> lista = FXCollections.observableArrayList(habitaciones);
+        List<Habitacion> habitacionesExistentes = habitaciones.getTodas();
+        ObservableList<Habitacion> lista = FXCollections.observableArrayList(habitacionesExistentes);
         listaDeHabitaciones.setItems(lista);
     }
 
@@ -73,7 +72,7 @@ public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
         buscar();
     }
     private void buscar() {
-        habitacion = gestorDeHabitaciones.get(numeroDeHabitacionABuscar.getText());
+        habitacion = habitaciones.get(numeroDeHabitacionABuscar.getText());
         if (habitacion != null) {
             paraModificar_numeroDeHabitacion.setText(habitacion.getNumeroDeHabitacion());
             paraModificar_tipoDeHabitacion.setValue(habitacion.getTipoDeHabitacion());
@@ -93,7 +92,7 @@ public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
             habitacion.setTipoDeHabitacion(paraModificar_tipoDeHabitacion.getValue());
             habitacion.setTipoDeBaño(paraModificar_tipoDeBaño.getValue());
             try {
-                gestorDeHabitaciones.guardarCambios(habitacion);
+                habitaciones.guardarCambios(habitacion);
                 refrescar();
             } catch (IOException ex) {
                 Alert avisos = new Alert(AlertType.ERROR);
@@ -120,7 +119,7 @@ public class ControlParaPantallaEditorDeHabitaciones implements Initializable {
     private void crearHabitacion(ActionEvent evento) {
         String numeroPropuesto = numeroDeHabitacionACrear.getText();
         try {
-            gestorDeHabitaciones.crearUnaNueva(numeroPropuesto);
+            habitaciones.crearUnaNueva(numeroPropuesto);
             refrescar();
             numeroDeHabitacionABuscar.setText(numeroPropuesto);
             buscar();

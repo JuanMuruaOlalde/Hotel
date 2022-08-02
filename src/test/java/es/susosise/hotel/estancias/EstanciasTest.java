@@ -1,9 +1,9 @@
 package es.susosise.hotel.estancias;
 
-import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
-import es.susosise.hotel.habitaciones.GestorDeHabitaciones;
+import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
+import es.susosise.hotel.habitaciones.Habitaciones;
 import es.susosise.hotel.habitaciones.Habitacion;
-import es.susosise.hotel.huespedes.CreadorDeHuespedesDePrueba;
+import es.susosise.hotel.huespedes.Huespedes;
 import es.susosise.hotel.huespedes.Huesped;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -27,30 +27,30 @@ import java.time.LocalDate;
 class EstanciasTest {
  
     private java.sql.Connection baseDeDatos;
-    private GestorDeEstancias gestorDeEstancias;
+    private Estancias estancias;
 
-    private static List<Habitacion> habitaciones = GestorDeHabitaciones.getUnGrupoDeHabitacionesDePrueba();
+    private static List<Habitacion> habitaciones = Habitaciones.getUnasCuantasParaPruebas();
     private static LocalDate fechaEntrada = java.time.LocalDate.now();
     private static LocalDate fechaSalida = fechaEntrada.plusDays(1);
-    private static List<Huesped> huespedes = CreadorDeHuespedesDePrueba.getUnGrupoDeHuespedesDePrueba();
+    private static List<Huesped> huespedes = Huespedes.getUnosCuantosParaPruebas();
     
     @BeforeAll
     static void prepararConstantes() {
-        habitaciones = GestorDeHabitaciones.getUnGrupoDeHabitacionesDePrueba();
+        habitaciones = Habitaciones.getUnasCuantasParaPruebas();
         fechaEntrada = java.time.LocalDate.now();
         fechaSalida = fechaEntrada.plusDays(1);
-        huespedes = CreadorDeHuespedesDePrueba.getUnGrupoDeHuespedesDePrueba();
+        huespedes = Huespedes.getUnosCuantosParaPruebas();
     }
     
     
     @BeforeEach
     void prepararEntorno() throws SQLException {
         //persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
-        baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
-        PersistenciaDeEstancias persistencia = new PersistenciaDeEstanciasEnBaseDeDatosSQL(baseDeDatos);
-        ((PersistenciaDeEstanciasEnBaseDeDatosSQL) persistencia).crearLasTablas();
+        baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
+        PersistenciaDeEstancias persistencia = new PersistenciaDeEstanciasEnMariaDB(baseDeDatos);
+        ((PersistenciaDeEstanciasEnMariaDB) persistencia).crearLasTablas();
 
-        gestorDeEstancias = new GestorDeEstancias(persistencia);
+        estancias = new Estancias(persistencia);
     }
     
     @AfterEach
@@ -62,22 +62,22 @@ class EstanciasTest {
     
     @Test
     void seCreaYSeRecuperaUnaNuevaEstancia() throws IOException {
-        Estancia estanciaCreada = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        Estancia estanciaCreada = estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, huespedes);
         
-        Estancia estanciaRecuperada = gestorDeEstancias.get(estanciaCreada.getIdInterno());
+        Estancia estanciaRecuperada = estancias.get(estanciaCreada.getIdInterno());
         
         assertEquals(estanciaCreada, estanciaRecuperada);
     }
     
     @Test
     void daErrorCrearNuevaEstanciaSobreAlgunaHabitacionQueEstabaYaOcupada() throws IOException {
-        Estancia primeraEstancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        Estancia primeraEstancia = estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, huespedes);
         
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia segundaEstancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+                    Estancia segundaEstancia = estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, huespedes);
                 }
              }
         );
@@ -91,7 +91,7 @@ class EstanciasTest {
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = gestorDeEstancias.crear(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
+                    Estancia estancia = estancias.crearUnaNueva(listaVaciaDeHabitaciones, fechaEntrada, fechaSalida, huespedes);
                 }
              }
         );
@@ -105,7 +105,7 @@ class EstanciasTest {
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntradaFutura, fechaSalida, huespedes);
+                    Estancia estancia = estancias.crearUnaNueva(habitaciones, fechaEntradaFutura, fechaSalida, huespedes);
                 }
              }
         );
@@ -119,7 +119,7 @@ class EstanciasTest {
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalidaErronea, huespedes);
+                    Estancia estancia = estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalidaErronea, huespedes);
                 }
              }
         );
@@ -133,7 +133,7 @@ class EstanciasTest {
              new Executable() {
                 @Override
                 public void execute() throws Throwable {
-                    Estancia estancia = gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, listaVaciaDeHuespedes);
+                    Estancia estancia = estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, listaVaciaDeHuespedes);
                 }
              }
         );
@@ -145,16 +145,16 @@ class EstanciasTest {
         LocalDate fechaEntradaAntigua = fechaEntrada.plusDays(-25);
         LocalDate fechaSalidaAntigua = fechaSalida.plusDays(-25);
         
-        gestorDeEstancias.crear(habitaciones, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
-        gestorDeEstancias.crear(habitaciones, fechaEntrada, fechaSalida, huespedes);
+        estancias.crearUnaNueva(habitaciones, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, huespedes);
        
         List<Habitacion> unaHabitacion = new ArrayList<>();
-        unaHabitacion.add(GestorDeHabitaciones.getUnaHabitacionDePrueba());
+        unaHabitacion.add(Habitaciones.getUnaParaPruebas());
 
-        gestorDeEstancias.crear(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
-        gestorDeEstancias.crear(unaHabitacion, fechaEntrada, fechaSalida, huespedes);
+        estancias.crearUnaNueva(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
+        estancias.crearUnaNueva(unaHabitacion, fechaEntrada, fechaSalida, huespedes);
         
-        List<Estancia> estanciasActivas = gestorDeEstancias.getEstanciasActivasEnEsteMomento();
+        List<Estancia> estanciasActivas = estancias.getEstanciasActivasEnEsteMomento();
         assertEquals(2, estanciasActivas.size());
     }
     

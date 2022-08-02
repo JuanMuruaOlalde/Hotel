@@ -8,22 +8,46 @@ import java.util.List;
 import java.util.UUID;
 
 import es.susosise.hotel.habitaciones.Habitacion;
+import es.susosise.hotel.huespedes.PersistenciaDeHuespedesEnMariaDB;
 
 
-public final class PersistenciaDeEstanciasEnBaseDeDatosSQL implements PersistenciaDeEstancias {
+public final class PersistenciaDeEstanciasEnMariaDB implements PersistenciaDeEstancias {
     private java.sql.Connection baseDeDatos;
     
-    public PersistenciaDeEstanciasEnBaseDeDatosSQL(java.sql.Connection baseDeDatos) {
+    public PersistenciaDeEstanciasEnMariaDB(java.sql.Connection baseDeDatos) {
         this.baseDeDatos = baseDeDatos;
     }
 
+    public static String sqlParaBorrarLaTablaDeEstancias() {
+        return "DROP TABLE IF EXISTS estancias ;";
+    }
+    public static String sqlParaCrearLaTablaDeEstancias() {
+        return "CREATE TABLE estancias ( " + System.lineSeparator()
+             + "    idInterno CHAR(36) NOT NULL, " + System.lineSeparator()
+             + "    fechaEntrada DATE NOT NULL, " + System.lineSeparator()
+             + "    fechaSalida DATE NOT NULL " + System.lineSeparator()
+             + ")"
+             ;
+    }
+    
+    public static String sqlParaBorrarLaTablaDeEstanciasHabitaciones() {
+        return "DROP TABLE IF EXISTS estancias_habitaciones ;";
+    }
+    public static String sqlParaCrearLaTablaDeEstanciasHabitaciones() {
+        return "CREATE TABLE estancias_habitaciones ( " + System.lineSeparator()
+             + "    idEstancia CHAR(36) NOT NULL, " + System.lineSeparator()
+             + "    idHabitacion CHAR(36) NOT NULL " + System.lineSeparator()
+             + ")"
+             ;
+    }
+    
     protected void crearLasTablas() throws SQLException {
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstancias());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHabitaciones());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHuespedes());
+            comando.execute(sqlParaCrearLaTablaDeEstancias());
+            comando.execute(sqlParaCrearLaTablaDeEstanciasHabitaciones());
+            comando.execute(PersistenciaDeHuespedesEnMariaDB.sqlParaCrearLaTablaDeEstanciasHuespedes());
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }

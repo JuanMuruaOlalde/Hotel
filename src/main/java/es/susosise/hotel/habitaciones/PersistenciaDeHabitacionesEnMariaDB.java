@@ -10,19 +10,33 @@ import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
 
-public final class PersistenciaDeHabitacionesEnBaseDeDatosSQL implements PersistenciaDeHabitaciones {
+public final class PersistenciaDeHabitacionesEnMariaDB implements PersistenciaDeHabitaciones {
 
     private java.sql.Connection baseDeDatos;
     
-    public PersistenciaDeHabitacionesEnBaseDeDatosSQL(java.sql.Connection baseDeDatos) {
+    public PersistenciaDeHabitacionesEnMariaDB(java.sql.Connection baseDeDatos) {
         this.baseDeDatos = baseDeDatos;
     }
 
+    public static String sqlParaBorrarLaTablaDeHabitaciones() {
+        return "DROP TABLE IF EXISTS habitaciones";
+    }
+    
+    public static String sqlParaCrearLaTablaDeHabitaciones() {
+        return "CREATE TABLE habitaciones (" + System.lineSeparator()
+             + "    idInterno CHAR(36) NOT NULL, " + System.lineSeparator()
+             + "    estaActiva BOOLEAN NOT NULL DEFAULT TRUE, " + System.lineSeparator()
+             + "    numeroDeHabitacion VARCHAR(10) NOT NULL, " + System.lineSeparator()
+             + "    tipoDeHabitacion VARCHAR(25), " + System.lineSeparator()
+             + "    tipoDeBaño VARCHAR(25) " + System.lineSeparator()
+             + ")";
+    }
+    
     protected void crearLaTabla() throws SQLException {
         java.sql.Statement comando = null;
         try {
             comando = baseDeDatos.createStatement();
-            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
+            comando.execute(sqlParaCrearLaTablaDeHabitaciones());
         } finally {
             try { if (comando != null) comando.close(); } catch (Exception ex) {}
         }

@@ -16,8 +16,8 @@ public class CargadorDeLosDatosDePruebaEnLaBD {
     
     public void cargar() throws IOException {
         
-        PersistenciaDeHabitacionesEnBaseDeDatosSQL bdHabitaciones = new PersistenciaDeHabitacionesEnBaseDeDatosSQL(baseDeDatos);
-        for (Habitacion habitacion : GestorDeHabitaciones.getUnGrupoDeHabitacionesDePrueba()) {
+        PersistenciaDeHabitacionesEnMariaDB bdHabitaciones = new PersistenciaDeHabitacionesEnMariaDB(baseDeDatos);
+        for (Habitacion habitacion : Habitaciones.getUnasCuantasParaPruebas()) {
             bdHabitaciones.añadirUnaNueva(habitacion);
         }
         

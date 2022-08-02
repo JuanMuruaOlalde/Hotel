@@ -7,9 +7,6 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>hotel</name>
-  <url>http://maven.apache.org</url>
-
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>17</maven.compiler.source>
@@ -86,7 +83,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>App</mainClass>
+          <mainClass>es.susosise.hotel.App</mainClass>
         </configuration>
       </plugin>
 

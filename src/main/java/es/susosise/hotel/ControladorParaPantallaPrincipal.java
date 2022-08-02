@@ -9,11 +9,11 @@ import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 
 
-public class ControlParaPantallaPrincipal {
+public class ControladorParaPantallaPrincipal {
 
     private Parent pantallaEditorDeHabitaciones;
     
-    public ControlParaPantallaPrincipal(Parent pantallaEditorDeHabitaciones) {
+    public ControladorParaPantallaPrincipal(Parent pantallaEditorDeHabitaciones) {
         this.pantallaEditorDeHabitaciones = pantallaEditorDeHabitaciones;
     }
     

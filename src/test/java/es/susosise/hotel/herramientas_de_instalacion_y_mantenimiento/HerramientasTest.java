@@ -1,11 +1,13 @@
 package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
-import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
 import java.sql.SQLException;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+
+import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -16,7 +18,7 @@ class HerramientasTest {
 
     @BeforeAll
      static void abrirConexionConLaBaseDeDatos() throws SQLException {
-        baseDeDatos = OpcionesYConstantes.getServidorDeDatosParaPruebas();
+        baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
     }
     
     @AfterAll
@@ -27,7 +29,7 @@ class HerramientasTest {
     
     @Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
     void seCreanTodasLasTablasNecesariasEnLaBD() throws SQLException {
-        CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(OpcionesYConstantes.getServidorDeDatosParaPruebas());
+        CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas());
         creador.crear();
         
         String[] filtroDeTipos = {"TABLE"};

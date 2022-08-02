@@ -9,25 +9,22 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion;
 import es.susosise.hotel.huespedes.Huesped;
 
-public class GestorDeEstancias implements GestionDeEstancias {
+public class Estancias {
     private PersistenciaDeEstancias persistencia;
     
-    public GestorDeEstancias(PersistenciaDeEstancias persistencia) {
+    public Estancias(PersistenciaDeEstancias persistencia) {
         this.persistencia = persistencia;
     }
     
-    @Override
     public Estancia get(UUID idInterno) {
         return persistencia.get(idInterno);
     }
 
-    @Override
     public List<Estancia> getEstanciasActivasEnEsteMomento() {
         return persistencia.getEstanciasActivasEnEsteMomento();
     }
     
     
-    @Override
     public boolean algunaDeLasHabitacionesEstaOcupada(List<Habitacion> habitaciones) {
         List<UUID> estancias = persistencia.getEstanciasActivasAsociadasAAlgunaDeEstasHabitaciones(habitaciones);
         if (estancias.isEmpty()) {
@@ -40,11 +37,10 @@ public class GestorDeEstancias implements GestionDeEstancias {
 
     
     
-    @Override
-    public Estancia crear(List<Habitacion> habitaciones, 
-                          LocalDate fechaEntrada, LocalDate fechaSalida, 
-                          List<Huesped> huespedes)
-                        throws IOException {
+    public Estancia crearUnaNueva(List<Habitacion> habitaciones, 
+                                  LocalDate fechaEntrada, LocalDate fechaSalida, 
+                                  List<Huesped> huespedes)
+                                throws IOException {
         
         if (fechaEntrada.isAfter(java.time.LocalDate.now())) {
             throw new IllegalArgumentException("No se puede registrar una estancia que comienza en el futuro, " 

@@ -2,8 +2,9 @@ package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
 import java.sql.SQLException;
 
-import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias;
-import es.susosise.hotel.estancias.PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias;
+import es.susosise.hotel.habitaciones.PersistenciaDeHabitacionesEnMariaDB;
+import es.susosise.hotel.huespedes.PersistenciaDeHuespedesEnMariaDB;
+import es.susosise.hotel.estancias.PersistenciaDeEstanciasEnMariaDB;
 
 
 public class CreadorDeLasTablasEnLaBD {
@@ -20,15 +21,15 @@ public class CreadorDeLasTablasEnLaBD {
         try {
             comando = baseDeDatos.createStatement();
             
-            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeHabitaciones());
-            comando.execute(PersistenciaDeHabitacionesEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeHabitaciones());
+            comando.execute(PersistenciaDeHabitacionesEnMariaDB.sqlParaBorrarLaTablaDeHabitaciones());
+            comando.execute(PersistenciaDeHabitacionesEnMariaDB.sqlParaCrearLaTablaDeHabitaciones());
             
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstancias());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstanciasHuespedes());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraBorrarLaTablaDeEstanciasHabitaciones());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstancias());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHabitaciones());
-            comando.execute(PersistenciaDeEstanciasEnBaseDeDatosSQL_sentencias.paraCrearLaTablaDeEstanciasHuespedes());
+            comando.execute(PersistenciaDeEstanciasEnMariaDB.sqlParaBorrarLaTablaDeEstancias());
+            comando.execute(PersistenciaDeHuespedesEnMariaDB.sqlParaBorrarLaTablaDeEstanciasHuespedes());
+            comando.execute(PersistenciaDeEstanciasEnMariaDB.sqlParaBorrarLaTablaDeEstanciasHabitaciones());
+            comando.execute(PersistenciaDeEstanciasEnMariaDB.sqlParaCrearLaTablaDeEstancias());
+            comando.execute(PersistenciaDeEstanciasEnMariaDB.sqlParaCrearLaTablaDeEstanciasHabitaciones());
+            comando.execute(PersistenciaDeHuespedesEnMariaDB.sqlParaCrearLaTablaDeEstanciasHuespedes());
             
             // TODO  aqui iremos poniendo el resto de tablas... a medida que vayamos completando cada entidad del dominio...
             

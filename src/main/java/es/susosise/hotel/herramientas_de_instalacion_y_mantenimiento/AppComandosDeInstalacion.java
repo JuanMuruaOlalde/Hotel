@@ -1,15 +1,15 @@
 package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
-import es.susosise.hotel.elementos_comunes_compartidos.OpcionesYConstantes;
+import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
 
 public class AppComandosDeInstalacion {
 
     public static void main(String[] args) {
         
         String archivoDeOpciones = "_configuracion_.json";
-        OpcionesYConstantes opciones = null;
+        PreferenciasGeneralesDeLaAplicacion opciones = null;
         try {
-            opciones = new OpcionesYConstantes(new java.io.File(archivoDeOpciones).toPath());
+            opciones = new PreferenciasGeneralesDeLaAplicacion(new java.io.File(archivoDeOpciones).toPath());
         } catch (Exception e) {
             System.out.println("Error al leer el archivo de opciones [" + archivoDeOpciones + "]");
             e.printStackTrace();
