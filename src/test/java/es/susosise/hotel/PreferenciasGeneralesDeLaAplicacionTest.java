@@ -1,4 +1,4 @@
-package es.susosise.hotel.elementosComunesCompartidos;
+package es.susosise.hotel;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,12 +12,12 @@ import java.sql.SQLException;
 
 
 
-public class OpcionesYConstantesTest {
+public class PreferenciasGeneralesDeLaAplicacionTest {
     
     
     @Disabled("Solo lo uso para lanzar el debugger y hacer pruebas") 
     void seLeeLaConfiguracionDesdeUnArchivo() throws IOException, SQLException {
-        PreferenciasGeneralesDeLaAplicacion opciones = new PreferenciasGeneralesDeLaAplicacion(java.nio.file.Paths.get("C:\\Users\\Public", "Hotel_pruebas", "_configuracion_.json"));
+        PreferenciasGeneralesDeLaAplicacion preferencias = new PreferenciasGeneralesDeLaAplicacion(java.nio.file.Paths.get("C:\\Users\\Public", "Hotel_pruebas", "_configuracion_.json"));
     }
     
 
