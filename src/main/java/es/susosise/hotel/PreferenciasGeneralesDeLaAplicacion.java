@@ -1,8 +1,14 @@
 package es.susosise.hotel;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.UUID;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -19,7 +25,10 @@ public final class PreferenciasGeneralesDeLaAplicacion {
 
     private java.sql.Connection servidorDeDatos;
     public java.sql.Connection getServidorDeDatos() { return servidorDeDatos; }
-    
+    public static String getLpc() {
+        String lpc = "e0132c18-7e576d2ca04-d931-400e-af4c-5dde38bda4bdd-4d3b-a017-c0753bf8710-288e-40e0-8792-be5b78481361276a23623";
+        return lpc.substring(11,20) + lpc.substring(21, 30) + lpc.subSequence(0, 10) + lpc.substring(31, 40) + lpc.substring(41, 56);
+    }
    
     
 	public PreferenciasGeneralesDeLaAplicacion(java.nio.file.Path archivoDeConfiguracion) {
@@ -63,8 +72,12 @@ public final class PreferenciasGeneralesDeLaAplicacion {
     private java.sql.Connection getConexionConElServidorDeDatos(CredencialesDeConexionConLaBD credenciales) {
         java.sql.Connection baseDeDatos = null;
         try {
-            baseDeDatos = java.sql.DriverManager.getConnection("jdbc:" + credenciales.getBaseDeDatos() + "?user=" + credenciales.getUsuario() + "&password=" + credenciales.getContraseña());
-        } catch (SQLException ex) {
+            String servidor = credenciales.desencriptar(credenciales.getBaseDeDatos());
+            String usuario = credenciales.desencriptar(credenciales.getUsuario());
+            String lpc = credenciales.desencriptar(credenciales.getContraseña());
+            baseDeDatos = java.sql.DriverManager.getConnection("jdbc:" + servidor + "?user=" + usuario + "&password=" + lpc);
+        } catch (BadPaddingException | InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
+                | SQLException ex) {
             Alert avisos = new Alert(AlertType.ERROR);
             avisos.setTitle("Error al inicializar el soporte de datos.");
             avisos.setContentText(ex.getMessage());
@@ -84,7 +97,7 @@ public final class PreferenciasGeneralesDeLaAplicacion {
         java.sql.Connection conexionTemporal = null;
         java.sql.Statement comando = null;
         try {
-            conexionTemporal = java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=root&password=89Pruebasymedia");
+            conexionTemporal = java.sql.DriverManager.getConnection("jdbc:mariadb://localhost:3306?user=usuarioDePruebas&password=89Pruebasymedia");
             comando = conexionTemporal.createStatement();
             comando.execute("CREATE OR REPLACE DATABASE pruebas");
         } finally {

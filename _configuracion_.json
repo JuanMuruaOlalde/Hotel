@@ -1,8 +1,8 @@
 [
 {"carpetaDeDatos" : "C:\\Users\\Public\\Hotel"},
-{"servidorDeDatos" : { "baseDeDatos" : "mariadb://localhost:3306/hotel",
-                       "usuario" : "root",
-                       "contraseña" : "89Pruebasymedia" 
+{"servidorDeDatos" : { "baseDeDatos" : "WsqD9zpPQcowdbBZCXKCZcylRrXsj8M/YBBA0AaeF48=",
+                       "usuario" : "qrzLR4a8Jto=",
+                       "contraseña" : "mrRwJHZAg2U/5QkDF8xyeQ==" 
                      }
 }
 ]
