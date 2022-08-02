@@ -23,7 +23,7 @@ class HabitacionesTest {
 	@BeforeEach
 	void prepararEntorno() throws IOException, SQLException {
 	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
-	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(OpcionesYConstantes.getCarpetaDeDatosParaPruebas());
+	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(PreferenciasGeneralesDeLaAplicacion.getCarpetaDeDatosParaPruebas());
 	    baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
 	    PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnMariaDB(baseDeDatos);
 	    ((PersistenciaDeHabitacionesEnMariaDB) persistencia).crearLaTabla();
@@ -32,7 +32,7 @@ class HabitacionesTest {
 	}
 	@AfterEach
 	void limpiarEntorno() {
-	    //borrarRecursivo(OpcionesYConstantes.getCarpetaDeDatosParaPruebas().toFile());
+	    //borrarRecursivo(PreferenciasGeneralesDeLaAplicacion.getCarpetaDeDatosParaPruebas().toFile());
         try { if (baseDeDatos != null) baseDeDatos.close(); } catch (Exception ex) {}
 	}
 //    static void borrarRecursivo (File carpeta) {
