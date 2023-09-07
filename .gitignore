@@ -3,7 +3,6 @@ _configuracion_.json
 
 
 #Y tampoco lo que sea fácilmente recuperable o recompilable a partir de las fuentes guardadas en el repositorio.
-
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -15,13 +14,11 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-
 # Eclipse 
 .settings/
 # Eclipse Core
 .project/
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
-
 #temporales de Drawio
 ~$*
