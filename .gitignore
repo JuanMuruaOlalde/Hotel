@@ -1,3 +1,9 @@
+#Los secretos no han de ir al repositorio
+_configuracion_.json
+
+
+#Y tampoco lo que sea fácilmente recuperable o recompilable a partir de las fuentes guardadas en el repositorio.
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
