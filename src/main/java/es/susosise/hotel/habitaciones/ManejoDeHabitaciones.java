@@ -6,11 +6,11 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
 
-public class Habitaciones {
+public class ManejoDeHabitaciones {
 
     private PersistenciaDeHabitaciones persistencia;
     
-    public Habitaciones(PersistenciaDeHabitaciones persistencia) {
+    public ManejoDeHabitaciones(PersistenciaDeHabitaciones persistencia) {
         this.persistencia = persistencia;
     }
 

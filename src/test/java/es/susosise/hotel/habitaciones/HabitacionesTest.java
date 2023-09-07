@@ -1,7 +1,7 @@
 package es.susosise.hotel.habitaciones;
 
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeHabitacion;
-import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
+import es.susosise.hotel.ManejoDePreferenciasYConfiguracion;
 import es.susosise.hotel.habitaciones.Habitacion.TipoDeBaño;
 
 import org.junit.jupiter.api.AfterEach;
@@ -17,18 +17,18 @@ import java.sql.SQLException;
 class HabitacionesTest {
 	
 	java.sql.Connection baseDeDatos;
-	Habitaciones habitaciones;
+	ManejoDeHabitaciones habitaciones;
 	
 	
 	@BeforeEach
 	void prepararEntorno() throws IOException, SQLException {
 	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesMocParaAgilizarLosTests();
 	    //PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnArchivoJSON(PreferenciasGeneralesDeLaAplicacion.getCarpetaDeDatosParaPruebas());
-	    baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
+	    baseDeDatos = ManejoDePreferenciasYConfiguracion.getServidorDeDatosParaPruebas();
 	    PersistenciaDeHabitaciones persistencia = new PersistenciaDeHabitacionesEnMariaDB(baseDeDatos);
 	    ((PersistenciaDeHabitacionesEnMariaDB) persistencia).crearLaTabla();
 	    
-        habitaciones = new Habitaciones(persistencia);
+        habitaciones = new ManejoDeHabitaciones(persistencia);
 	}
 	@AfterEach
 	void limpiarEntorno() {

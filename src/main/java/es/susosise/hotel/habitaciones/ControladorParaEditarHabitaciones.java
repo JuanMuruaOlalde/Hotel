@@ -26,9 +26,9 @@ import javafx.event.ActionEvent;
 
 public class ControladorParaEditarHabitaciones implements Initializable {
     
-    private Habitaciones habitaciones;
+    private ManejoDeHabitaciones habitaciones;
     
-    public ControladorParaEditarHabitaciones(Habitaciones habitaciones) {
+    public ControladorParaEditarHabitaciones(ManejoDeHabitaciones habitaciones) {
         this.habitaciones = habitaciones;
     }
     

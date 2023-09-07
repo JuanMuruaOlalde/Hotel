@@ -15,7 +15,7 @@ import javafx.scene.control.ButtonType;
 
 public class App extends Application {
     
-    private static PreferenciasGeneralesDeLaAplicacion preferenciasGenerales;
+    private static ManejoDePreferenciasYConfiguracion preferenciasGenerales;
     
     public static void main(String[] args) {
         launch(args); // esto llama a start(...)
@@ -27,11 +27,11 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            preferenciasGenerales = new PreferenciasGeneralesDeLaAplicacion(new java.io.File("_configuracion_.json").toPath());
+            preferenciasGenerales = new ManejoDePreferenciasYConfiguracion(new java.io.File("_configuracion_.json").toPath());
             baseDeDatos = preferenciasGenerales.getServidorDeDatos();
             
             PersistenciaDeHabitaciones persistenciaDeHabitaciones = new PersistenciaDeHabitacionesEnMariaDB(baseDeDatos);
-            Habitaciones habitaciones = new Habitaciones(persistenciaDeHabitaciones);
+            ManejoDeHabitaciones habitaciones = new ManejoDeHabitaciones(persistenciaDeHabitaciones);
             ControladorParaEditarHabitaciones controladorParaEditarHabitaciones = new ControladorParaEditarHabitaciones(habitaciones);
             FXMLLoader loaderVistaParaEditarHabitaciones = new FXMLLoader(getClass().getResource("habitaciones/VistaParaEditarHabitaciones.fxml"));
             loaderVistaParaEditarHabitaciones.setController(controladorParaEditarHabitaciones);

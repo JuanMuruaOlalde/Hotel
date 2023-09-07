@@ -6,7 +6,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 
-import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
+import es.susosise.hotel.ManejoDePreferenciasYConfiguracion;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,7 +18,7 @@ class HerramientasTest {
 
     @BeforeAll
      static void abrirConexionConLaBaseDeDatos() throws SQLException {
-        baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
+        baseDeDatos = ManejoDePreferenciasYConfiguracion.getServidorDeDatosParaPruebas();
     }
     
     @AfterAll
@@ -29,7 +29,7 @@ class HerramientasTest {
     
     @Disabled("El creador de tablas es una herramienta auxiliar que solo se usa en momentos puntuales")
     void seCreanTodasLasTablasNecesariasEnLaBD() throws SQLException {
-        CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas());
+        CreadorDeLasTablasEnLaBD creador = new CreadorDeLasTablasEnLaBD(ManejoDePreferenciasYConfiguracion.getServidorDeDatosParaPruebas());
         creador.crear();
         
         String[] filtroDeTipos = {"TABLE"};

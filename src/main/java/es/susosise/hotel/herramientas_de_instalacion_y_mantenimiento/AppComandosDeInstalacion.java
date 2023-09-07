@@ -1,17 +1,17 @@
 package es.susosise.hotel.herramientas_de_instalacion_y_mantenimiento;
 
-import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
+import es.susosise.hotel.ManejoDePreferenciasYConfiguracion;
 
 public class AppComandosDeInstalacion {
 
     public static void main(String[] args) {
         
-        String archivoDeOpciones = "_configuracion_.json";
-        PreferenciasGeneralesDeLaAplicacion opciones = null;
+        String ARCHIVO_DE_OPCIONES = "_configuracion_.json";
+        ManejoDePreferenciasYConfiguracion opciones = null;
         try {
-            opciones = new PreferenciasGeneralesDeLaAplicacion(new java.io.File(archivoDeOpciones).toPath());
+            opciones = new ManejoDePreferenciasYConfiguracion(new java.io.File(ARCHIVO_DE_OPCIONES).toPath());
         } catch (Exception e) {
-            System.out.println("Error al leer el archivo de opciones [" + archivoDeOpciones + "]");
+            System.out.println("Error al leer el archivo de opciones [" + ARCHIVO_DE_OPCIONES + "]");
             e.printStackTrace();
         }
         if (opciones != null) {

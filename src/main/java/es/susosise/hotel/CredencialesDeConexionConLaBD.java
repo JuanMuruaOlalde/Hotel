@@ -51,7 +51,7 @@ public final class CredencialesDeConexionConLaBD {
         
 
         protected String encriptar(String texto) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-            byte[] lpc = PreferenciasGeneralesDeLaAplicacion.getLpc().getBytes();
+            byte[] lpc = ManejoDePreferenciasYConfiguracion.getLpc().getBytes();
             SecretKeySpec secreto = new SecretKeySpec(lpc, "Blowfish");
             Cipher maquina = Cipher.getInstance("Blowfish");
             maquina.init(Cipher.ENCRYPT_MODE, secreto);
@@ -60,7 +60,7 @@ public final class CredencialesDeConexionConLaBD {
         }
         
         protected String desencriptar(String texto) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-            byte[] lpc = PreferenciasGeneralesDeLaAplicacion.getLpc().getBytes();
+            byte[] lpc = ManejoDePreferenciasYConfiguracion.getLpc().getBytes();
             SecretKeySpec secreto = new SecretKeySpec(lpc, "Blowfish");
             Cipher maquina = Cipher.getInstance("Blowfish");
             maquina.init(Cipher.DECRYPT_MODE, secreto);

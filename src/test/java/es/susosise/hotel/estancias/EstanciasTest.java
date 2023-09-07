@@ -1,7 +1,7 @@
 package es.susosise.hotel.estancias;
 
-import es.susosise.hotel.PreferenciasGeneralesDeLaAplicacion;
-import es.susosise.hotel.habitaciones.Habitaciones;
+import es.susosise.hotel.ManejoDePreferenciasYConfiguracion;
+import es.susosise.hotel.habitaciones.ManejoDeHabitaciones;
 import es.susosise.hotel.habitaciones.Habitacion;
 import es.susosise.hotel.huespedes.Huespedes;
 import es.susosise.hotel.huespedes.Huesped;
@@ -27,16 +27,16 @@ import java.time.LocalDate;
 class EstanciasTest {
  
     private java.sql.Connection baseDeDatos;
-    private Estancias estancias;
+    private ManejoDeEstancias estancias;
 
-    private static List<Habitacion> habitaciones = Habitaciones.getUnasCuantasParaPruebas();
+    private static List<Habitacion> habitaciones = ManejoDeHabitaciones.getUnasCuantasParaPruebas();
     private static LocalDate fechaEntrada = java.time.LocalDate.now();
     private static LocalDate fechaSalida = fechaEntrada.plusDays(1);
     private static List<Huesped> huespedes = Huespedes.getUnosCuantosParaPruebas();
     
     @BeforeAll
     static void prepararConstantes() {
-        habitaciones = Habitaciones.getUnasCuantasParaPruebas();
+        habitaciones = ManejoDeHabitaciones.getUnasCuantasParaPruebas();
         fechaEntrada = java.time.LocalDate.now();
         fechaSalida = fechaEntrada.plusDays(1);
         huespedes = Huespedes.getUnosCuantosParaPruebas();
@@ -46,11 +46,11 @@ class EstanciasTest {
     @BeforeEach
     void prepararEntorno() throws SQLException {
         //persistencia = new PersistenciaDeEstanciasMocParaAgilizarLosTest();
-        baseDeDatos = PreferenciasGeneralesDeLaAplicacion.getServidorDeDatosParaPruebas();
+        baseDeDatos = ManejoDePreferenciasYConfiguracion.getServidorDeDatosParaPruebas();
         PersistenciaDeEstancias persistencia = new PersistenciaDeEstanciasEnMariaDB(baseDeDatos);
         ((PersistenciaDeEstanciasEnMariaDB) persistencia).crearLasTablas();
 
-        estancias = new Estancias(persistencia);
+        estancias = new ManejoDeEstancias(persistencia);
     }
     
     @AfterEach
@@ -149,7 +149,7 @@ class EstanciasTest {
         estancias.crearUnaNueva(habitaciones, fechaEntrada, fechaSalida, huespedes);
        
         List<Habitacion> unaHabitacion = new ArrayList<>();
-        unaHabitacion.add(Habitaciones.getUnaParaPruebas());
+        unaHabitacion.add(ManejoDeHabitaciones.getUnaParaPruebas());
 
         estancias.crearUnaNueva(unaHabitacion, fechaEntradaAntigua, fechaSalidaAntigua, huespedes);
         estancias.crearUnaNueva(unaHabitacion, fechaEntrada, fechaSalida, huespedes);

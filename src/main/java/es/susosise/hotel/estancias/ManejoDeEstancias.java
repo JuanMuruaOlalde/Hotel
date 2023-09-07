@@ -9,10 +9,10 @@ import java.util.UUID;
 import es.susosise.hotel.habitaciones.Habitacion;
 import es.susosise.hotel.huespedes.Huesped;
 
-public class Estancias {
+public class ManejoDeEstancias {
     private PersistenciaDeEstancias persistencia;
     
-    public Estancias(PersistenciaDeEstancias persistencia) {
+    public ManejoDeEstancias(PersistenciaDeEstancias persistencia) {
         this.persistencia = persistencia;
     }
     
